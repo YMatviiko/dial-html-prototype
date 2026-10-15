@@ -1,0 +1,71 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, Scheduled tasks list. Source of truth: Figma "DIAL Chat 2.0 (Scheduled tasks)"
+     (QMWaL8m8tFmoekQKxIH569), page "Iteration 1", frame 545:9315 "Scheduled Tasks _ List" (same layout as 231:15640);
+     card states from 276:11148 "Task card types". Generate with: kit-lookup.mjs pattern scheduled-tasks > page.html
+     Kit components and icons are filled in at generation time; edit the text, cards and states freely. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scheduled tasks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=scheduled -->
+
+  <!-- Main (Figma: Catalog View). Horizontal padding is 32px: px-6 here + px-2 on each section (the kit has no px-8). -->
+  <main class="flex-1 min-w-0 flex flex-col overflow-y-auto px-6">
+
+    <!-- Page header (Figma: Page header): title + description, primary action on the right. No bottom stroke here. -->
+    <header class="flex items-start gap-2 px-2 py-4">
+      <div class="flex-1 min-w-0 flex flex-col gap-0.5">
+        <div class="flex h-[40px] items-center"><h1 class="dial-h1-text text-primary">Scheduled tasks</h1></div>
+        <p class="dial-small-text text-secondary">Automate recurring tasks with scheduled runs, or execute them on demand whenever you need.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- render: PrimaryButton {"label":"New task","iconBefore":"@icon:plus"} -->
+      </div>
+    </header>
+
+    <!-- Toolbar (Figma: Toolbar / Search Row): full-width search + sort button. -->
+    <div class="flex items-center gap-3 px-2 pt-4 pb-4">
+      <div class="flex-1 min-w-0"><!-- render: Search {"id":"task-search","placeholder":"Search scheduled tasks…","size":"large"} --></div>
+      <!-- render: GhostButton {"label":"First to run","iconBefore":"@icon:arrows-sort","iconAfter":"@icon:chevron-down"} -->
+    </div>
+
+    <!-- Card container (Figma: Card Container / Card Grid): centred 3-column grid, max 1116px, 20px gaps, 184px cards.
+         Card = CardShell (20px radius, p-5, gap-3, shadow-md): title row (16/24 semibold + optional "N new" badge),
+         description (14/24 secondary, clipped to the space left), schedule badge at the bottom.
+         States (276:11148): Active = primary title + schedule badge; Paused = secondary title + "Paused" badge with
+         player-pause icon; Completed = secondary title + "Completed" badge with check icon. -->
+    <div class="flex justify-center px-2 mt-6 pt-1 pb-6">
+      <div class="grid w-full grid-cols-3 gap-5" style="max-width: 1116px">
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Urgent Issues Summary"},{"@component":"Badge","label":"8 new","variant":"filled","color":"blue"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Summarize high-priority customer tickets."},{"@component":"Badge","label":"Hourly, 8 min past the hour"}]} --></div>
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Customer Feedback Summary"},{"@component":"Badge","label":"1 new","variant":"filled","color":"blue"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Summarize feedback from support tickets, surveys, and app reviews. Group recurring themes and highlight the most requested improvements."},{"@component":"Badge","label":"Daily 9:00"}]} --></div>
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Dependency Vulnerability Scan"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Review new security advisories and create a report."},{"@component":"Badge","label":"Weekdays 12:00"}]} --></div>
+
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Sprint Progress and Status Summary"},{"@component":"Badge","label":"1 new","variant":"filled","color":"blue"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-2","children":"Summarize completed, in-progress, and blocked work, highlighting key updates and blockers."},{"@component":"Badge","label":"Every Monday 10:00"}]} --></div>
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Infrastructure Health, System Performance, and Service Availability Summary"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary truncate","children":"Summarize key infrastructure metrics, system performance, service uptime, and active incidents."},{"@component":"Badge","label":"Every Wednesday 14:00"}]} --></div>
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Weekly Release Notes"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Generate release notes from merged pull requests."},{"@component":"Badge","label":"Every Friday 9:00"}]} --></div>
+
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Knowledge Base Update Digest"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Highlight new knowledge base articles, recent changes, and outdated documentation."},{"@component":"Badge","label":"31 Jul 2026 12:00"}]} --></div>
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-primary","children":"Feature Adoption Report"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Bi-weekly summary of key product metrics after recent releases."},{"@component":"Badge","label":"Every 2 weeks on Friday 10:00"}]} --></div>
+        <!-- Paused card -->
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-secondary","children":"Weekly AI Research Digest"},{"@component":"Badge","label":"1 new","variant":"filled","color":"blue"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Summarize the latest AI news, papers, and product announcements relevant to the team."},{"@component":"Badge","label":"Paused","icon":"@icon:player-pause:12"}]} --></div>
+
+        <!-- Completed card -->
+        <div class="flex flex-col" style="min-height: 184px"><!-- render: CardShell {"className":"flex-1","children":[{"@component":"div","className":"flex w-full items-start gap-2","children":[{"@component":"h3","className":"flex-1 min-w-0 dial-body-semi-text text-secondary","children":"Competitor Updates"}]},{"@component":"p","className":"flex-1 min-h-0 dial-small-paragraph-text text-secondary line-clamp-3","children":"Monitor competitors for new features, pricing, or announcements."},{"@component":"Badge","label":"Completed","icon":"@icon:check:12"}]} --></div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

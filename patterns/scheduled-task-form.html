@@ -1,0 +1,189 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, Scheduled task creation form (filled). Source of truth: Figma "DIAL Chat 2.0 (Scheduled tasks)"
+     (QMWaL8m8tFmoekQKxIH569), page "Iteration 1", frame 545:9646 "Scheduled task _ Task creation _ Filled";
+     repeat variants 545:9789 (One-time), 545:9861 (Hourly), 545:9931 (Weekly), 545:10084 (Custom), 545:10003 (Repeat
+     dropdown); error state 545:9716 "Task creation _ Errors". Generate with: kit-lookup.mjs pattern scheduled-task-form > page.html
+     Note: the Figma frame shows the navigation collapsed to a 72px rail; the shared navigation has no collapsed mode yet,
+     so the full 336px navigation is included.
+
+     ERROR STATE (545:9716): empty required fields get the kit error style. In a render marker add
+       "invalid":true,"error":"This field could not be empty"  (Name: Input, Model or Agent: Select)
+     and the empty values become placeholders: "Enter task name", "Describe what the task does", "Select Model or Agent",
+     "Select Skill", "Pick start date" / "Pick end date". For Instructions swap border-secondary for border-error on the
+     editor box and add <span role="alert" class="dial-tiny-text text-error">This field could not be empty</span> under it.
+     REPEAT OPTIONS (545:10003): One-time, Hourly, Daily, Weekdays, Weekly, Custom. The fields under Repeat depend on it:
+     the Daily/Weekdays block is shown; the other blocks are below with the "hidden" class (data-repeat="…"). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New task</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation collapsed active=scheduled -->
+
+  <main class="flex-1 min-w-0 flex flex-col">
+
+    <!-- Page header (Figma: Page header, with the tertiary bottom stroke): back, title, Cancel + Create. -->
+    <header class="shrink-0 flex items-start gap-2 px-6 py-4 border-b border-tertiary">
+      <div class="flex flex-1 min-w-0 items-center gap-2 pl-2">
+        <!-- render: GhostIconButton {"aria-label":"Back to scheduled tasks","icon":"@icon:arrow-narrow-left:24"} -->
+        <div class="flex h-[40px] items-center"><h1 class="dial-h1-text text-primary">New task</h1></div>
+      </div>
+      <div class="flex items-center gap-2 pr-2">
+        <!-- render: NeutralButton {"label":"Cancel"} -->
+        <!-- render: PrimaryButton {"label":"Create"} -->
+      </div>
+    </header>
+
+    <!-- Body (Figma: Body): Details column 400px | Configuration (fills) | empty 400px right column. -->
+    <div class="flex-1 min-h-0 flex">
+
+      <!-- Left column: Details. 32px side padding = p-6 + px-2 (the kit has no px-8). -->
+      <section class="shrink-0 overflow-y-auto border-r border-tertiary p-6" style="width: 400px">
+        <div class="flex flex-col gap-5 px-2">
+          <h2 class="dial-h3-text text-primary">Details</h2>
+
+          <!-- render: Input {"id":"task-name","labelProps":{"label":"Name","required":true},"value":"Morning calendar briefing"} -->
+
+          <!-- Description: label row carries the "Refine with AI" link (Figma: Text Areas, label actions). -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-2">
+              <!-- render: Label {"label":"Description","htmlFor":"task-description"} -->
+              <!-- render: LinkButton {"label":"Refine with AI","size":"small","iconBefore":"@icon:sparkles:16"} -->
+            </div>
+            <!-- render: Textarea {"id":"task-description","value":"Review schedule, prioritize tasks, and prepare for the day.","resize":"vertical","rows":3} -->
+          </div>
+
+          <!-- render: Select {"id":"task-model","labelProps":{"label":"Model or Agent","required":true},"options":[{"value":"opus","label":"Anthropic Claude Opus 4.6"},{"value":"gpt","label":"GPT-5.1"}],"value":"opus","onFooterClick":null} -->
+
+          <!-- Repeat: One-time | Hourly | Daily | Weekdays | Weekly | Custom (open state: add "open":true,"selectedOptionMark":"check"). -->
+          <!-- render: Select {"id":"task-repeat","labelProps":{"label":"Repeat"},"options":[{"value":"once","label":"One-time"},{"value":"hourly","label":"Hourly"},{"value":"daily","label":"Daily"},{"value":"weekdays","label":"Weekdays"},{"value":"weekly","label":"Weekly"},{"value":"custom","label":"Custom"}],"value":"daily","onFooterClick":null} -->
+
+          <!-- Daily / Weekdays: Time (+ time zone), Start date, End date. -->
+          <div class="flex flex-col gap-5" data-repeat="daily weekdays">
+            <!-- render: Input {"id":"task-time","labelProps":{"label":"Time"},"value":"09:00","postfix":"(GMT+1:00) Berlin, Germany"} -->
+            <div class="grid grid-cols-2 gap-3">
+              <!-- render: Input {"id":"task-start","labelProps":{"label":"Start date"},"value":"8 Mar 2026","iconAfter":"@icon:calendar-event:20"} -->
+              <!-- render: Input {"id":"task-end","labelProps":{"label":"End date"},"value":"31 Mar 2026","iconAfter":"@icon:calendar-event:20"} -->
+            </div>
+          </div>
+
+          <!-- One-time (545:9789): a single date-and-time picker. -->
+          <div class="hidden" data-repeat="once">
+            <!-- render: Input {"id":"task-once","labelProps":{"label":"Date and time"},"placeholder":"Pick date and time","iconAfter":"@icon:calendar-event:20"} -->
+          </div>
+
+          <!-- Hourly (545:9861): minutes past the hour (narrow field), start and end date + time. -->
+          <div class="hidden" data-repeat="hourly"><div class="flex flex-col gap-5">
+            <div class="grid grid-cols-2 gap-3"><!-- render: NumberInput {"id":"task-minutes","labelProps":{"label":"Minutes past the hour"},"value":0} --></div>
+            <!-- render: Input {"id":"task-hourly-start","labelProps":{"label":"Start date and time"},"value":"11 Mar 2026, 9:00","iconAfter":"@icon:calendar-event:20"} -->
+            <!-- render: Input {"id":"task-hourly-end","labelProps":{"label":"End date and time"},"value":"31 Mar 2026, 18:00","iconAfter":"@icon:calendar-event:20"} -->
+          </div></div>
+
+          <!-- Weekly (545:9931): Day select above the Daily fields (Time, Start date, End date). -->
+          <div class="hidden" data-repeat="weekly">
+            <!-- render: Select {"id":"task-day","labelProps":{"label":"Day"},"options":[{"value":"mon","label":"Monday"},{"value":"tue","label":"Tuesday"},{"value":"wed","label":"Wednesday"},{"value":"thu","label":"Thursday"},{"value":"fri","label":"Friday"}],"value":"mon","onFooterClick":null} -->
+          </div>
+
+          <!-- Custom (545:10084): Every (1–10 weeks), Time, then the week-day chips (selected = primary, others = neutral). -->
+          <div class="hidden" data-repeat="custom"><div class="flex flex-col gap-5">
+            <!-- render: Select {"id":"task-every","labelProps":{"label":"Every"},"options":[{"value":"1","label":"1 week"},{"value":"2","label":"2 weeks"},{"value":"3","label":"3 weeks"},{"value":"4","label":"4 weeks"}],"value":"1","onFooterClick":null} -->
+            <div class="flex flex-col gap-2">
+              <!-- render: Label {"label":"Day"} -->
+              <div class="flex items-center gap-0.5">
+                <!-- render: PrimaryButton {"label":"M","aria-label":"Monday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"T","aria-label":"Tuesday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"W","aria-label":"Wednesday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"T","aria-label":"Thursday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"F","aria-label":"Friday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"S","aria-label":"Saturday","className":"w-[40px] px-0"} -->
+                <!-- render: NeutralButton {"label":"S","aria-label":"Sunday","className":"w-[40px] px-0"} -->
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- Middle column: Configuration. Skill select + Instructions markdown editor filling the height. -->
+      <section class="flex-1 min-w-0 flex flex-col p-6">
+        <div class="flex-1 min-h-0 flex flex-col gap-5 px-2">
+          <h2 class="dial-h3-text text-primary">Configuration</h2>
+
+          <!-- render: Select {"id":"task-skill","labelProps":{"label":"Skill"},"options":[{"value":"tmo","label":"time-management-optimization"},{"value":"web","label":"web-research"}],"value":"tmo","placeholder":"Select Skill","onFooterClick":null} -->
+
+          <!-- Instructions (Figma: Markdown). The kit's MarkdownEditor is lazy-loaded and can't be rendered statically,
+               so this imitates it: toolbar (formatting left, edit / live / preview / fullscreen right) over a code-font
+               text area, one 8px-radius field border around both. -->
+          <div class="flex-1 min-h-0 flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-2">
+              <!-- render: Label {"label":"Instructions","required":true,"htmlFor":"task-instructions"} -->
+              <!-- render: LinkButton {"label":"Refine with AI","size":"small","iconBefore":"@icon:sparkles:16"} -->
+            </div>
+            <div data-dial-component="MarkdownEditor" class="flex-1 min-h-0 flex flex-col overflow-hidden rounded-lg border border-secondary bg-layer-raised">
+              <div class="shrink-0 flex items-center justify-between gap-2 px-2 pt-2 pb-1">
+                <div class="flex items-center gap-2">
+                  <!-- render: GhostIconButton {"aria-label":"Bold","icon":"@icon:bold:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Italic","icon":"@icon:italic:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Strikethrough","icon":"@icon:strikethrough:16","size":"small"} -->
+                  <span class="h-3 border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Text style","icon":"@icon:text-size:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Bulleted list","icon":"@icon:list:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Numbered list","icon":"@icon:list-numbers:16","size":"small"} -->
+                  <span class="h-3 border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Quote","icon":"@icon:quote:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Link","icon":"@icon:link:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Code","icon":"@icon:code:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Table","icon":"@icon:table:16","size":"small"} -->
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex rounded-full bg-control-accent-alpha-hover"><!-- render: GhostIconButton {"aria-label":"Edit mode (selected)","icon":"@icon:pencil:16","size":"small"} --></span>
+                  <!-- render: GhostIconButton {"aria-label":"Live preview","icon":"@icon:columns-2:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Preview","icon":"@icon:eye:16","size":"small"} -->
+                  <span class="h-3 border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Fullscreen","icon":"@icon:maximize:16","size":"small"} -->
+                </div>
+              </div>
+              <textarea id="task-instructions" class="flex-1 min-h-0 w-full resize-none border-0 bg-transparent outline-none px-3 py-2 dial-code-text text-primary placeholder:text-secondary" placeholder="Describe what this task should do step by step and what output it should produce">You are running a scheduled morning briefing for [Name], a [Role/Title]. Use the Outlook calendar (or any integrated calendar tool) to fetch today’s events. Prepare a concise and actionable briefing covering the following:
+
+Meetings: List all meetings with start/end times, attendees, and formats (virtual/in-person).
+Prep Notes: Add 2–3 concise talking points for each meeting based on title, attendees, or agenda.
+Conflicts &amp; Gaps: Flag overlapping events or long gaps (&gt;2 hours) between meetings.
+Format as a clean, easy-to-read report with local times. Note briefly if no meetings are scheduled.
+
+Daily Calendar Extraction &amp; Verification:
+Fetch today's schedule using the integrated calendar tool. Address the executive by [Name] and [Role/Title] with a professional morning greeting.
+If no meetings are scheduled, note this clearly and suggest 2–3 focus areas for the free day.
+
+Actionable Meeting Dossier (List &amp; Prep):
+Logistics: For each event, list the local start/end times, format (Virtual with platform, or In-person with location), and key internal/external attendees.
+Prep Notes: For each meeting, provide 2–3 hyper-concise talking points outlining:
+The core objective of the meeting.
+Crucial context or recent history regarding the topic/attendees.
+A specific strategic question or talking point the executive can use to drive the meeting.
+
+Schedule Diagnostics (Conflicts &amp; Gaps):
+Double Bookings: Flag overlapping events immediately and suggest which to prioritize or delegate.
+Back-to-Backs: Flag meetings with zero buffer time that may require a quick transition.
+Focus Blocks (Gaps &gt; 2 hrs): Highlight long open windows and recommend a specific deep-work task or prep item to fill the time productively.</textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column: empty 400px in the design (keeps the Configuration column from stretching too wide). -->
+      <div class="shrink-0" style="width: 400px"></div>
+    </div>
+  </main>
+
+</body>
+</html>

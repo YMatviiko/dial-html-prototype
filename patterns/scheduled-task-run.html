@@ -1,0 +1,163 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, Scheduled task run (the conversation a run produced) with the task's right panel.
+     Source of truth: Figma "DIAL Chat 2.0 (Scheduled tasks)" (QMWaL8m8tFmoekQKxIH569), page "Iteration 1",
+     frame 592:19881 "Scheduled task _ Conversation" (main area + composer) and 143:6606 "Right panel - Expanded sections"
+     (History, Details, Process, Uploaded files, Generated files, all expanded). Related: 143:6696 (process in progress),
+     525:8250 / 525:8684 (long run list). Generate with: kit-lookup.mjs pattern scheduled-task-run > page.html
+     The run opens as a chat row in "My chats" in the design; the shared navigation's rows are fixed, so no row is marked.
+     Right-panel sections collapse to their 40px header row (chevron-down); expanded ones show chevron-up. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weekly AI Research Digest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation chat=2 chat-title="Weekly AI Research Digest" -->
+
+  <!-- Main (Figma: Frame 140): 64px top bar with the right-panel toggle, the run thread, the composer at the bottom. -->
+  <main class="flex-1 min-w-0 flex flex-col">
+    <div class="shrink-0 flex h-16 items-center justify-end gap-2 px-2">
+      <!-- render: GhostIconButton {"aria-label":"Toggle task panel","icon":"@icon:layout-sidebar-right:24"} -->
+    </div>
+
+    <div class="flex-1 min-h-0 overflow-y-auto flex justify-center px-6">
+      <div class="flex w-full flex-col items-center gap-8 pt-4 pb-6" style="max-width: 712px">
+        <!-- Run banner: task name + run time; status on the right ("Task was deleted" when the task is gone). -->
+        <div class="flex w-full items-center gap-2 pl-6 pr-2 py-3 rounded-xl border border-secondary bg-layer-sunken">
+          <p class="flex-1 min-w-0 truncate dial-small-text text-primary"><span class="dial-small-semi-text">Weekly AI Research Digest</span> Jul 17 at 9:01 AM</p>
+          <span class="flex h-6 items-center px-2 dial-tiny-semi-text text-secondary">Task was deleted</span>
+        </div>
+
+        <!-- Assistant message: model icon + 16/26 text, a document link, message actions. -->
+        <div class="flex w-full items-start gap-3">
+          <!-- asset: model-gpt 28 -->
+          <div class="flex-1 min-w-0 flex flex-col items-start gap-4 py-0.5">
+            <div class="dial-body-paragraph-text text-primary">
+              <p>Daily AI intel report done. Six web searches across model releases, research, hardware, policy, and funding; report saved and Gmail draft created.</p>
+              <p>The day's throughline: launches gated by policy, not just compute. New frontier models shipped to trusted partners first, benchmark leaders changed twice this week, and a major hardware platform ramped to full production.</p>
+              <p>Two notes: I saved to your connected AI News folder (the task file pointed at a path I can't reach from here). And benchmark figures are vendor-reported, not independently verified — flagged in the report. The Gmail draft is in your Drafts, addressed to you, ready to send.</p>
+              <p>Sources: CNBC · BuildFastWithAI · White House EO · NVIDIA Rubin</p>
+            </div>
+            <a href="#" class="flex items-center gap-2 dial-body-paragraph-text text-primary">Ai update 2026 06 30 Document <span class="dial-body-paragraph-semi-text">MD Google Drive</span><!-- icon: external-link 20 --></a>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"View as Markdown","icon":"@icon:markdown:16","size":"small"} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Composer (Figma: chat-input, one line): +, placeholder, model picker, microphone. Max 748px. -->
+    <div class="shrink-0 flex justify-center px-6 pt-4 pb-6">
+      <form class="flex w-full items-center gap-2 p-3 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px" data-composer>
+        <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+        <input type="text" aria-label="Message" placeholder="How can I help you today?" class="flex-1 min-w-0 border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary">
+        <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-caption-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+        <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+      </form>
+    </div>
+  </main>
+
+  <!-- Right panel (Figma: Right panel - Expanded sections): 360px, raised, shadow-sm. Header with task name + close;
+       sections with a 12px semibold title and a 24px chevron button. -->
+  <aside class="shrink-0 flex flex-col overflow-y-auto bg-layer-raised shadow-sm pb-4" style="width: 360px">
+    <div class="shrink-0 flex items-center gap-1 px-4 py-3 border-b border-tertiary">
+      <h2 class="flex-1 min-w-0 truncate dial-h3-text text-primary">Weekly AI Research Digest</h2>
+      <!-- render: GhostIconButton {"aria-label":"Close panel","icon":"@icon:x:24"} -->
+    </div>
+
+    <!-- History: same run rows as the view-task History card; the open run is tinted. -->
+    <section class="flex flex-col gap-3 px-4 py-3">
+      <div class="flex items-center justify-between">
+        <h3 class="truncate dial-tiny-semi-text text-primary">History</h3>
+        <!-- render: GhostIconButton {"aria-label":"Collapse history","icon":"@icon:chevron-up:16","size":"small"} -->
+      </div>
+      <nav class="flex flex-col gap-0.5" aria-label="Runs">
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: loader 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">today at 9:01 AM</span></a>
+        <a href="#" aria-current="page" class="flex h-[32px] items-center gap-2 px-3 rounded-full bg-control-accent-alpha"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Jul 17 at 9:01 AM</span></a>
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-semi-text text-primary">Jul 10 at 9:46 AM</span><span class="flex p-1" aria-label="Not read"><!-- icon: point-filled 16 text-accent --></span></a>
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-semi-text text-primary">Jul 3 at 8:30 AM</span><span class="flex p-1" aria-label="Not read"><!-- icon: point-filled 16 text-accent --></span></a>
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: circle-x 20 text-error --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 26 at 9:46 AM</span><span class="flex p-1 text-secondary"><!-- icon: chevron-down 16 --></span></a>
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 26 at 9:44 AM</span></a>
+        <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 12 at 9:07 AM</span></a>
+      </nav>
+    </section>
+
+    <!-- Details: model + instructions of this run. -->
+    <section class="flex flex-col gap-3 px-4 py-2">
+      <div class="flex items-center justify-between">
+        <h3 class="truncate dial-tiny-semi-text text-primary">Details</h3>
+        <!-- render: GhostIconButton {"aria-label":"Collapse details","icon":"@icon:chevron-up:16","size":"small"} -->
+      </div>
+      <div class="flex flex-col gap-3 pb-1">
+        <div class="flex flex-col gap-2">
+          <p class="dial-tiny-text text-secondary">Model</p>
+          <p class="dial-small-text text-primary">GPT-5.1</p>
+        </div>
+        <div class="flex flex-col gap-2">
+          <p class="dial-tiny-text text-secondary">Instructions</p>
+          <p class="whitespace-pre-wrap dial-small-text text-primary">You are running a scheduled morning briefing for [Name], a [Role/Title]. Use the Outlook calendar (or any integrated calendar tool) to fetch today’s events. Prepare a concise and actionable briefing covering the following:
+
+Meetings: List all meetings with start/end times, attendees, and formats (virtual/in-person).
+Prep Notes: Add 2–3 concise talking points for each meeting based on title, attendees, or agenda.
+Conflicts &amp; Gaps: Flag overlapping events or long gaps (&gt;2 hours) between meetings.
+Format as a clean, easy-to-read report with local times. Note briefly if no meetings are scheduled.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process: steps with a success check and a connecting line (in progress: loader icon on the running step). -->
+    <section class="flex flex-col gap-3 px-4 py-2">
+      <div class="flex items-center justify-between">
+        <h3 class="truncate dial-tiny-semi-text text-primary">Process</h3>
+        <!-- render: GhostIconButton {"aria-label":"Collapse process","icon":"@icon:chevron-up:16","size":"small"} -->
+      </div>
+      <ol class="flex flex-col pb-1">
+        <li class="flex gap-4"><span class="flex flex-col items-center gap-1.5 py-0.5"><!-- icon: circle-check 16 text-success --><span class="flex-1 border-l border-tertiary"></span></span><p class="flex-1 min-w-0 pb-4 dial-small-text text-primary">Gather the latest AI updates from academic, industry, and product sources.</p></li>
+        <li class="flex gap-4"><span class="flex flex-col items-center gap-1.5 py-0.5"><!-- icon: circle-check 16 text-success --><span class="flex-1 border-l border-tertiary"></span></span><p class="flex-1 min-w-0 pb-4 dial-small-text text-primary">Select the top developments most relevant to your team's current projects.</p></li>
+        <li class="flex gap-4"><span class="flex flex-col items-center gap-1.5 py-0.5"><!-- icon: circle-check 16 text-success --><span class="flex-1 border-l border-tertiary"></span></span><p class="flex-1 min-w-0 pb-4 dial-small-text text-primary">Draft brief outlines highlighting the key features and practical takeaways of each.</p></li>
+        <li class="flex gap-4"><span class="flex flex-col items-center py-0.5"><!-- icon: circle-check 16 text-success --></span><p class="flex-1 min-w-0 dial-small-text text-primary">Distribute the summary weekly via your team's communication channel and gather feedback.</p></li>
+      </ol>
+    </section>
+
+    <!-- Uploaded files: 100px attachment tiles (name on top, file-type icon + extension at the bottom). -->
+    <section class="flex flex-col gap-3 px-4 py-2">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="flex-1 min-w-0 dial-tiny-semi-text text-primary">Uploaded files</h3>
+        <!-- render: GhostIconButton {"aria-label":"Download uploaded files","icon":"@icon:download:16","size":"small"} -->
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#" class="flex h-[100px] flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px"><span class="truncate dial-tiny-text text-primary">EPAM</span><span class="flex items-end gap-1 text-secondary"><!-- icon: file-type-png 20 --><span class="truncate dial-tiny-text text-primary">.png</span></span></a>
+        <a href="#" class="flex h-[100px] flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px"><span class="line-clamp-2 break-words dial-tiny-text text-primary">EPAM-DIAL-Very long name of the file</span><span class="flex items-end gap-1 text-secondary"><!-- icon: file-type-pdf 20 --><span class="truncate dial-tiny-text text-primary">.pdf</span></span></a>
+        <!-- Image attachment: the design shows the image itself as a cover thumbnail; a placeholder tile stands in. -->
+        <a href="#" aria-label="photo.jpg" class="flex h-[100px] items-center justify-center rounded-xl border border-secondary bg-layer-sunken text-tertiary" style="width: 100px"><!-- icon: photo 24 --></a>
+      </div>
+    </section>
+
+    <!-- Generated files: same tiles. -->
+    <section class="flex flex-col gap-3 px-4 py-2">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="flex-1 min-w-0 dial-tiny-semi-text text-primary">Generated files</h3>
+        <!-- render: GhostIconButton {"aria-label":"Download generated files","icon":"@icon:download:16","size":"small"} -->
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#" class="flex h-[100px] flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px"><span class="truncate dial-tiny-text text-primary">AI digest</span><span class="flex items-end gap-1 text-secondary"><!-- icon: file-type-pdf 20 --><span class="truncate dial-tiny-text text-primary">.pdf</span></span></a>
+        <a href="#" class="flex h-[100px] flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px"><span class="line-clamp-2 break-words dial-tiny-text text-primary">Benchmarks summary chart</span><span class="flex items-end gap-1 text-secondary"><!-- icon: file-type-png 20 --><span class="truncate dial-tiny-text text-primary">.png</span></span></a>
+        <a href="#" aria-label="cover.jpg" class="flex h-[100px] items-center justify-center rounded-xl border border-secondary bg-layer-sunken text-tertiary" style="width: 100px"><!-- icon: photo 24 --></a>
+      </div>
+    </section>
+  </aside>
+
+</body>
+</html>

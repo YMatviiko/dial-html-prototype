@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, View scheduled task (details + run history). Source of truth: Figma "DIAL Chat 2.0 (Scheduled tasks)"
+     (QMWaL8m8tFmoekQKxIH569), page "Iteration 1", frame 252:11189 "Scheduled task _ View task"; variants 252:11279 "Paused",
+     2323:14168 "Error details", run row states 2323:14394 "Run item states". Generate with: kit-lookup.mjs pattern scheduled-task-view > page.html
+     Note: the Figma frame shows the navigation collapsed to a 72px rail; the shared navigation has no collapsed mode yet,
+     so the full 336px navigation is included.
+
+     VARIANTS
+     - Paused (252:11279): the "Active" Switch is off ("isOn":false) and the History card has no "Next run" line.
+     - Error details (2323:14168): a failed run (circle-x, text-error) expands below its row into a small secondary
+       error text; the row gets the selected tint and its chevron flips up. Click the failed row here to toggle it.
+     RUN ROW STATES (2323:14394): in progress = loader icon; default = check; not read = semibold date + accent dot on the
+     right; error = circle-x + chevron; hover/selected = accent tint (bg-control-accent-alpha). Rows open the run's
+     conversation (see the scheduled-task-run pattern). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Morning calendar briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation collapsed active=scheduled -->
+
+  <main class="flex-1 min-w-0 flex flex-col">
+
+    <!-- Page header (Figma: Page header, tertiary bottom stroke): back, task name; Active switch, Delete, Edit, Start now. -->
+    <header class="shrink-0 flex items-start gap-2 px-6 py-4 border-b border-tertiary">
+      <div class="flex flex-1 min-w-0 items-center gap-2 pl-2">
+        <!-- render: GhostIconButton {"aria-label":"Back to scheduled tasks","icon":"@icon:arrow-narrow-left:24"} -->
+        <div class="flex h-[40px] min-w-0 items-center"><h1 class="truncate dial-h1-text text-primary">Morning calendar briefing</h1></div>
+      </div>
+      <div class="flex items-center gap-2 pr-2">
+        <div class="flex h-[40px] items-center"><!-- render: Switch {"id":"task-active","labelProps":{"label":"Active"},"isOn":true} --></div>
+        <!-- render: Button {"label":"Delete","iconBefore":"@icon:trash","variant":"danger","appearance":"ghost","className":"px-3"} -->
+        <!-- render: NeutralButton {"label":"Edit","iconBefore":"@icon:pencil-minus"} -->
+        <!-- render: NeutralButton {"label":"Start now","iconBefore":"@icon:player-play"} -->
+      </div>
+    </header>
+
+    <!-- Body: Details 400px | Configuration (fills) | History card column 400px. -->
+    <div class="flex-1 min-h-0 flex">
+
+      <!-- Left column: read-only details. Field = 12px secondary label (24px row) + 14/20 primary value. -->
+      <section class="shrink-0 overflow-y-auto border-r border-tertiary p-6" style="width: 400px">
+        <div class="flex flex-col gap-5 px-2">
+          <h2 class="dial-h3-text text-primary">Details</h2>
+          <div class="flex flex-col gap-1">
+            <div class="flex h-[24px] items-center dial-tiny-text text-secondary">Description</div>
+            <p class="dial-small-text text-primary">Review schedule, prioritize tasks, and prepare for the day.</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex h-[24px] items-center dial-tiny-text text-secondary">Model or Agent</div>
+            <p class="dial-small-text text-primary">Anthropic Claude Opus 4.6</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex h-[24px] items-center dial-tiny-text text-secondary">Repeats</div>
+            <p class="truncate dial-small-text text-primary">Daily at 09:00</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Middle column: Configuration (skill + instructions as plain paragraph text, 14/24). -->
+      <section class="flex-1 min-w-0 overflow-y-auto p-6">
+        <div class="flex flex-col gap-5 px-2">
+          <h2 class="truncate dial-h3-text text-primary">Configuration</h2>
+          <div class="flex flex-col gap-1">
+            <div class="flex h-[24px] items-center dial-tiny-text text-secondary">Skill</div>
+            <p class="truncate dial-small-text text-primary">time-management-optimization</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex h-[24px] items-center dial-tiny-text text-secondary">Instructions</div>
+            <p class="pr-3 whitespace-pre-wrap dial-small-paragraph-text text-primary">You are running a scheduled morning briefing for [Name], a [Role/Title]. Use the Outlook calendar (or any integrated calendar tool) to fetch today’s events. Prepare a concise and actionable briefing covering the following:
+
+Meetings: List all meetings with start/end times, attendees, and formats (virtual/in-person).
+Prep Notes: Add 2–3 concise talking points for each meeting based on title, attendees, or agenda.
+Conflicts &amp; Gaps: Flag overlapping events or long gaps (&gt;2 hours) between meetings.
+Format as a clean, easy-to-read report with local times. Note briefly if no meetings are scheduled.
+
+Daily Calendar Extraction &amp; Verification:
+Fetch today's schedule using the integrated calendar tool. Address the executive by [Name] and [Role/Title] with a professional morning greeting.
+If no meetings are scheduled, note this clearly and suggest 2–3 focus areas for the free day.
+
+Actionable Meeting Dossier (List &amp; Prep):
+Logistics: For each event, list the local start/end times, format (Virtual with platform, or In-person with location), and key internal/external attendees.
+Prep Notes: For each meeting, provide 2–3 hyper-concise talking points outlining:
+The core objective of the meeting.
+Crucial context or recent history regarding the topic/attendees.
+A specific strategic question or talking point the executive can use to drive the meeting.
+
+Schedule Diagnostics (Conflicts &amp; Gaps):
+Double Bookings: Flag overlapping events immediately and suggest which to prioritize or delegate.
+Back-to-Backs: Flag meetings with zero buffer time that may require a quick transition.
+Focus Blocks (Gaps &gt; 2 hrs): Highlight long open windows and recommend a specific deep-work task or prep item to fill the time productively.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column: History card (Figma: History): raised, 12px radius, shadow-md, px-6 py-5, 360px wide. -->
+      <aside class="shrink-0 overflow-y-auto p-6" style="width: 400px">
+        <div class="flex flex-col gap-4 px-6 py-4 rounded-xl bg-layer-raised shadow-md">
+          <div class="flex flex-col gap-4 py-1">
+            <h2 class="truncate dial-h3-text text-primary">History</h2>
+            <p class="truncate dial-small-text text-secondary" data-next-run>Next run: Jul 31 at 9:00 AM</p>
+
+            <!-- Run list: 32px pill rows, 2px apart. -->
+            <nav class="flex flex-col gap-0.5" aria-label="Runs">
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: loader 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">today at 9:01 AM</span></a>
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Jul 17 at 9:01 AM</span></a>
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-semi-text text-primary">Jul 10 at 9:46 AM</span><span class="flex p-1" aria-label="Not read"><!-- icon: point-filled 16 text-accent --></span></a>
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-paragraph-semi-text text-primary">Jul 3 at 8:30 AM</span><span class="flex p-1" aria-label="Not read"><!-- icon: point-filled 16 text-accent --></span></a>
+              <!-- Failed run: click toggles the error details (2323:14168). -->
+              <div class="flex flex-col gap-0.5" data-run-error>
+                <button type="button" aria-expanded="false" data-run-error-toggle class="flex h-[32px] w-full items-center gap-2 px-3 rounded-full text-left hover:bg-control-accent-alpha-hover"><!-- icon: circle-x 20 text-error --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 26 at 9:46 AM</span><span class="flex p-1 text-secondary"><span data-chevron="down" class="flex"><!-- icon: chevron-down 16 --></span><span data-chevron="up" class="hidden"><!-- icon: chevron-up 16 --></span></span></button>
+                <p class="hidden px-3 pb-1 dial-caption-text text-secondary" data-run-error-details>The scheduled task failed to complete due to a connection timeout. The request returned a 504 Gateway Timeout error after 30.2 seconds. Request ID: req_7f82c1a4. Retry attempt: 1 of 3.</p>
+              </div>
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 26 at 9:44 AM</span></a>
+              <a href="#" class="flex h-[32px] items-center gap-2 px-3 rounded-full hover:bg-control-accent-alpha-hover"><!-- icon: check 20 text-secondary --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">Jun 12 at 9:07 AM</span></a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    // Failed run row: expand / collapse its error details (Figma 2323:14168).
+    document.querySelectorAll('[data-run-error]').forEach((run) => {
+      const btn = run.querySelector('[data-run-error-toggle]');
+      btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(open));
+        btn.classList.toggle('bg-control-accent-alpha', open);
+        run.querySelector('[data-run-error-details]').classList.toggle('hidden', !open);
+        run.querySelector('[data-chevron="down"]').classList.toggle('hidden', open);
+        run.querySelector('[data-chevron="up"]').classList.toggle('hidden', !open);
+      });
+    });
+  </script>
+</body>
+</html>

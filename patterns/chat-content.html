@@ -1,0 +1,248 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, rich message content. Source of truth: Figma "DIAL Chat 2.0 (Chat)" (t46nfThjIus5aUpMt43stA),
+     page "Iteration 2": attachments in a message 22:2715 / 22:2747, citations 563:11644, code block 546:14028,
+     table 546:11418, attachments in the composer 27:4909. Message parts from Components 2.0 page "Message" (56:862).
+     Generate with: kit-lookup.mjs pattern chat-content > page.html
+     Each block below is marked "BLOCK: …" and can be copied into pattern chat-conversation on its own. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIAL Chat — rich content</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation chat=3 -->
+
+  <main class="flex-1 min-w-0 flex flex-col">
+    <div class="h-16 shrink-0 flex items-center justify-center px-2">
+      <!-- render: GhostIconButton {"aria-label":"Conversation details","icon":"@icon:file-description:24"} -->
+    </div>
+
+    <div class="relative flex-1 min-h-0 flex flex-col">
+      <div class="flex-1 min-h-0 overflow-y-auto flex flex-col items-center p-8" data-thread>
+        <div class="flex w-full flex-col gap-6" style="max-width: 712px">
+
+          <!-- ============ BLOCK: user message with attachments (Figma 22:2715, Attachments 829:22472) ============ -->
+          <div class="flex flex-col items-end gap-4">
+            <!-- Attachments: header (photo icon, count, download all) + 100px cards, right-aligned above the bubble. -->
+            <div class="flex flex-col items-end gap-2">
+              <div class="flex w-full items-center gap-10">
+                <div class="flex flex-1 items-center gap-2 text-secondary"><!-- icon: photo 16 --><span class="dial-tiny-semi-text text-secondary whitespace-nowrap">3 attachments</span></div>
+                <!-- render: GhostIconButton {"aria-label":"Download all attachments","icon":"@icon:download:16","size":"small"} -->
+              </div>
+              <div class="flex items-center justify-end gap-2">
+                <!-- File card: 100px, 12px padding, name on top (2 lines max), format icon + extension at the bottom. -->
+                <a href="#" class="flex flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised hover:bg-control-accent-alpha-hover" style="width: 100px; height: 100px">
+                  <span class="dial-tiny-text text-primary line-clamp-2 break-words">EPAM-DIAL</span>
+                  <span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="flex-1 min-w-0 truncate dial-tiny-text text-primary">.csv</span></span>
+                </a>
+                <a href="#" class="flex flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised hover:bg-control-accent-alpha-hover" style="width: 100px; height: 100px">
+                  <span class="dial-tiny-text text-primary line-clamp-2 break-words">EPAM-DIAL-Very long name of the file</span>
+                  <span class="flex items-end gap-1"><!-- asset: file-pdf 20 --><span class="flex-1 min-w-0 truncate dial-tiny-text text-primary">.pdf</span></span>
+                </a>
+                <!-- Image card: the picture fills the card. -->
+                <a href="#" class="flex overflow-hidden rounded-xl border border-secondary" style="width: 100px; height: 100px"><!-- asset: chat-attachment-photo 100 --></a>
+              </div>
+            </div>
+            <div class="max-w-[600px] rounded-2xl border border-secondary bg-layer-sunken px-6 py-4 dial-body-paragraph-text text-primary break-words">Tell me what is EPAM company?</div>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Edit message","icon":"@icon:pencil-minus:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"Delete message","icon":"@icon:trash-x:16","size":"small"} -->
+            </div>
+          </div>
+
+          <!-- ============ BLOCK: assistant answer with citations + finished-answer actions (Figma 563:11644) ============ -->
+          <div class="flex items-start gap-3">
+            <!-- asset: chat-model-gemini 28 -->
+            <div class="flex-1 min-w-0 flex flex-col items-start gap-4 py-0.5">
+              <p class="dial-body-paragraph-text text-primary break-words">EPAM Systems, Inc. is a U.S.-based global provider of information technology services and consulting. The company specializes in digital engineering, cloud transformation, artificial intelligence, and software development. Headquartered in Newtown, Pennsylvania, EPAM has been listed on the New York Stock Exchange since 2012 (NYSE: EPAM). It is a member of the S&amp;P 500 Index.</p>
+              <!-- Citations (Message-source chips): 24px pill, accent tint, link icon 12, caption 10/12 accent text. -->
+              <div class="flex flex-wrap items-start gap-2">
+                <a href="#" class="flex h-[24px] items-center justify-center gap-1 px-2 rounded-full border border-secondary bg-control-accent-alpha text-accent hover:bg-control-accent-alpha-hover"><!-- icon: link 12 --><span class="dial-caption-text text-accent whitespace-nowrap">Wikipedia +1</span></a>
+                <a href="#" class="flex h-[24px] items-center justify-center gap-1 px-2 rounded-full border border-secondary bg-control-accent-alpha text-accent hover:bg-control-accent-alpha-hover"><!-- icon: link 12 --><span class="dial-caption-text text-accent whitespace-nowrap">About_Epam.pdf +1</span></a>
+              </div>
+              <!-- Message-actions, Source=Agent (finished answer): regenerate, copy, markdown, like, dislike. -->
+              <div class="flex items-center gap-2">
+                <!-- render: GhostIconButton {"aria-label":"Regenerate","icon":"@icon:refresh:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"View as Markdown","icon":"@icon:markdown:16","size":"small"} -->
+                <!-- Like / dislike are ToggleIconButton in the kit. Its rendered markup carries a class the validator rejects
+                     ("[&_svg]:size-4"), so the same 24px ghost icon button stands in here. -->
+                <!-- render: GhostIconButton {"aria-label":"Like","icon":"@icon:thumb-up:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"Dislike","icon":"@icon:thumb-down:16","size":"small"} -->
+              </div>
+            </div>
+          </div>
+
+          <!-- user message (plain) -->
+          <div class="flex flex-col items-end gap-4">
+            <div class="max-w-[600px] rounded-2xl border border-secondary bg-layer-sunken px-6 py-4 dial-body-paragraph-text text-primary break-words">Create plot of sin(x* 4.5) in Plotly</div>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Edit message","icon":"@icon:pencil-minus:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"Delete message","icon":"@icon:trash-x:16","size":"small"} -->
+            </div>
+          </div>
+
+          <!-- ============ BLOCK: code block in a message (Figma 546:14028, code_block 546:15273) ============ -->
+          <div class="flex items-start gap-3">
+            <!-- asset: chat-model-gemini 28 -->
+            <div class="flex-1 min-w-0 flex flex-col items-start gap-4 py-0.5">
+              <p class="dial-body-paragraph-text text-primary">If you run this code in your local Python environment (after installing plotly and kaleido), you will get the chart:</p>
+              <!-- Code block: raised card, secondary stroke, 12px radius. Header: language (12/16 semibold, secondary) + copy/download.
+                   Body: code 14/20 (Fira Code via dial-code-text), keywords and strings in accent. -->
+              <div class="flex w-full flex-col overflow-hidden rounded-xl border border-secondary bg-layer-raised">
+                <div class="flex items-center gap-2 px-3 py-2 bg-layer-raised">
+                  <span class="flex-1 min-w-0 dial-tiny-semi-text uppercase text-secondary">Python</span>
+                  <div class="flex items-center gap-2">
+                    <!-- render: GhostIconButton {"aria-label":"Copy code","icon":"@icon:copy:16","size":"small"} -->
+                    <!-- render: GhostIconButton {"aria-label":"Download code","icon":"@icon:download:16","size":"small"} -->
+                  </div>
+                </div>
+                <pre class="px-4 py-3 dial-code-text text-primary whitespace-pre-wrap break-words"><span class="text-accent">import</span> numpy <span class="text-accent">as</span> np
+<span class="text-accent">import</span> plotly.graph_objs <span class="text-accent">as</span> go
+
+x = np.linspace(0, 2 * np.pi, 500)
+y = np.sin(x * 4.5)
+
+trace = go.Scatter(x=x, y=y, mode=<span class="text-accent">'lines'</span>, name=<span class="text-accent">'sin(x*4.5)'</span>)
+layout = go.Layout(title=<span class="text-accent">'Plot of sin(x*4.5)'</span>, xaxis=dict(title='x'), yaxis=dict(title='sin(x*4.5)'))
+fig = go.Figure(data=[trace], layout=layout)
+fig.show()</pre>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"View as Markdown","icon":"@icon:markdown:16","size":"small"} -->
+              </div>
+            </div>
+          </div>
+
+          <!-- user message (plain) -->
+          <div class="flex flex-col items-end gap-4">
+            <div class="max-w-[600px] rounded-2xl border border-secondary bg-layer-sunken px-6 py-4 dial-body-paragraph-text text-primary break-words">List the editor settings as a table</div>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Edit message","icon":"@icon:pencil-minus:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"Delete message","icon":"@icon:trash-x:16","size":"small"} -->
+            </div>
+          </div>
+
+          <!-- ============ BLOCK: table in a message (Figma 546:11418, table 546:12465) ============ -->
+          <div class="flex items-start gap-3">
+            <!-- asset: chat-model-gemini 28 -->
+            <div class="flex-1 min-w-0 flex flex-col items-start gap-4 py-0.5">
+              <p class="dial-body-paragraph-text text-primary">Here are the editor settings with their types and defaults:</p>
+              <!-- Table: raised card, 12px radius, no outer stroke; scrolls sideways when wider than the message.
+                   Header 48px, caption-lead labels; rows split by tertiary lines; values in code chips.
+                   The action bar (copy / download / open in side panel) appears on hover at the top-right corner. -->
+              <div class="relative w-full overflow-hidden rounded-xl bg-layer-raised">
+                <div class="overflow-x-auto">
+                  <table class="min-w-[800px] text-left">
+                    <thead>
+                      <tr>
+                        <th class="h-[48px] px-3 dial-caption-lead-semi-text text-secondary" style="width: 210px">Key</th>
+                        <th class="h-[48px] px-3 dial-caption-lead-semi-text text-secondary" style="width: 110px">Type</th>
+                        <th class="h-[48px] px-3 dial-caption-lead-semi-text text-secondary" style="width: 148px">Default value</th>
+                        <th class="h-[48px] px-3 dial-caption-lead-semi-text text-secondary">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">theme</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">string</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">default-light</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">Specifies the visual theme for the editor</td>
+                      </tr>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">fontSize</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">integer</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">14</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">Base font size in pixels for the editor text.</td>
+                      </tr>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">lineNumbers</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">boolean</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">true</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">Whether to display line numbers in the editor</td>
+                      </tr>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">autoSave</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">boolean</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">true</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">Enables automatic saving of changes</td>
+                      </tr>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">export.defaultFormat</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">string</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">html</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">The default format used when exporting</td>
+                      </tr>
+                      <tr class="border-t border-tertiary">
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">editor.tabSize</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">integer</code></td>
+                        <td class="px-3 py-2"><code class="inline-flex px-1.5 py-0.5 rounded border border-tertiary bg-layer-base dial-code-text text-primary">2</code></td>
+                        <td class="px-3 py-2 dial-small-paragraph-text text-primary">Number of spaces a tab character represents in the editor.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Table action bar (hover) -->
+                <div class="absolute top-0 right-0 p-2">
+                  <div class="flex items-center gap-1 px-2 py-1 rounded-lg border border-tertiary bg-layer-raised shadow-xs">
+                    <!-- render: GhostIconButton {"aria-label":"Copy table","icon":"@icon:copy:16","size":"small"} -->
+                    <!-- render: GhostIconButton {"aria-label":"Download table","icon":"@icon:download:16","size":"small"} -->
+                    <!-- render: GhostIconButton {"aria-label":"Open in side panel","icon":"@icon:layout-sidebar-right:16","size":"small"} -->
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"View as Markdown","icon":"@icon:markdown:16","size":"small"} -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="absolute inset-0 flex items-end justify-center pointer-events-none">
+        <span class="flex rounded-full bg-control-neutral shadow-sm" style="pointer-events: auto"><!-- render: GhostIconButton {"aria-label":"Scroll to bottom","icon":"@icon:arrow-narrow-down:24"} --></span>
+      </div>
+    </div>
+
+    <!-- ============ BLOCK: composer with attachments, filled (Figma 27:4909, chat-input 27:4974) ============
+         16px padding all round; a row of 100px attachment cards above the text (clipped at the right edge);
+         typed text in primary; send button after the microphone. -->
+    <div class="shrink-0 flex flex-col items-center p-5">
+      <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px" data-composer>
+        <div class="flex gap-2 overflow-hidden">
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">Q3 report</span><span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="dial-tiny-text text-primary">.csv</span></span></div>
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">Customer list</span><span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="dial-tiny-text text-primary">.csv</span></span></div>
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">About EPAM</span><span class="flex items-end gap-1"><!-- asset: file-pdf 20 --><span class="dial-tiny-text text-primary">.pdf</span></span></div>
+          <div class="flex shrink-0 overflow-hidden rounded-xl border border-secondary" style="width: 100px; height: 100px"><!-- asset: chat-attachment-photo 100 --></div>
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">Revenue by region</span><span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="dial-tiny-text text-primary">.csv</span></span></div>
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">Headcount</span><span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="dial-tiny-text text-primary">.csv</span></span></div>
+          <div class="flex shrink-0 flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px"><span class="dial-tiny-text text-primary line-clamp-2">Glossary</span><span class="flex items-end gap-1"><!-- asset: file-code 20 --><span class="dial-tiny-text text-primary">.csv</span></span></div>
+        </div>
+        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary">Tell me what is EPAM company?</textarea>
+        <div class="flex items-center gap-2">
+          <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+          <div class="flex-1"></div>
+          <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+          <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+          <!-- render: PrimaryIconButton {"aria-label":"Send","icon":"@icon:arrow-right:24"} -->
+        </div>
+      </form>
+      <div class="h-4 shrink-0"></div>
+    </div>
+  </main>
+
+</body>
+</html>

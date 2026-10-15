@@ -1,0 +1,236 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, Catalog, Details. Source of truth: Figma "DIAL Chat 2.0 (Catalog)" (exvUDT37ocKgJbcJvjSRz1),
+     page "Iteration 1", frame 1:937 "Catalog - Details" (richest of 1:937 / 62:977 / 62:1548). Generate with: kit-lookup.mjs pattern catalog-details > page.html
+     The list page (same as the catalog pattern) under the open details side panel; the panel is at the end of <body>.
+     Kit components and icons are filled in at generation time. Cards are plain layout on the kit's CardShell look
+     (rounded-[20px] p-5 bg-layer-raised shadow-md); entity icons are data (assets catalog-icon-*, model-gpt), so
+     swap them freely. Copy a card to add one; drop the Featured badge / footer star when not needed. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catalog - Details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=catalog -->
+
+  <!-- Main (Figma: Catalog View). No header bar: a 64px heading row with the page title and the Create button. -->
+  <main class="flex-1 min-w-0 overflow-y-auto">
+    <!-- 32px side gutters: mx-2 + px-6 (the kit has no px-8) -->
+    <div class="flex flex-col mx-2 px-6">
+    <div class="flex h-16 shrink-0 items-center justify-between">
+      <h1 class="dial-display3-text text-primary">Catalog</h1>
+      <!-- Create: primary button with a chevron; opens the create menu (Agent, Toolset, Skill…) -->
+      <!-- render: PrimaryButton {"label":"Create","iconAfter":"@icon:chevron-down"} -->
+    </div>
+
+    <!-- Your favorites (Figma: Favorites). 4-column row of compact cards: icon 52, type, name + version, last used, star. -->
+    <section class="flex flex-col gap-4 py-2">
+      <div class="flex items-center gap-2">
+        <h2 class="dial-h3-text text-primary">Your favorites</h2>
+        <span class="dial-tiny-semi-text text-tertiary">3</span>
+      </div>
+      <div class="grid grid-cols-4 gap-5">
+        <article data-dial-component="CardShell" class="relative flex items-center gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md">
+          <!-- asset: catalog-icon-chathub 52 -->
+          <div class="flex flex-1 min-w-0 items-end gap-1">
+            <div class="flex flex-1 min-w-0 flex-col gap-1">
+              <span class="dial-caption-lead-semi-text text-green-1">Agent</span>
+              <div class="flex min-w-0 items-start gap-1 whitespace-nowrap"><h3 class="dial-h3-text text-primary">DIAL ChatHub</h3><span class="min-w-0 truncate dial-tiny-text text-secondary">Gemini 3.5 Flash</span></div>
+              <span class="dial-tiny-text text-secondary">2 days ago</span>
+            </div>
+            <button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button>
+          </div>
+        </article>
+        <article data-dial-component="CardShell" class="relative flex items-center gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md">
+          <!-- asset: model-gpt 52 -->
+          <div class="flex flex-1 min-w-0 items-end gap-1">
+            <div class="flex flex-1 min-w-0 flex-col gap-1">
+              <span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1 whitespace-nowrap"><h3 class="dial-h3-text text-primary">GPT-5.1</h3><span class="min-w-0 truncate dial-tiny-text text-secondary">2025-11-13</span></div>
+              <span class="dial-tiny-text text-secondary">Last used</span>
+            </div>
+            <button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button>
+          </div>
+        </article>
+        <article data-dial-component="CardShell" class="relative flex items-center gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md">
+          <!-- asset: icon-notebook 52 -->
+          <div class="flex flex-1 min-w-0 items-end gap-1">
+            <div class="flex flex-1 min-w-0 flex-col gap-1">
+              <span class="dial-caption-lead-semi-text text-brown-2">Toolset</span>
+              <div class="flex min-w-0 items-start gap-1 whitespace-nowrap"><h3 class="dial-h3-text text-primary">Notebooks MCP</h3><span class="min-w-0 truncate dial-tiny-text text-secondary">0.0.2</span></div>
+              <span class="dial-tiny-text text-secondary">7 days ago</span>
+            </div>
+            <button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Browse toolbar (Figma: Toolbar): title + count, grid/list switch, sort; search + "From" filter. -->
+    <section class="flex flex-col gap-3 mt-6 mb-1 pb-4">
+      <div class="flex items-center gap-2">
+        <h2 class="dial-h3-text text-primary">Browse</h2>
+        <span class="dial-tiny-semi-text text-tertiary">10</span>
+        <div class="flex flex-1 min-w-0 items-center justify-end gap-3">
+          <!-- render: SegmentedControl {"aria-label":"View","value":"grid","items":[{"value":"grid","icon":"@icon:layout-grid:16","aria-label":"Grid view"},{"value":"list","icon":"@icon:layout-list:16","aria-label":"List view"}]} -->
+          <span class="h-4 border-s border-default"></span>
+          <!-- render: LinkButton {"label":"Recently Updated","iconAfter":"@icon:chevron-down"} -->
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- render: Search {"placeholder":"Search models, tools, agents…","size":"large","containerClassName":"flex-1"} -->
+        <!-- render: OutlinedButton {"label":"From","iconBefore":"@icon:filter","iconAfter":"@icon:chevron-down","className":"h-[48px]"} -->
+      </div>
+    </section>
+
+    <!-- Entity tabs with counts (Figma: Tabs). Full-width underline under the tab row. -->
+    <div>
+      <div class="border-b border-tertiary">
+        <!-- render: Tabs {"ariaLabel":"Entity types","activeTabId":"models","tabs":[{"id":"models","label":"Models","count":138},{"id":"agents","label":"Agents","count":207},{"id":"toolsets","label":"Toolsets","count":234},{"id":"skills","label":"Skills","count":2}]} -->
+      </div>
+    </div>
+
+    <!-- Card grid (Figma: Card Container). 3 columns, max 1116px, centred. Card: 228px high; identity row (icon 44,
+         coloured type label, name + version), 2-line description, topic badges, footer line (folder path / star). -->
+    <div class="flex flex-col items-center mt-6 pb-6">
+      <div class="grid w-full grid-cols-3 gap-5" style="max-width: 1116px">
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-anthropic 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Anthropic Claude Haiku 4.5</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">20251001-v1:0</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Claude Haiku 4.5 delivers near-frontier performance for a wide range of use cases, and stands out as one of the best coding and agent models, with the right speed and cost to power free products.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Image Recognition"} --><!-- render: Badge {"label":"+6"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+          <div class="absolute top-0 end-4 -translate-y-1/2"><!-- render: Badge {"label":"Featured","variant":"filled","color":"blue"} --></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-anthropic 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Anthropic Claude Opus 4.6</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">v1</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Claude Opus 4.6 is the next generation of our most intelligent model, and the world’s best model for coding, enterprise agents, and professional work.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Image Recognition"} --><!-- render: Badge {"label":"+6"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div><button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: model-gpt 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">GPT-5.1</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">2025-11-13</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">OpenAI’s new flagship model, GPT-5 - a full reasoning model provides deep, richer reasoning for analytics and complex tasks.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Azure"} --><!-- render: Badge {"label":"Functions"} --><!-- render: Badge {"label":"Reasoning"} --><!-- render: Badge {"label":"+2"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div><button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-gemini 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Google Gemini 3.5 Flash</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">With Google Search Grounding</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Gemini 3.5 Flash provides sustained frontier-level intelligence optimized for real-world tasks at a higher speed and lower cost.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"GCP"} --><!-- render: Badge {"label":"Functions"} --><!-- render: Badge {"label":"+5"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-nova 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Amazon Nova Lite</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">v1</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Amazon Nova Lite is a very low-cost multimodal model that is lightning fast. The accuracy of Amazon Nova Lite across a breadth of tasks makes it a strong default.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Image Recognition"} --><!-- render: Badge {"label":"+6"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-nova 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Amazon Nova Micro</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">v1</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Amazon Nova Micro is a text-only model that delivers the lowest latency responses at very low cost. It is highly performant at language understanding.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Image Recognition"} --><!-- render: Badge {"label":"+4"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-deepseek 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">DeepSeek R1</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">AWS: deepseek.r1-v1:0</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">DeepSeek-R1 provides customers a state-of-the-art reasoning model, optimized for general reasoning tasks, math, science, and code generation.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"AWS"} --><!-- render: Badge {"label":"Reasoning"} --><!-- render: Badge {"label":"+1"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-deepseek 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">DeepSeek V4 Flash</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">Azure: V4 Flash 2026-04-23</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">DeepSeek V4 Flash is optimized for low latency and high-throughput scenarios, making it ideal for real-time and cost-sensitive applications.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Azure"} --><!-- render: Badge {"label":"Reasoning"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+        <article data-dial-component="CardShell" class="relative flex flex-col gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md" style="height: 228px">
+          <div class="flex items-center gap-3"><!-- asset: catalog-icon-anthropic 44 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1"><span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h3 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">Anthropic Claude Opus 4.8</h3><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">Opus 4.8</span></div></div></div>
+          <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Claude Opus 4.8 is Anthropic's most intelligent Opus model and the best generally available model for coding and agents, with deeper reasoning for enterprise workflows.</p>
+          <div class="flex items-center gap-2"><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"Image Recognition"} --><!-- render: Badge {"label":"+6"} --></div>
+          <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 h-6"></div></div>
+        </article>
+
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <!-- Details side panel (Figma: 1:938 "Details", 540px) over the dimmed page. Shell = the kit's SideDrawer markup
+       (render SideDrawer for a full-page overlay; this copy keeps the identity icon as an asset). Header: favourite
+       star + close. Identity (icon 52, type, name + version, Featured), actions (Use in chat, Share), tabs, About. -->
+  <div data-dial-component="SideDrawer" data-drawer class="z-popup bg-backdrop fixed inset-0 overflow-auto">
+    <div role="dialog" aria-modal="true" aria-label="GPT-5.1 details" class="fixed inset-y-0 end-0 flex w-full flex-col overflow-hidden bg-layer-raised outline-none desktop:w-[540px] desktop:rounded-s-xl desktop:border-s desktop:border-secondary">
+      <div class="flex shrink-0 items-center gap-2 border-b border-tertiary px-6 py-3">
+        <div class="min-w-0 flex-1"></div>
+        <button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button>
+        <!-- render: GhostIconButton {"aria-label":"Close","icon":"@icon:x:24"} -->
+      </div>
+      <div class="min-h-0 flex-1 overflow-y-auto">
+        <div class="flex flex-col gap-3 pt-4 pb-6 px-6">
+          <div class="relative flex items-start gap-2">
+            <!-- asset: model-gpt 52 -->
+            <div class="flex flex-1 min-w-0 flex-col gap-1">
+              <span class="dial-caption-lead-semi-text text-blue">Model</span>
+              <div class="flex min-w-0 items-start gap-1"><h2 class="shrink-0 whitespace-nowrap dial-h3-text text-primary">GPT-5.1</h2><span class="min-w-0 flex-1 truncate dial-tiny-text text-secondary">2025-11-13</span></div>
+            </div>
+            <div class="absolute top-0 end-0"><!-- render: Badge {"label":"Featured","variant":"filled","color":"blue"} --></div>
+          </div>
+          <!-- Actions sit under the name (60px indent = icon 52 + gap 8) -->
+          <div class="flex items-center gap-2 ml-[44px] pl-4">
+            <!-- render: PrimaryButton {"label":"Use in chat","iconBefore":"@icon:player-play"} -->
+            <!-- render: NeutralButton {"label":"Share","iconBefore":"@icon:share","iconAfter":"@icon:chevron-down"} -->
+          </div>
+        </div>
+        <div class="px-6">
+          <div class="border-b border-tertiary">
+            <!-- render: Tabs {"ariaLabel":"Details sections","activeTabId":"about","tabs":[{"id":"about","label":"About"},{"id":"overview","label":"Overview"},{"id":"pricing","label":"Pricing"},{"id":"connect","label":"Connect"}]} -->
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 px-6 py-4">
+          <p class="dial-small-paragraph-text text-primary">GPT-5.1 is the latest frontier-grade model in the GPT-5 series, offering stronger general-purpose reasoning, improved instruction adherence, and a more natural conversational style compared to GPT-5. It uses adaptive reasoning to allocate computation dynamically, responding quickly to simple queries while spending more depth on complex tasks. The model produces clearer, more grounded explanations with reduced jargon, making it easier to follow even on technical or multi-step problems.</p>
+          <p class="dial-small-paragraph-text text-primary">Built for broad task coverage, GPT-5.1 delivers consistent gains across math, coding, and structured analysis workloads, with more coherent long-form answers and improved tool-use reliability. It also features refined conversational alignment, enabling warmer, more intuitive responses without compromising precision. GPT-5.1 serves as the primary full-capability successor to GPT-5.</p>
+          <div class="flex flex-wrap items-center gap-2"><!-- render: Badge {"label":"Azure"} --><!-- render: Badge {"label":"Functions"} --><!-- render: Badge {"label":"Reasoning"} --><!-- render: Badge {"label":"Text Generation"} --><!-- render: Badge {"label":"PDF Supported"} --><!-- render: Badge {"label":"+1"} --></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

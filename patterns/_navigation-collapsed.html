@@ -1,0 +1,18 @@
+<!-- Shared DIAL Chat navigation, collapsed 72px rail (Figma: Navigation "Collapsed default"; used by the
+     QuickApp builder, toolset editor and scheduled-task form/view). Pages get it with the "include: navigation"
+     marker plus the word collapsed; active=ID works the same as in the full navigation. -->
+  <aside class="relative z-10 shrink-0 flex flex-col justify-between bg-layer-raised shadow-sm" style="width: 72px">
+    <div class="flex flex-col items-center gap-4 p-4">
+      <div class="flex size-[40px] items-center pl-2"><!-- asset: dial-mark 24 --></div>
+      <nav class="flex w-full flex-col gap-1" aria-label="Main">
+        <!-- nav-item: new-chat "New chat" plus -->
+        <!-- nav-item: scheduled "Scheduled tasks" clock -->
+        <!-- nav-item: catalog "Catalog" layout-grid -->
+        <!-- nav-item: files "File manager" folder-open -->
+      </nav>
+    </div>
+    <div class="flex flex-col gap-2 px-4 py-3 bg-layer-raised">
+      <a href="#" aria-label="Usage statistics" class="flex items-center p-2 rounded-full text-primary hover:bg-control-accent-alpha-hover"><!-- icon: chart-bar 24 --></a>
+      <button type="button" aria-label="Natalia Sudko" data-user-menu class="flex items-center p-2 rounded-full hover:bg-control-accent-alpha-hover"><!-- render: Avatar {"name":"Natalia Sudko","initials":"NS","size":24} --></button>
+    </div>
+  </aside>

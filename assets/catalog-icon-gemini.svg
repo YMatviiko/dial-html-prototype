@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="44.007" height="44" viewBox="0 0 44.007 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Image-icon/Gemini-Pro-Vision">
+<path id="bg" d="M0 13.2C0 5.90984 5.90984 0 13.2 0H30.8C38.0902 0 44 5.90984 44 13.2V30.8C44 38.0902 38.0902 44 30.8 44H13.2C5.90984 44 0 38.0902 0 30.8V13.2Z" fill="#EEF1F7"/>
+<g id="Group">
+<path id="Subtract" d="M20.8414 3.66667C20.8391 13.1474 13.1537 20.8323 3.67365 20.8323C13.155 20.8323 20.8414 28.5194 20.8414 38.0021C20.8414 34.4706 21.9074 31.1881 23.7353 28.4589L21.6007 22.5274C21.3856 21.9295 21.475 21.2644 21.8404 20.7446C22.2057 20.2248 22.8013 19.9154 23.4367 19.9154H26.0548C26.8892 19.9154 27.6313 20.4461 27.9011 21.2357L28.7 23.5733C30.0862 22.6769 31.6098 21.9748 33.2323 21.5057L33.3246 21.2357C33.4545 20.8284 33.5686 20.5163 33.6718 20.2797C26.2915 18.3582 20.8433 11.649 20.8414 3.66667Z" fill="url(#paint0_radial_0_1444)"/>
+<path id="V" d="M26.4475 21.9447L30.5319 34.2974H30.6928L34.7695 21.9447H37.896L32.3633 37.6384H28.8537L23.3287 21.9447H26.4475Z" fill="black"/>
+</g>
+</g>
+<defs>
+<radialGradient id="paint0_radial_0_1444" cx="0" cy="0" r="1" gradientTransform="matrix(30.2467 11.7069 -81.9332 277.328 6.65096 17.6219)" gradientUnits="userSpaceOnUse">
+<stop offset="0.067" stop-color="#9168C0"/>
+<stop offset="0.343" stop-color="#5684D1"/>
+<stop offset="0.672" stop-color="#1BA1E3"/>
+</radialGradient>
+</defs>
+</svg>

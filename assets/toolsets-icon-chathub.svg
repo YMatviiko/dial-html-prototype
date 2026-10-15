@@ -1,0 +1,34 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Image-icon/ChatHub" clip-path="url(#clip0_0_1152)">
+<path id="bg" d="M0 15.6C0 6.98436 6.98436 0 15.6 0H36.4C45.0156 0 52 6.98436 52 15.6V36.4C52 45.0156 45.0156 52 36.4 52H15.6C6.98436 52 0 45.0156 0 36.4V15.6Z" fill="url(#paint0_linear_0_1152)" fill-opacity="0.22"/>
+<path id="Vector" d="M15.5346 14.95H36.0729C39.4959 14.95 41.2075 16.64 41.2075 20.02V30.16C41.2075 33.54 39.4959 35.23 36.0729 35.23H25.8037L20.6692 40.3V35.23H15.5346C12.1115 35.23 10.4 33.54 10.4 30.16V20.02C10.4 16.64 12.1115 14.95 15.5346 14.95Z" fill="url(#paint1_linear_0_1152)" fill-opacity="0.94"/>
+<g id="Vector_2" opacity="0.5" filter="url(#filter0_d_0_1152)">
+<path d="M22.1 25.35C22.1 26.427 21.227 27.3 20.15 27.3C19.073 27.3 18.2 26.427 18.2 25.35C18.2 24.273 19.073 23.4 20.15 23.4C21.227 23.4 22.1 24.273 22.1 25.35Z" fill="#000643"/>
+<path d="M27.95 25.35C27.95 26.427 27.077 27.3 26 27.3C24.923 27.3 24.05 26.427 24.05 25.35C24.05 24.273 24.923 23.4 26 23.4C27.077 23.4 27.95 24.273 27.95 25.35Z" fill="#000643"/>
+<path d="M33.8 25.35C33.8 26.427 32.927 27.3 31.85 27.3C30.773 27.3 29.9 26.427 29.9 25.35C29.9 24.273 30.773 23.4 31.85 23.4C32.927 23.4 33.8 24.273 33.8 25.35Z" fill="#000643"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_0_1152" x="16.2" y="21.9" width="19.6" height="7.9" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="0.5"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.177071 0 0 0 0 0.222744 0 0 0 0 0.584615 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1152"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1152" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_1152" x1="-31.2" y1="-30.55" x2="42.575" y2="47.125" gradientUnits="userSpaceOnUse">
+<stop stop-color="#2E4BEC"/>
+<stop offset="1" stop-color="#7989E1"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_1152" x1="20.5627" y1="46.413" x2="38.9641" y2="15.4476" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9DB4FF"/>
+<stop offset="1" stop-color="#3C4BE9"/>
+</linearGradient>
+<clipPath id="clip0_0_1152">
+<rect width="52" height="52" fill="white"/>
+</clipPath>
+</defs>
+</svg>

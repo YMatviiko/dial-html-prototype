@@ -1,0 +1,153 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, toolset create / edit form. Source of truth: Figma "DIAL Chat 2.0 (Toolsets)",
+     page "Iteration 1", frame 61:24989 "Edit toolset" (same layout as 56:12718 "Create toolset - filled view";
+     auth states from 31:4292 "Create toolset - open access" and 31:3629 "Create toolset - API key - with login").
+     Generate with: kit-lookup.mjs pattern toolsets-editor > page.html
+     Layout: collapsed 72px navigation rail (Catalog active) | page header with back, title, Cancel / Save |
+     400px "Metadata" column | "Setup" workspace (max 1048px). The Authentication segmented control switches the
+     three auth panels (data-auth-panel). For "Create toolset" change the title and the Save label. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit toolset</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation collapsed active=catalog -->
+
+  <main class="flex-1 min-w-0 flex flex-col">
+
+    <!-- Page header (Figma: Page header, bottom stroke tertiary). 32px side padding = px-6 + inner px-2. -->
+    <header class="shrink-0 px-6 py-3 border-b border-tertiary">
+      <div class="flex items-center gap-2 px-2">
+        <!-- render: GhostIconButton {"aria-label":"Back to catalog","icon":"@icon:arrow-narrow-left:24"} -->
+        <h1 class="flex-1 min-w-0 truncate dial-h1-text text-primary">Edit Acme CRM Connector</h1>
+        <div class="flex items-center gap-2">
+          <!-- render: NeutralButton {"label":"Cancel"} -->
+          <!-- render: PrimaryButton {"label":"Save"} -->
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-1 min-h-0 flex">
+
+      <!-- Metadata column (Figma: Sidebar). 400px, right divider. -->
+      <section class="shrink-0 overflow-y-auto border-r border-tertiary p-6" style="width: 400px" aria-label="Metadata">
+        <div class="flex flex-col gap-5 px-2">
+          <h2 class="dial-body-semi-text text-primary">Metadata</h2>
+
+          <!-- Avatar picker (Figma: ImageField) -->
+          <div class="flex flex-col gap-2">
+            <!-- render: Label {"label":"Avatar"} -->
+            <div class="flex items-center gap-3">
+              <div class="shrink-0 overflow-hidden rounded-lg border border-tertiary" style="width: 64px; height: 64px"><!-- asset: toolsets-acme-logo 62 --></div>
+              <div class="flex flex-col items-start gap-2">
+                <!-- render: LinkButton {"label":"Add avatar","iconBefore":"@icon:plus:16","size":"small"} -->
+                <span class="dial-tiny-text text-tertiary">PNG, JPG or SVG (max 1 MB)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="flex-1 min-w-0"><!-- render: Input {"id":"toolset-name","labelProps":{"label":"Name","required":true},"value":"Acme CRM Connector","placeholder":"Enter name"} --></div>
+            <div class="shrink-0" style="width: 80px"><!-- render: Input {"id":"toolset-version","labelProps":{"label":"Version","required":true},"value":"1.0.0"} --></div>
+          </div>
+
+          <!-- Description with the "Refine with AI" action in the label row -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-2">
+              <!-- render: Label {"label":"Description","required":true,"htmlFor":"toolset-description"} -->
+              <!-- render: LinkButton {"label":"Refine with AI","iconBefore":"@icon:sparkles:16","size":"small"} -->
+            </div>
+            <!-- render: Textarea {"id":"toolset-description","rows":3,"resize":"vertical","placeholder":"Describe what this toolset does","value":"Lets the agent search contacts, manage deals, and track pipeline activity in Acme CRM. Use for sales workflows that need live customer or deal data."} -->
+          </div>
+
+          <div class="flex"><!-- render: LinkButton {"label":"Add locales","iconBefore":"@icon:plus:16","size":"small"} --></div>
+
+          <!-- render: TagInput {"id":"toolset-tags","labelProps":{"label":"Tags"},"placeholder":"Add tags, comma separated"} -->
+        </div>
+      </section>
+
+      <!-- Setup workspace (Figma: Workspace). Fields stop at 984px; the rest of the width stays empty. -->
+      <section class="flex-1 min-w-0 overflow-y-auto p-6" aria-label="Setup">
+        <div class="flex flex-col gap-5 px-2" style="max-width: 1000px">
+          <h2 class="dial-body-semi-text text-primary">Setup</h2>
+
+          <!-- render: Input {"id":"toolset-endpoint","labelProps":{"label":"Endpoint","required":true},"value":"https://mcp.acme-crm.com/v1","placeholder":"https://...","caption":"The HTTPS address where the server accepts MCP requests."} -->
+
+          <div class="flex flex-col items-start gap-1.5" role="radiogroup" aria-labelledby="protocol-label">
+            <span id="protocol-label" class="dial-tiny-semi-text text-secondary">Protocol</span>
+            <!-- render: Radio {"id":"protocol-http","name":"protocol","value":"http","labelProps":{"label":"HTTP"},"isSelected":true} -->
+            <!-- render: Radio {"id":"protocol-sse","name":"protocol","value":"sse","labelProps":{"label":"SSE"}} -->
+          </div>
+
+          <!-- render: TagInput {"id":"toolset-tools","labelProps":{"label":"Allowed tools"},"placeholder":"Add tools, comma separated"} -->
+
+          <!-- Authentication: segmented control + the panel of the selected option -->
+          <div class="flex flex-col gap-2">
+            <h3 class="dial-body-semi-text text-primary">Authentication</h3>
+            <div class="flex flex-col gap-4">
+              <div data-auth-switch><!-- render: SegmentedControl {"aria-label":"Authentication","value":"oauth","items":[{"value":"open","label":"Open access","icon":"@icon:lock-off:16"},{"value":"oauth","label":"OAuth","icon":"@icon:brand-oauth:16"},{"value":"key","label":"API key","icon":"@icon:key:16"}]} --></div>
+
+              <!-- Open access (Figma 31:4292) -->
+              <p data-auth-panel="Open access" class="hidden dial-small-text text-secondary">Open endpoint, no credentials</p>
+
+              <!-- OAuth, custom login, signed in (Figma 61:24989): fields are read-only until Log out -->
+              <div data-auth-panel="OAuth" class="flex flex-col gap-4">
+                <div class="flex flex-col items-start gap-1.5" role="radiogroup" aria-label="OAuth login">
+                  <!-- render: Radio {"id":"oauth-standard","name":"oauth-login","value":"standard","labelProps":{"label":"Standard login"}} -->
+                  <!-- render: Radio {"id":"oauth-custom","name":"oauth-login","value":"custom","labelProps":{"label":"Custom login"},"isSelected":true} -->
+                </div>
+                <div class="ml-[28px] flex flex-col items-start gap-5">
+                  <div class="w-full"><!-- render: Input {"id":"oauth-client-id","labelProps":{"label":"Client ID","required":true},"value":"dial-toolset-8f3a1c92","disabled":true} --></div>
+                  <div class="w-full"><!-- render: PasswordInput {"id":"oauth-client-secret","labelProps":{"label":"Client secret"},"value":"secret-value-123","disabled":true} --></div>
+                  <div class="w-full"><!-- render: Input {"id":"oauth-auth-endpoint","labelProps":{"label":"Authorization endpoint"},"value":"https://auth.acme-crm.com/oauth2/authorize","disabled":true} --></div>
+                  <div class="w-full"><!-- render: Input {"id":"oauth-token-endpoint","labelProps":{"label":"Token endpoint"},"value":"https://auth.acme-crm.com/oauth2/token","disabled":true} --></div>
+                  <div class="w-full"><!-- render: Input {"id":"oauth-scopes","labelProps":{"label":"Scopes"},"value":"read:contacts write:contacts read:deals","disabled":true} --></div>
+                  <!-- render: OutlinedButton {"label":"Log out","iconBefore":"@icon:logout:20"} -->
+                </div>
+              </div>
+
+              <!-- API key, with login (Figma 31:3629) -->
+              <div data-auth-panel="API key" class="hidden flex flex-col gap-4">
+                <div class="flex flex-col items-start gap-1.5" role="radiogroup" aria-label="API key login">
+                  <!-- render: Radio {"id":"key-with-login","name":"key-login","value":"with","labelProps":{"label":"With login"},"isSelected":true} -->
+                  <!-- render: Radio {"id":"key-without-login","name":"key-login","value":"without","labelProps":{"label":"Without login"}} -->
+                </div>
+                <div class="ml-[28px] flex flex-col items-start gap-5">
+                  <div class="w-full"><!-- render: Input {"id":"key-param","labelProps":{"label":"API Key parameter name","required":true},"placeholder":"Enter API key parameter name"} --></div>
+                  <div class="w-full"><!-- render: PasswordInput {"id":"key-value","labelProps":{"label":"API key"},"placeholder":"Enter API key"} --></div>
+                  <!-- render: NeutralButton {"label":"Log in","iconBefore":"@icon:login-2:20"} -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Authentication switch: move the selected look to the clicked segment and show its panel.
+    const seg = document.querySelector('[data-auth-switch] [role="radiogroup"]');
+    seg.addEventListener('click', (e) => {
+      const btn = e.target.closest('[role="radio"]');
+      const cur = seg.querySelector('[aria-checked="true"]');
+      if (!btn || btn === cur) return;
+      [btn.className, cur.className] = [cur.className, btn.className];
+      btn.setAttribute('aria-checked', 'true'); cur.setAttribute('aria-checked', 'false');
+      btn.tabIndex = 0; cur.tabIndex = -1;
+      document.querySelectorAll('[data-auth-panel]').forEach((p) => p.classList.toggle('hidden', p.dataset.authPanel !== btn.getAttribute('aria-label')));
+    });
+  </script>
+</body>
+</html>

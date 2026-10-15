@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, settings, Preferences section. Source of truth: Figma "DIAL Chat 2.0 (Settings and Usage)",
+     page "Iteration 2", section "Desktop", frame 2390:27903 "Setting - preferences - default". Generate with: kit-lookup.mjs pattern <name> > page.html
+     Kit components and icons are filled in at generation time; edit the text, list items and states freely. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings, Preferences section</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=new-chat -->
+
+  <!-- Main (Figma: Frame 141): the DIAL Chat start screen. Settings opens on top of whatever page is open. -->
+  <main class="flex-1 min-w-0 flex flex-col">
+    <div class="h-16 shrink-0"></div>
+    <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6">
+      <h1 class="dial-display2-text text-primary">Afternoon, Olha</h1>
+      <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 700px" data-composer>
+        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+        <div class="flex items-center gap-2">
+          <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+          <div class="flex-1"></div>
+          <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+          <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+        </div>
+      </form>
+      <div class="flex w-full flex-wrap justify-center gap-2" style="max-width: 700px">
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->What can I do</button>
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->GenAI trends in 2026</button>
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->Prompting tips</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Settings popup (Figma: PopUp, 1200 x 840). A modal over the whole app: the navigation and the page stay
+       visible under the backdrop. Opened from the user menu in the navigation footer ("Settings").
+       Left: the section rail (Tabs, vertical) on bg-layer-base. Right: the section's content. Footer: Cancel + Save.
+       The whole popup is one rendered kit Popup; its body markup sits inside it. -->
+  <!-- render: Popup {"open":true,"header":"Settings","size":"lg","onBack":null,"mainButtons":[{"label":"Cancel"},{"label":"Save","variant":"primary"}],"children":{"@component":"div","className":"flex h-[740px] px-6 py-2","children":[{"@component":"div","className":"flex w-[240px] shrink-0 flex-col rounded-lg bg-layer-base py-2","children":{"@component":"Tabs","orientation":"vertical","ariaLabel":"Settings sections","activeTabId":"preferences","tabs":[{"id":"preferences","label":"Preferences","icon":"@icon:adjustments-horizontal:20"},{"id":"extensions","label":"Extensions","icon":"@icon:plug-connected:20"}]}},{"@component":"div","className":"flex min-w-0 flex-1 flex-col gap-8 px-6 pt-3","children":[{"@component":"section","className":"flex w-[400px] flex-col gap-5","children":[{"@component":"h3","className":"dial-small-semi-text text-primary","children":"General"},{"@component":"Select","id":"theme","labelProps":{"label":"Theme"},"value":"Light","options":[{"value":"Light","label":"Light"},{"value":"Dark","label":"Dark"},{"value":"System","label":"System"}]},{"@component":"Select","id":"shortcuts","labelProps":{"label":"Keyboard shortcuts"},"value":"Enter — send message, Shift+Enter — new line","options":[{"value":"Enter — send message, Shift+Enter — new line","label":"Enter — send message, Shift+Enter — new line"},{"value":"Ctrl+Enter — send message, Enter — new line","label":"Ctrl+Enter — send message, Enter — new line"}]},{"@component":"Select","id":"default-agent","labelProps":{"label":"Default agent for new chat"},"value":"Default agent","options":[{"value":"Default agent","label":"Default agent"},{"value":"GPT-4o mini","label":"GPT-4o mini"},{"value":"Claude Sonnet","label":"Claude Sonnet"}]}]},{"@component":"section","className":"flex flex-col gap-5","children":[{"@component":"h3","className":"dial-small-semi-text text-primary","children":"Date & Time settings"},{"@component":"RadioGroup","id":"date-format","labelProps":{"label":"Date format"},"value":"28 Jul, 2026","items":[{"value":"Jul 28 2026","label":"Jul 28 2026"},{"value":"28 Jul, 2026","label":"28 Jul, 2026"}]},{"@component":"RadioGroup","id":"time-format","labelProps":{"label":"Time format"},"value":"24-hour","items":[{"value":"12-hour","label":"12-hour"},{"value":"24-hour","label":"24-hour"}]},{"@component":"div","className":"w-[400px]","children":{"@component":"Select","id":"time-zone","labelProps":{"label":"Time zone"},"value":"(GMT+01:00) Berlin, Germany","options":[{"value":"(GMT+00:00) London, United Kingdom","label":"(GMT+00:00) London, United Kingdom"},{"value":"(GMT+01:00) Berlin, Germany","label":"(GMT+01:00) Berlin, Germany"},{"value":"(GMT+02:00) Kyiv, Ukraine","label":"(GMT+02:00) Kyiv, Ukraine"}]}}]}]}]}} -->
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!-- Shared DIAL Chat navigation (Figma: Navigation component, DIAL Chat 2.0 files). Pages include it with an
+     "include: navigation" marker comment taking optional active=new-chat|scheduled|catalog|files and chat=N.
+     Active nav item: tinted pill + its active icon (assets/nav-ID-active.svg). Open conversation: tinted row.
+     Unread chat: filled accent dot + semibold name (row 3 below). -->
+  <!-- Navigation (Figma: Sidebar / Navigation). 336px wide; raised surface with a soft shadow, no border. -->
+  <aside class="relative z-10 shrink-0 flex flex-col bg-layer-raised shadow-sm" style="width: 336px">
+    <div class="flex flex-col gap-4 p-4">
+      <div class="flex h-[40px] items-center justify-between pl-2">
+        <!-- asset: dial-chat-logo 24 -->
+        <!-- render: GhostIconButton {"aria-label":"Collapse sidebar","icon":"@icon:layout-sidebar:24"} -->
+      </div>
+      <nav class="flex flex-col gap-1" aria-label="Main">
+        <!-- nav-item: new-chat "New chat" plus -->
+        <!-- nav-item: scheduled "Scheduled tasks" clock -->
+        <!-- nav-item: catalog "Catalog" layout-grid -->
+        <!-- nav-item: files "File manager" folder-open -->
+      </nav>
+    </div>
+
+    <div class="flex-1 min-h-0 flex flex-col gap-2 pt-4 px-4">
+      <div class="flex items-center justify-between pl-2">
+        <span class="dial-tiny-semi-text uppercase text-secondary">Chats and tasks</span>
+        <div class="flex items-center gap-2">
+          <!-- render: GhostIconButton {"aria-label":"Search chats","icon":"@icon:search:16","size":"small"} -->
+          <!-- render: GhostIconButton {"aria-label":"Filter chats","icon":"@icon:filter-2:16","size":"small"} -->
+          <!-- render: GhostIconButton {"aria-label":"More","icon":"@icon:dots-vertical:16","size":"small"} -->
+        </div>
+      </div>
+
+      <!-- Chat list. Row: 32px, status dot + name. Active chat: filled accent dot + semibold name. -->
+      <div class="flex-1 min-h-0 overflow-y-auto flex flex-col" data-chat-list>
+        <section class="flex flex-col gap-0.5 py-2">
+          <div class="px-2 py-1 dial-tiny-lead-text text-secondary">Pinned</div>
+          <a href="#" data-chat="1" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Help with Python code</span></a>
+        </section>
+        <section class="flex flex-col gap-0.5 py-2">
+          <div class="px-2 py-1 dial-tiny-lead-text text-secondary">My chats</div>
+          <a href="#" data-chat="2" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">What is St Patrick's day?</span></a>
+          <a href="#" data-chat="3" aria-current="page" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- icon: point-filled 16 text-accent --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-semi-text text-primary">Tell me what is EPAM company?</span></a>
+          <a href="#" data-chat="4" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Create plot of sin(x * 4.5) in Plotly</span></a>
+        </section>
+        <section class="flex flex-col gap-0.5 py-2">
+          <div class="px-2 py-1 dial-tiny-lead-text text-secondary">Organization</div>
+          <a href="#" data-chat="5" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Summarize meeting notes</span></a>
+          <a href="#" data-chat="6" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Draft email to client</span></a>
+          <a href="#" data-chat="7" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Create a presentation outline</span></a>
+          <a href="#" data-chat="8" class="flex h-[32px] w-full items-center gap-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover"><span class="flex size-6 shrink-0 items-center justify-center"><!-- asset: chat-status 16 --></span><span class="flex-1 min-w-0 truncate dial-small-paragraph-text text-primary">Research product specifications</span></a>
+        </section>
+      </div>
+    </div>
+
+    <!-- Footer: user menu + usage. Raised, with the large soft shadow above the list. -->
+    <div class="flex items-center justify-between px-4 py-3 bg-layer-raised shadow-lg">
+      <button type="button" data-user-menu class="flex items-center gap-2 p-2 rounded-full hover:bg-control-accent-alpha-hover"><!-- render: Avatar {"name":"Natalia Sudko","initials":"NS","size":24} --><span class="dial-small-text text-primary">Natalia Sudko</span><!-- icon: chevron-down 16 --></button>
+      <a href="#" aria-label="Usage statistics" class="flex items-center p-2 rounded-full text-primary hover:bg-control-accent-alpha-hover"><!-- icon: chart-bar 24 --></a>
+    </div>
+  </aside>

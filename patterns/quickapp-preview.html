@@ -1,0 +1,83 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, QuickApp Builder, Preview mode (test chat of the app being built). Source of truth: Figma
+     "DIAL Chat 2.0 (QuickApp Builder)" (48tp0CBotseAa95yPfSxdn), page "Iteration 2", frame 556:37329 "QuickApp_Preview".
+     Generate with: kit-lookup.mjs pattern quickapp-preview > page.html
+     Opened by "Preview" in the builder header; it replaces the builder (not a side panel). Collapsed 72px rail,
+     a header with Back + "Back to setup", a full-width "Preview mode" info strip, then a normal conversation
+     (centred 712px column) and a plain composer at the bottom (no model picker, no attach button in this frame). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuickApp preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation collapsed active=catalog -->
+
+  <div class="flex-1 min-w-0 flex flex-col">
+    <!-- Page header: back icon button + title (Figma: Page header with tertiary bottom stroke). -->
+    <header class="shrink-0 flex items-center gap-2 p-8 py-4 border-b border-tertiary">
+      <!-- render: GhostIconButton {"aria-label":"Back to setup","icon":"@icon:arrow-narrow-left:24"} -->
+      <h1 class="flex-1 min-w-0 flex h-[40px] items-center dial-h1-text text-primary">Back to setup</h1>
+    </header>
+
+    <!-- Preview-mode strip (Figma: system-message, blue/100 fill, 8px radius). -->
+    <div class="shrink-0 flex items-center justify-center gap-2 p-3 rounded-lg bg-info whitespace-nowrap">
+      <span class="dial-tiny-semi-text uppercase text-info">Preview mode</span>
+      <span class="dial-small-text text-primary">You are previewing <span class="dial-small-semi-text">Design Review Agent</span>. Send a message to test how it responds. Usage is following your limits.</span>
+    </div>
+
+    <!-- Conversation (Figma: ConversationContainer, 712px column, 24px between messages). -->
+    <main class="flex-1 min-h-0 overflow-y-auto flex justify-center p-6 pb-4">
+      <div class="flex w-full flex-col gap-6" style="max-width: 712px">
+
+        <!-- Assistant message: 44px letter avatar of the app, 16/26 text, message actions. -->
+        <div class="flex items-start gap-3">
+          <!-- render: Avatar {"name":"Design Review Agent","initials":"DR","shape":"square","size":40,"textClassName":"dial-h2-text"} -->
+          <div class="flex-1 min-w-0 flex flex-col gap-4 p-0.5">
+            <p class="dial-body-paragraph-text text-primary">Test your QuickApp here. Send a message or upload a document to see how it responds.</p>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Regenerate","icon":"@icon:refresh:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User message: attachments group above a sunken bubble, actions under it; all right-aligned. -->
+        <div class="flex flex-col items-end gap-4">
+          <div class="flex flex-col items-end gap-1">
+            <span class="flex items-center gap-2 dial-tiny-semi-text text-secondary"><!-- icon: paperclip 16 -->1 attachment</span>
+            <div class="flex flex-col justify-between p-3 rounded-xl border border-secondary bg-layer-raised" style="width: 100px; height: 100px">
+              <div class="flex items-start justify-between gap-1"><span class="truncate dial-tiny-text text-primary">Title</span><!-- render: GhostIconButton {"aria-label":"Download","icon":"@icon:download:16","size":"small"} --></div>
+              <span class="flex items-end gap-1 dial-tiny-text text-primary"><!-- asset: file-code 20 -->.csv</span>
+            </div>
+          </div>
+          <div class="px-6 py-4 rounded-2xl border border-secondary bg-layer-sunken dial-body-paragraph-text text-primary">Review this icon. Does it follow WCAG 2.0 AA level?</div>
+          <div class="flex items-center gap-2">
+            <!-- render: GhostIconButton {"aria-label":"Edit message","icon":"@icon:pencil:16","size":"small"} -->
+            <!-- render: GhostIconButton {"aria-label":"Delete message","icon":"@icon:trash-x:16","size":"small"} -->
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Composer (Figma: InputBox > chat-input, max 748px): one text line, no extra controls in preview. -->
+    <div class="shrink-0 flex justify-center p-8 pt-4">
+      <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px" data-composer>
+        <textarea rows="1" aria-label="Test message" placeholder="Send a test message" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

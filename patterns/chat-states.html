@@ -1,0 +1,141 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, overlay and banner states, shown as copyable blocks (no app shell).
+     Source of truth: Figma "DIAL Chat 2.0 (Chat)" (t46nfThjIus5aUpMt43stA), page "Iteration 2":
+     usage limit 886:31864 (80% used) and 886:31884 (reached), model dropdown 733:12524 (select-list 733:12605),
+     chat actions menu 333:9040 (menu 333:9338 + submenu 335:9604). Generate with: kit-lookup.mjs pattern chat-states > page.html
+     Put each block into pattern chat-conversation / dial-chat where the comment says. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIAL Chat — states</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-layer-base text-primary dial-small-text">
+  <main class="flex flex-col gap-8 p-8">
+
+    <!-- ============ BLOCK: usage-limit banner (Figma 886:31864, 886:31884) ============
+         Goes into the composer area of chat-conversation, 8px above the composer card, same 748px width. -->
+    <section class="flex flex-col gap-4">
+      <div class="flex flex-col gap-1">
+        <h2 class="dial-h3-text text-primary">Usage limit banner</h2>
+        <p class="dial-small-text text-secondary">Section message above the composer: almost reached (warning) and reached (error). Closable.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-8 p-8 rounded-xl border border-tertiary">
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-full" style="max-width: 748px">
+            <!-- render: Notification {"variant":"warning","type":"section-message","title":"{Daily|Weekly|Monthly} limit 80% used.","message":"Resets at {time|date}.","closable":true} -->
+          </div>
+          <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px">
+            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+              <div class="flex-1"></div>
+              <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+              <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+            </div>
+          </form>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-full" style="max-width: 748px">
+            <!-- render: Notification {"variant":"error","type":"section-message","title":"{Daily|Weekly|Monthly} limit reached.","message":"Resets at {time|date}.","closable":true} -->
+          </div>
+          <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px">
+            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+              <div class="flex-1"></div>
+              <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+              <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-2 gap-8">
+
+      <!-- ============ BLOCK: model dropdown in the composer (Figma 733:12524) ============
+           Start-screen composer (dial-chat), filled: model picker in its active state (tinted pill), send button.
+           The select list (368px) opens under the picker, right-aligned. -->
+      <section class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <h2 class="dial-h3-text text-primary">Model dropdown</h2>
+          <p class="dial-small-text text-secondary">Search, currently selected, favourites (rows with a version or a sub-model open a second level), Browse.</p>
+        </div>
+        <div class="flex flex-col items-center p-8 rounded-xl border border-tertiary">
+          <div class="flex w-full flex-col gap-1" style="max-width: 700px">
+            <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md">
+              <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+              <div class="flex items-center gap-2">
+                <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+                <div class="flex-1"></div>
+                <!-- Model picker, open: tinted pill -->
+                <button type="button" aria-expanded="true" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded-full bg-control-accent-alpha-hover"><!-- asset: chat-model-gemini 28 --><span class="flex min-w-0 items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">Adapter Dial</span><span class="min-w-0 truncate dial-tiny-text text-secondary">Gemini Pro Vision</span></span><!-- icon: chevron-down 20 --></button>
+                <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+                <!-- render: PrimaryIconButton {"aria-label":"Send","icon":"@icon:arrow-right:24"} -->
+              </div>
+            </form>
+            <!-- Select list (Figma: select-list, Components 2.0 "Select list"): raised, 12px radius, 8px padding, medium shadow. -->
+            <div class="flex justify-end">
+              <div class="flex flex-col gap-1 p-2 rounded-xl bg-layer-raised shadow-md" style="width: 368px" role="listbox" aria-label="Models and agents">
+                <!-- render: Search {"placeholder":"Search models, agent..."} -->
+                <div class="px-3 py-2 dial-caption-lead-semi-text text-secondary">Currently selected</div>
+                <div role="option" aria-selected="true" class="flex h-[48px] items-center gap-2 px-3 rounded-lg bg-control-accent-alpha"><!-- asset: chat-model-gemini 20 --><span class="flex flex-1 min-w-0 items-start gap-0.5 whitespace-nowrap"><span class="dial-small-text text-primary">Adapter Dial</span><span class="dial-tiny-text text-secondary">Gemini Pro Vision</span></span></div>
+                <div class="px-3 py-2 dial-caption-lead-semi-text text-secondary">Favourites</div>
+                <div class="flex flex-col gap-0.5 overflow-hidden" style="max-height: 179px">
+                  <div role="option" class="flex h-[48px] shrink-0 items-center gap-2 px-3 rounded-lg cursor-pointer hover:bg-control-accent-alpha-hover"><!-- asset: chat-model-rag 20 --><span class="flex-1 min-w-0 truncate dial-small-text text-primary">DIAL RAG</span></div>
+                  <!-- Row with a sub-model: two lines, divider, chevron opens the second level -->
+                  <div role="option" class="flex h-[48px] shrink-0 items-center gap-3 px-3 rounded-lg cursor-pointer hover:bg-control-accent-alpha-hover">
+                    <span class="flex flex-1 min-w-0 items-center gap-2"><!-- asset: chat-model-chathub 20 --><span class="flex flex-1 min-w-0 flex-col"><span class="flex items-start gap-1 whitespace-nowrap"><span class="dial-small-text text-primary">DIAL ChatHub</span><span class="dial-tiny-text text-secondary">v2</span></span><span class="truncate dial-caption-text text-secondary">Anthropic Claude Haiku 4.5</span></span></span>
+                    <span class="h-[24px] border-l border-tertiary"></span>
+                    <!-- render: GhostIconButton {"aria-label":"Show versions","icon":"@icon:chevron-right:16","size":"small"} -->
+                  </div>
+                  <div role="option" class="flex h-[48px] shrink-0 items-center gap-2 px-3 rounded-lg cursor-pointer hover:bg-control-accent-alpha-hover"><!-- asset: chat-model-gpt4 20 --><span class="flex flex-1 min-w-0 items-start gap-0.5 whitespace-nowrap"><span class="dial-small-text text-primary">GPT-4o (Omni)</span><span class="dial-tiny-text text-secondary">Latest</span></span></div>
+                  <div role="option" class="flex h-[48px] shrink-0 items-center gap-2 px-3 rounded-lg cursor-pointer hover:bg-control-accent-alpha-hover"><!-- asset: chat-model-anthropic 20 --><span class="flex flex-1 min-w-0 items-start gap-0.5 whitespace-nowrap"><span class="dial-small-text text-primary">Anthropic Claude Opus 5</span><span class="truncate dial-tiny-text text-secondary">Latest (GCP VertexAI)</span></span></div>
+                </div>
+                <div class="flex flex-col px-3 py-2 border-t border-tertiary">
+                  <!-- render: GhostButton {"label":"Browse"} -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK: chat actions menu (Figma 333:9040) ============
+           Opens from the "more" button that appears on a hovered chat row in the navigation, to the right of the
+           sidebar. Export has a submenu (With / Without attachments) that opens beside it. -->
+      <section class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <h2 class="dial-h3-text text-primary">Chat actions menu</h2>
+          <p class="dial-small-text text-secondary">Pin, Rename, Duplicate, Export (submenu), Share, Publish, Delete. Shown with Export hovered and its submenu open.</p>
+        </div>
+        <div class="flex items-start gap-1 p-8 rounded-xl border border-tertiary">
+          <!-- Trigger + menu (kit Dropdown, open) -->
+          <div class="flex items-start gap-2" style="width: 200px">
+            <!-- render: Dropdown {"open":true,"onItemClick":null,"listClassName":"w-[160px]","items":[{"key":"pin","label":"Pin","icon":"@icon:pin:20"},{"key":"rename","label":"Rename","icon":"@icon:pencil-minus:20"},{"key":"duplicate","label":"Duplicate","icon":"@icon:copy:20"},{"key":"export","label":"Export","icon":"@icon:download:20","className":"bg-control-accent-alpha-hover","children":[{"key":"with","label":"With attachments"},{"key":"without","label":"Without attachments"}]},{"key":"share","label":"Share","icon":"@icon:share:20"},{"key":"publish","label":"Publish","icon":"@icon:world-share:20"},{"key":"delete","label":"Delete","icon":"@icon:trash-x:20","danger":true}],"children":{"@component":"GhostIconButton","aria-label":"Chat actions","icon":"@icon:dots-vertical:16","size":"small","className":"bg-control-accent-alpha-hover"}} -->
+          </div>
+          <!-- Export submenu, aligned with the Export row (3 rows of 40px + 2px gaps + menu padding above it).
+               Same overlay surface as the kit Dropdown; its rows are kit MenuItems. -->
+          <div class="flex flex-col">
+            <div class="shrink-0" style="height: 134px"></div>
+            <div class="flex flex-col gap-0.5 p-1 rounded-xl bg-layer-raised shadow-md" role="menu" aria-label="Export">
+              <!-- render: MenuItem {"role":"menuitem","label":"With attachments"} -->
+              <!-- render: MenuItem {"role":"menuitem","label":"Without attachments"} -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>

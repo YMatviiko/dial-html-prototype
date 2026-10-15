@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, conversation. Source of truth: Figma "DIAL Chat 2.0 (Chat)" (t46nfThjIus5aUpMt43stA),
+     page "Iteration 2", frame 22:2694 "Chat - Conversation - output generation"; message and composer details from
+     Components 2.0 pages "Message" (56:862) and "Сhat Input" (38:792). Generate with: kit-lookup.mjs pattern chat-conversation > page.html
+     Kit components and icons are filled in at generation time; edit the text, messages and states freely.
+     Rich content blocks (table, code, attachments, citations): pattern chat-content. Dropdowns and banner: pattern chat-states. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIAL Chat — conversation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- Navigation with the open conversation highlighted (row 2). No main nav item is active on a conversation. -->
+  <!-- include: navigation chat=2 -->
+
+  <!-- Main (Figma: MainPanel 1584px) -->
+  <main class="flex-1 min-w-0 flex flex-col">
+
+    <!-- Header (Figma: Header, 64px): no bar, only the conversation-details icon button in the centre. -->
+    <div class="h-16 shrink-0 flex items-center justify-center px-2">
+      <!-- render: GhostIconButton {"aria-label":"Conversation details","icon":"@icon:file-description:24"} -->
+    </div>
+
+    <!-- Conversation (Figma: ConversationContainer). Scrolls; the scroll-down button floats at its bottom centre. -->
+    <div class="relative flex-1 min-h-0 flex flex-col">
+      <div class="flex-1 min-h-0 overflow-y-auto flex flex-col items-center p-8" data-thread>
+
+        <!-- One exchange (Figma: ChatMessage, 712px column, 24px between user and assistant parts) -->
+        <div class="flex w-full flex-col gap-6" style="max-width: 712px">
+
+          <!-- User message (Figma: MessageHeader): bubble on the right, edit/delete under it. -->
+          <div class="flex flex-col items-end gap-4">
+            <!-- Bubble (Message / bubble): layer-sunken fill, secondary stroke, 16px radius (Figma: top-right corner 4px). -->
+            <div class="max-w-[600px] rounded-2xl border border-secondary bg-layer-sunken px-6 py-4 dial-body-paragraph-text text-primary break-words">what is st Patrick's day?</div>
+            <!-- Message-actions, Source=User -->
+            <div class="flex items-center gap-2">
+              <!-- render: GhostIconButton {"aria-label":"Edit message","icon":"@icon:pencil-minus:16","size":"small"} -->
+              <!-- render: GhostIconButton {"aria-label":"Delete message","icon":"@icon:trash-x:16","size":"small"} -->
+            </div>
+          </div>
+
+          <!-- Assistant message (Figma: MessageContent): 28px model icon, 12px gap, rich text, actions under it. -->
+          <div class="flex items-start gap-3">
+            <!-- asset: chat-model-gpt-avatar 28 -->
+            <div class="flex-1 min-w-0 flex flex-col items-start gap-4 py-0.5">
+              <!-- Rich text: body paragraph 16/26; headings 18/26 semibold; an empty 26px line between blocks. -->
+              <div class="flex flex-col dial-body-paragraph-text text-primary break-words">
+                <p>St. Patrick's Day is celebrated on <strong class="dial-body-paragraph-semi-text">March 17</strong> each year, marking the death date of Saint Patrick, the patron saint of Ireland who lived in the 5th century.</p>
+                <div class="h-[26px]"></div>
+                <h3 class="dial-h2-text">The history</h3>
+                <p>Patrick wasn't actually Irish — he was born in Britain (likely Roman Britain) and was kidnapped as a teenager by Irish raiders, who enslaved him in Ireland for about six years. After escaping and returning home, he later went back to Ireland as a Christian missionary, where he's credited with spreading Christianity across the island. The holiday began as a religious feast day in the Catholic Church, commemorating his death around 461 AD.</p>
+                <div class="h-[26px]"></div>
+                <h3 class="dial-h2-text">How it's celebrated today</h3>
+                <p>What started as a solemn religious observance has become a much bigger cultural celebration, especially outside Ireland:</p>
+                <ul class="pl-6" style="list-style-type: disc">
+                  <li>Wearing green (tied to Ireland's nickname "the Emerald Isle" and shamrocks)</li>
+                  <li>Parades — the biggest ones are actually in the U.S., with New York City's parade being one of the oldest and largest in the world</li>
+                  <li>Shamrocks, which legend says Patrick used to explain the Holy Trinity to pagan converts</li>
+                  <li>Beer dyed green, Irish food like corned beef and cabbage, and general festivities</li>
+                </ul>
+                <div class="h-[26px]"></div>
+                <h3 class="dial-h2-text">Fun facts</h3>
+                <ul class="pl-6" style="list-style-type: disc">
+                  <li>Chicago famously dyes its river green every year for the occasion.</li>
+                  <li>The "no snakes in Ireland" legend attributed to Patrick is symbolic (there never were snakes there natively) rather than literal.</li>
+                  <li>It's a public holiday in Ireland, Northern Ireland, and Montserrat.</li>
+                </ul>
+                <div class="h-[26px]"></div>
+                <p>Want to know more about any particular angle — the religious history, the parades, or how it's celebrated in different countries?</p>
+              </div>
+              <!-- Message-actions while the answer is generating: copy + view as markdown.
+                   A finished answer adds regenerate (refresh) first and like / dislike last: see pattern chat-content. -->
+              <div class="flex items-center gap-2">
+                <!-- render: GhostIconButton {"aria-label":"Copy","icon":"@icon:copy:16","size":"small"} -->
+                <!-- render: GhostIconButton {"aria-label":"View as Markdown","icon":"@icon:markdown:16","size":"small"} -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scroll-down button (Figma: FAB, 40px, neutral fill, small shadow), centred on the bottom edge of the thread. -->
+      <div class="absolute inset-0 flex items-end justify-center pointer-events-none">
+        <span class="flex rounded-full bg-control-neutral shadow-sm" style="pointer-events: auto"><!-- render: GhostIconButton {"aria-label":"Scroll to bottom","icon":"@icon:arrow-narrow-down:24"} --></span>
+      </div>
+    </div>
+
+    <!-- Composer (Figma: InputBox > chat-input). Same card as the start screen, pinned to the bottom, 748px wide,
+         12px side / 16px vertical padding. Model picker lives in the composer. -->
+    <div class="shrink-0 flex flex-col items-center p-5">
+      <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px" data-composer>
+        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+        <div class="flex items-center gap-2">
+          <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+          <div class="flex-1"></div>
+          <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+          <!-- Empty composer: microphone. With text typed it is followed by the send button
+               (render: PrimaryIconButton {"aria-label":"Send","icon":"@icon:arrow-right:24"}); see pattern chat-states. -->
+          <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+        </div>
+      </form>
+      <div class="h-4 shrink-0"></div>
+    </div>
+  </main>
+
+</body>
+</html>

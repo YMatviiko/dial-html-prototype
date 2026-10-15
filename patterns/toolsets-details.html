@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, toolset details drawer over the Catalog. Source of truth: Figma "DIAL Chat 2.0 (Toolsets)",
+     page "Iteration 1", frame 75:46278 "Catalog - List - toolsets tab - toolset details - tools tab" (tab panels from
+     61:21352 About, 75:45004 Overview, 77:46987 Connect). Generate with: kit-lookup.mjs pattern toolsets-details > page.html
+     Layout: shared navigation (Catalog active) | Catalog page (My collection, Browse toolbar, entity tabs, card grid),
+     dimmed by the SideDrawer backdrop | 540px SideDrawer: identity (EntityIdentity + FolderPath), actions
+     (Log in, Share, more), Tabs About / Overview / Tools / Connect. Tabs switch the panels (data-tab-panel).
+     The drawer body is one SideDrawer render line, built with nested "@component" JSON; edit its text in place. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toolset details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex overflow-hidden bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=catalog -->
+
+  <!-- Catalog page behind the drawer (Figma: Catalog View). 32px side padding = px-6 + inner px-2. -->
+  <main class="flex-1 min-w-0 flex flex-col overflow-hidden">
+    <header class="shrink-0 px-6 py-3">
+      <div class="flex items-center gap-2 px-2">
+        <h1 class="flex-1 min-w-0 truncate dial-h1-text text-primary">Catalog</h1>
+        <!-- render: PrimaryButton {"label":"Create","iconBefore":"@icon:plus:20","iconAfter":"@icon:chevron-down:20"} -->
+      </div>
+    </header>
+
+    <!-- My collection (Figma: Favorites): compact cards, 4 per row -->
+    <section class="shrink-0 px-6 py-2" aria-label="My collection">
+      <div class="flex flex-col gap-4 px-2">
+        <div class="flex items-center gap-2"><h2 class="dial-body-semi-text text-primary">My collection</h2><span class="dial-tiny-semi-text text-secondary">6</span></div>
+        <div class="grid grid-cols-4 gap-5">
+          <a href="#" class="flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- asset: toolsets-icon-chathub 52 --><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-green-1">Agent</span><span class="flex items-baseline gap-1 truncate"><span class="dial-body-semi-text text-primary">DIAL ChatHub</span><span class="dial-tiny-text text-secondary">Gemini 3.5 Flash</span></span><span class="dial-tiny-text text-secondary">2 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+          <a href="#" class="flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- asset: model-gpt 52 --><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-blue">Model</span><span class="flex items-baseline gap-1 truncate"><span class="dial-body-semi-text text-primary">GPT-5.1</span><span class="dial-tiny-text text-secondary">2025-11-13</span></span><span class="dial-tiny-text text-secondary">6 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+          <a href="#" class="relative flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- asset: icon-notebook 52 --><span class="absolute left-0 top-8 mt-4 ml-[44px] pl-4 flex"><!-- asset: warning-badge 16 --></span><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-brown-2">Toolset</span><span class="truncate dial-body-semi-text text-primary">Notebooks MCP</span><span class="dial-tiny-text text-secondary">7 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+          <a href="#" class="flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- render: Avatar {"name":"web-search","initials":"WS","size":48,"shape":"square"} --><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-green-2">Skill</span><span class="truncate dial-body-semi-text text-primary">web-search</span><span class="dial-tiny-text text-secondary">7 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+          <a href="#" class="flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- render: Avatar {"name":"code-interpreter","initials":"CI","size":48,"shape":"square"} --><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-green-2">Skill</span><span class="truncate dial-body-semi-text text-primary">code-interpreter</span><span class="dial-tiny-text text-secondary">9 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+          <a href="#" class="flex items-center gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md"><!-- render: Avatar {"name":"file-reader","initials":"GM","size":48,"shape":"square"} --><div class="flex-1 min-w-0 flex flex-col gap-1"><span class="uppercase dial-caption-lead-semi-text text-green-2">Skill</span><span class="truncate dial-body-semi-text text-primary">file-reader</span><span class="dial-tiny-text text-secondary">14 days ago</span></div><span class="self-end flex p-1"><!-- asset: star-filled 16 --></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Browse toolbar (Figma: Toolbar): title + view toggle + sort, then search + "From" filter -->
+    <section class="shrink-0 mt-2 px-6 py-4" aria-label="Browse">
+      <div class="flex flex-col gap-3 px-2">
+        <div class="flex items-center gap-2">
+          <h2 class="dial-body-semi-text text-primary">Browse</h2><span class="dial-tiny-semi-text text-secondary">10</span>
+          <div class="flex-1 flex items-center justify-end gap-3">
+            <!-- render: SegmentedControl {"aria-label":"View","value":"grid","items":[{"value":"grid","icon":"@icon:layout-grid:16","aria-label":"Grid"},{"value":"list","icon":"@icon:layout-list:16","aria-label":"List"}]} -->
+            <span class="h-4 border-l border-tertiary"></span>
+            <!-- render: LinkButton {"label":"Recently Updated","iconAfter":"@icon:chevron-down:20"} -->
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex-1 min-w-0"><!-- render: Search {"placeholder":"Search models, tools, agents…","size":"large"} --></div>
+          <!-- render: OutlinedButton {"label":"From","iconBefore":"@icon:filter:20","iconAfter":"@icon:chevron-down:20","size":"large"} -->
+        </div>
+      </div>
+    </section>
+
+    <div class="shrink-0 px-6">
+      <div class="px-2"><div class="border-b border-tertiary"><!-- render: Tabs {"ariaLabel":"Catalog entities","tabs":[{"id":"models","label":"Models","count":138},{"id":"agents","label":"Agents","count":207},{"id":"toolsets","label":"Toolsets","count":234},{"id":"skills","label":"Skills","count":5},{"id":"prompts","label":"Prompts","count":7}],"activeTabId":"toolsets"} --></div></div>
+    </div>
+
+    <!-- Toolset cards (Figma: Card Grid, 3 columns, max 1120px). Card: identity, 3-line description, topics, folder footer. -->
+    <div class="flex-1 min-h-0 overflow-hidden px-6 pt-4">
+      <div class="flex justify-center px-2 pt-2">
+        <div class="grid w-full grid-cols-3 gap-5" style="max-width: 1120px">
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <span class="absolute end-4 top-0 -translate-y-1/2"><!-- render: Badge {"label":"Featured","variant":"filled","color":"brown"} --></span>
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"Acme CRM Connector","version":"1.4.0"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-blue text-blue"} -->
+            <p class="flex-1 min-h-0 line-clamp-3 dial-small-paragraph-text text-secondary">Lets the agent search contacts, manage deals, and track pipeline activity in Acme CRM. Use for sales workflows that need live customer or deal data.</p>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div><span class="flex p-1"><!-- asset: star-filled 16 --></span></div>
+          </article>
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"Docs Knowledge Search","version":"3.0.0"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-violet-1 text-violet-2"} -->
+            <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Searches and retrieves content from the team's internal documentation and wiki. Use when the agent needs grounded answers.</p>
+            <div class="flex gap-2 overflow-hidden"><!-- render: Badge {"label":"docs"} --><!-- render: Badge {"label":"knowledge-base"} --><!-- render: Badge {"label":"search"} --><!-- render: Badge {"label":"wiki"} --></div>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div></div>
+          </article>
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"Notebooks MCP","version":"2.1.3"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-layer-sunken text-secondary"} -->
+            <p class="flex-1 min-h-0 line-clamp-3 dial-small-paragraph-text text-secondary">Connect to Notebook through MCP.</p>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div></div>
+          </article>
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"Calendar Scheduler","version":"1.0.2"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-red text-red"} -->
+            <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Reads availability and creates or updates calendar events across connected accounts. Use for scheduling workflows.</p>
+            <div class="flex gap-2 overflow-hidden"><!-- render: Badge {"label":"calendar"} --><!-- render: Badge {"label":"scheduling"} --><!-- render: Badge {"label":"meetings"} --><!-- render: Badge {"label":"productivity"} --></div>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div><span class="flex p-1"><!-- asset: star-filled 16 --></span></div>
+          </article>
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"GitHub Issue Tracker","version":"0.9.1"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-green-1 text-green-2"} -->
+            <p class="flex-1 min-h-0 line-clamp-3 dial-small-paragraph-text text-secondary">Creates, updates, and searches issues and pull requests in connected repositories.</p>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div></div>
+          </article>
+          <article class="relative flex flex-col gap-3 p-5 rounded-[20px] bg-layer-raised shadow-md" style="height: 228px">
+            <!-- render: EntityIdentity {"item":{"type":"toolset","name":"Payment Ledger","version":"1.0.0"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-blue text-blue"} -->
+            <p class="flex-1 min-h-0 line-clamp-2 dial-small-paragraph-text text-secondary">Retrieves balances and transactions and handles refunds in the payment ledger.</p>
+            <div class="flex gap-2 overflow-hidden"><!-- render: Badge {"label":"payments"} --><!-- render: Badge {"label":"finance"} --></div>
+            <div class="flex items-center gap-2 border-t border-tertiary pt-3"><div class="flex-1 min-w-0"><!-- render: FolderPath {"segments":["Public","OpenAI"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"} --></div></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toolset details: SideDrawer (540px, backdrop over the whole page). Header: star toggle + close.
+       Identity + actions, then Tabs; each tab panel is a div with data-tab-panel (about | overview | tools | connect). -->
+  <!-- render: SideDrawer {"open":true,"ariaLabel":"Payment Ledger details","onBack":null,"headerActions":{"@component":"GhostIconButton","aria-label":"Add to My collection","icon":"@icon:star:16","size":"small"},"children":{"@component":"div","className":"flex flex-col","children":[{"@component":"div","className":"flex flex-col gap-3 px-6 py-4","children":[{"@component":"EntityIdentity","item":{"type":"toolset","name":"Payment Ledger","version":"1.0.0"},"labels":{"type":"Toolset"},"iconSize":48,"iconClassName":"bg-blue text-blue dial-h2-text","footer":{"@component":"FolderPath","segments":["Public","Toolsets"],"labelClassName":"dial-tiny-text","leafClassName":"dial-tiny-semi-text"}},{"@component":"div","className":"ml-[44px] flex items-center gap-2 pl-4","children":[{"@component":"PrimaryButton","label":"Log in","iconBefore":"@icon:login-2:20"},{"@component":"NeutralButton","label":"Share","iconBefore":"@icon:share:20","iconAfter":"@icon:chevron-down:20"},{"@component":"NeutralIconButton","aria-label":"More actions","icon":"@icon:dots:24"}]}]},{"@component":"div","className":"px-6","data-detail-tabs":"","children":{"@component":"div","className":"border-b border-tertiary","children":{"@component":"Tabs","ariaLabel":"Toolset details","tabs":[{"id":"about","label":"About"},{"id":"overview","label":"Overview"},{"id":"tools","label":"Tools"},{"id":"connect","label":"Connect"}],"activeTabId":"tools"}}},{"@component":"div","className":"hidden flex flex-col gap-4 px-6 py-4","data-tab-panel":"about","children":[{"@component":"p","className":"dial-small-paragraph-text text-primary","children":"Moves payments between ledgers, reconciles transactions and reports balances for finance workflows. Use when the agent needs live accounting data."},{"@component":"div","className":"flex flex-wrap gap-2","children":[{"@component":"Badge","label":"finance"},{"@component":"Badge","label":"payments"},{"@component":"Badge","label":"ledger"},{"@component":"Badge","label":"reporting"}]}]},{"@component":"div","className":"hidden flex flex-col gap-6 px-6 py-4","data-tab-panel":"overview","children":[{"@component":"section","className":"flex flex-col gap-3","children":[{"@component":"h4","className":"dial-tiny-text text-secondary","children":"Specification"},{"@component":"dl","className":"flex flex-col","children":[{"@component":"div","className":"bg-layer-base flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Authentication"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":"OAUTH"}]},{"@component":"div","className":"bg-layer-raised flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Hosted by"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":"Alesia Shchurevich"}]},{"@component":"div","className":"bg-layer-base flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Release date"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":"18/08/2026"}]},{"@component":"div","className":"bg-layer-raised flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Authorization endpoint"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":"https://github.com/login/oauth/authorize"}]}]}]},{"@component":"section","className":"flex flex-col gap-3","children":[{"@component":"h4","className":"dial-tiny-text text-secondary","children":"Capabilities"},{"@component":"dl","className":"flex flex-col","children":[{"@component":"div","className":"bg-layer-base flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"MCP"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":[{"@component":"span","className":"flex shrink-0 text-success","children":"@icon:circle-check:16"},"Yes"]}]},{"@component":"div","className":"bg-layer-raised flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Prompt caching"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":[{"@component":"span","className":"size-4 shrink-0"},"No"]}]},{"@component":"div","className":"bg-layer-base flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"System prompt"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":[{"@component":"span","className":"flex shrink-0 text-success","children":"@icon:circle-check:16"},"Yes"]}]},{"@component":"div","className":"bg-layer-raised flex items-center gap-2 p-2","children":[{"@component":"dt","className":"w-[160px] shrink-0 dial-small-semi-text text-primary","children":"Resume"},{"@component":"dd","className":"flex-1 min-w-0 flex items-center gap-2 dial-small-text text-primary break-all","children":[{"@component":"span","className":"flex shrink-0 text-success","children":"@icon:circle-check:16"},"Yes"]}]}]}]}]},{"@component":"div","className":"flex flex-col gap-5 px-6 py-4","data-tab-panel":"tools","children":[{"@component":"Search","placeholder":"Search..."},{"@component":"div","className":"flex flex-col gap-3","children":[{"@component":"span","className":"dial-tiny-text text-secondary","children":"27 tools"},{"@component":"ul","className":"flex flex-col","children":[{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"add_comment_to_pending_review"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"add_issue_comment"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"add_reply_to_pull_request_comment"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"create_branch"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"create_or_update_file"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"create_pull_request"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"create_repository"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"delete_file"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"fork_repository"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"get_commit"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"get_file_contents"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"get_label"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"get_latest_release"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"get_me"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"get_release_by_tag"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"get_tag"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"get_team_members"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"get_teams"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"issue_read"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"issue_write"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"list_branches"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"list_commits"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"list_issues"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"list_pull_requests"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"merge_pull_request"},{"@component":"li","className":"bg-layer-raised p-2 dial-small-text text-primary","children":"search_code"},{"@component":"li","className":"bg-layer-base p-2 dial-small-text text-primary","children":"search_repositories"}]}]}]},{"@component":"div","className":"hidden flex flex-col gap-5 px-6 py-4","data-tab-panel":"connect","children":[{"@component":"section","className":"overflow-hidden rounded-lg border border-tertiary bg-layer-raised","children":[{"@component":"div","className":"flex items-center justify-between gap-2 border-b border-tertiary pl-3 pr-2 py-2","children":[{"@component":"h4","className":"dial-tiny-semi-text text-secondary","children":"Endpoint"},{"@component":"GhostIconButton","aria-label":"Copy Endpoint","icon":"@icon:copy:16","size":"small"}]},{"@component":"pre","className":"overflow-x-auto px-3 py-3 dial-code-text text-primary whitespace-pre-wrap break-all","children":"https://core.aks.dev.dial.parts/v1/toolset/toolsets/public/payment-ledger__1.0.0/mcp"}]},{"@component":"section","className":"overflow-hidden rounded-lg border border-tertiary bg-layer-raised","children":[{"@component":"div","className":"flex items-center justify-between gap-2 border-b border-tertiary pl-3 pr-2 py-2","children":[{"@component":"h4","className":"dial-tiny-semi-text text-secondary","children":"cURL"},{"@component":"GhostIconButton","aria-label":"Copy cURL","icon":"@icon:copy:16","size":"small"}]},{"@component":"pre","className":"overflow-x-auto px-3 py-3 dial-code-text text-primary whitespace-pre-wrap break-all","children":["curl -X POST https://core.aks.dev.dial.parts/v1/toolset/toolsets/public/payment-ledger__1.0.0/mcp \\\n",{"@component":"span","className":"text-violet-1","children":"  -H 'Content-Type: application/json' \\\n  -H 'Api-Key: <key>' \\\n  -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'"}]}]}]}]}} -->
+
+  <script>
+    // Detail tabs: move the selected look to the clicked tab and show its panel.
+    const tabs = document.querySelector('[data-detail-tabs] [role="tablist"]');
+    tabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('[role="tab"]');
+      const cur = tabs.querySelector('[aria-selected="true"]');
+      if (!btn || btn === cur) return;
+      [btn.className, cur.className] = [cur.className, btn.className];
+      btn.setAttribute('aria-selected', 'true'); cur.setAttribute('aria-selected', 'false');
+      btn.tabIndex = 0; cur.tabIndex = -1;
+      const id = btn.textContent.trim().toLowerCase();
+      document.querySelectorAll('[data-tab-panel]').forEach((p) => p.classList.toggle('hidden', p.dataset.tabPanel !== id));
+    });
+  </script>
+</body>
+</html>

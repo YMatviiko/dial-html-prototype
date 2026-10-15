@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Menu icons">
+<path id="Exclude" d="M12 1.2002C17.9647 1.2002 22.7998 6.03532 22.7998 12C22.7998 17.9647 17.9647 22.7998 12 22.7998C6.03532 22.7998 1.2002 17.9647 1.2002 12C1.2002 6.03532 6.03532 1.2002 12 1.2002ZM12 6.25C11.5858 6.25 11.25 6.58579 11.25 7V11.25H7C6.58579 11.25 6.25 11.5858 6.25 12C6.25 12.4142 6.58579 12.75 7 12.75H11.25V17C11.25 17.4142 11.5858 17.75 12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V12.75H17C17.4142 12.75 17.75 12.4142 17.75 12C17.75 11.5858 17.4142 11.25 17 11.25H12.75V7C12.75 6.58579 12.4142 6.25 12 6.25Z" fill="url(#paint0_linear_0_429)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_429" x1="23" y1="1" x2="-0.601663" y2="21.0227" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1D4ED8"/>
+<stop offset="0.9" stop-color="#885DF2"/>
+</linearGradient>
+</defs>
+</svg>

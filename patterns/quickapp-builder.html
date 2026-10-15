@@ -1,0 +1,234 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, QuickApp Builder ("Create QuickApp"), filled state. Source of truth: Figma
+     "DIAL Chat 2.0 (QuickApp Builder)" (48tp0CBotseAa95yPfSxdn), page "Iteration 2", frame 606:21975 "QuickApp_Filled"
+     (empty state: 603:17479 "QuickApp_Empty"). Generate with: kit-lookup.mjs pattern quickapp-builder > page.html
+     Layout: the builder REPLACES the full navigation with the collapsed 72px rail, then a page header and three
+     columns: Metadata (400px) | Instruction + Add-ons cards (flexible, scrolls) | Configuration (400px).
+     There is no live preview inside the builder: "Preview" opens a separate test-chat screen (Figma 556:37329).
+     The newer "Create Loop App" builder (Figma 861:31445 "Loop_Configured") uses this same shell: header adds
+     "View structure"; Add-ons adds Plugins and Files, items may show a source link under the name, some "Add"
+     buttons get a chevron (dropdown); Configuration becomes Harness (Select), Model (+ effort line), and
+     Overrides / Variables / Egress allowlist as rows of closable Tags.
+     Empty state of an add-on section: replace its item list with one line of
+     <p class="dial-small-text text-secondary">…what it is for…</p> under the section title (see each data-empty). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create QuickApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation collapsed active=catalog -->
+
+  <div class="flex-1 min-w-0 flex flex-col">
+    <!-- Page header (Figma: Page header): title left, actions right, tertiary bottom stroke. -->
+    <header class="shrink-0 flex items-center gap-2 p-8 py-4 border-b border-tertiary">
+      <h1 class="flex-1 min-w-0 flex h-[40px] items-center dial-h1-text text-primary">Create QuickApp</h1>
+      <div class="flex items-center gap-2">
+        <!-- render: GhostButton {"label":"Preview","iconBefore":"@icon:player-play:20"} -->
+        <!-- render: NeutralButton {"label":"Cancel"} -->
+        <!-- render: PrimaryButton {"label":"Save"} -->
+      </div>
+    </header>
+
+    <div class="flex-1 min-h-0 flex">
+
+      <!-- Column 1: Metadata (Figma: Sidebar, 400px, right stroke). -->
+      <section class="shrink-0 overflow-y-auto p-6 border-r border-tertiary" style="width: 400px" aria-label="Metadata">
+        <div class="flex flex-col gap-5 px-2">
+          <h2 class="dial-h3-text text-primary">Metadata</h2>
+          <div class="flex flex-col gap-2">
+            <span class="dial-tiny-semi-text text-secondary">Avatar</span>
+            <div class="flex items-center gap-3">
+              <div style="width: 64px; height: 64px" class="flex shrink-0 items-center justify-center rounded-lg border border-tertiary bg-layer-raised text-secondary"><!-- icon: photo 24 --></div>
+              <div class="flex flex-col items-start gap-2">
+                <!-- render: LinkButton {"size":"small","label":"Add avatar","iconBefore":"@icon:plus:16","className":"px-2"} -->
+                <span class="dial-tiny-text text-tertiary">PNG, JPG or SVG (max 1 MB)</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-1 min-w-0"><!-- render: Input {"id":"qa-name","labelProps":{"label":"Name","required":true},"value":"Design Review Agent"} --></div>
+            <div class="shrink-0" style="width: 80px"><!-- render: Input {"id":"qa-version","labelProps":{"label":"Version","required":true},"value":"1.0.0"} --></div>
+          </div>
+          <!-- render: Textarea {"id":"qa-description","labelProps":{"label":"Description"},"value":"Automatically analyzes your designs for layout, accessibility, and consistency issues — then suggests fixes in seconds.","resize":"vertical","rows":3} -->
+          <!-- render: Input {"id":"qa-tags","labelProps":{"label":"Tags"},"placeholder":"Add tags, comma separated"} -->
+        </div>
+      </section>
+
+      <!-- Column 2: Instruction + Add-ons (Figma: Folder tree). Two raised cards, 20px radius; this column scrolls. -->
+      <main class="flex-1 min-w-0 overflow-y-auto pl-6 pt-4 pb-6">
+        <div class="flex flex-col gap-2 pl-2 pt-2">
+
+          <!-- Card: Instruction (Figma: Card > Markdown). -->
+          <section class="flex flex-col gap-3 p-6 rounded-[20px] bg-layer-raised shadow-md">
+            <h2 class="flex items-start gap-1 px-1"><span class="dial-h3-text text-primary">Instruction</span><span class="dial-tiny-text text-error" aria-hidden="true">*</span></h2>
+            <!-- Markdown editor (kit MarkdownEditor is lazy-loaded and can't be rendered statically): toolbar + monospace text. -->
+            <div class="px-1"><div data-dial-component="MarkdownEditor" class="flex flex-col rounded-lg border border-secondary bg-layer-raised">
+              <div class="flex items-center justify-between px-2 pt-2 pb-1">
+                <div class="flex items-center gap-2">
+                  <!-- render: GhostIconButton {"aria-label":"Bold","icon":"@icon:bold:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Italic","icon":"@icon:italic:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Strikethrough","icon":"@icon:strikethrough:16","size":"small"} -->
+                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Text style","icon":"@icon:text-size:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Bulleted list","icon":"@icon:list:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Numbered list","icon":"@icon:list-numbers:16","size":"small"} -->
+                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Quote","icon":"@icon:quote:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Link","icon":"@icon:link:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Code","icon":"@icon:code:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Table","icon":"@icon:table:16","size":"small"} -->
+                </div>
+                <div class="flex items-center gap-2">
+                  <!-- render: NeutralIconButton {"aria-label":"Edit mode","icon":"@icon:pencil:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Split view","icon":"@icon:columns-2:16","size":"small"} -->
+                  <!-- render: GhostIconButton {"aria-label":"Preview","icon":"@icon:eye:16","size":"small"} -->
+                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <!-- render: GhostIconButton {"aria-label":"Full screen","icon":"@icon:maximize:16","size":"small"} -->
+                </div>
+              </div>
+              <textarea aria-label="Instruction" class="w-full resize-y border-0 bg-transparent outline-none px-3 py-2 dial-code-text text-primary placeholder:text-secondary" style="height: 91px" placeholder="How your QuickApp should work?"># ROLE
+You are an expert AI Design Review Agent — a meticulous, senior-level design auditor specialized in UI/UX quality assurance. You operate inside Figma, analyzing screens and frames submitted by designers to identify every visual, structural, and accessibility issue before handoff.
+
+# CORE CAPABILITIES
+1. Visual Consistency Audit — Detect mismatched colors, inconsistent border radii, shadow variations and fill mismatches.</textarea>
+            </div></div>
+          </section>
+
+          <!-- Card: Add-ons (Figma: Card). Sections 28px apart (gap-6 + pt-1); each: title + small "Add" button, then rows. -->
+          <section class="flex flex-col gap-5 p-6 rounded-[20px] bg-layer-raised shadow-md">
+            <h2 class="px-1 dial-h3-text text-primary">Add-ons</h2>
+            <div class="flex flex-col gap-6 px-1">
+
+              <!-- Skills. 56px rows: 40px letter avatar, name + version. Hover row: tinted, trash on the right. -->
+              <div class="flex flex-col gap-2" data-empty="Reusable instruction modules the agent loads on demand when the task matches.">
+                <div class="flex items-center justify-between"><h3 class="dial-small-paragraph-semi-text text-primary">Skills</h3><!-- render: NeutralButton {"size":"small","label":"Add","iconBefore":"@icon:plus:16"} --></div>
+                <div class="flex flex-col">
+                  <div style="height: 56px" class="flex items-center gap-3 px-1 pr-2 py-3">
+                    <!-- render: Avatar {"name":"Web Search","initials":"WS","shape":"square","size":40,"textClassName":"dial-h2-text"} -->
+                    <div class="flex-1 min-w-0 flex items-center gap-1"><span class="truncate dial-body-semi-text text-primary">Web Search</span><span class="dial-small-text text-secondary">1.4.6</span></div>
+                  </div>
+                  <div style="height: 56px" class="flex items-center gap-3 px-1 pr-2 py-3 bg-control-accent-alpha">
+                    <!-- render: Avatar {"name":"User Research","initials":"UR","shape":"square","size":40,"textClassName":"dial-h2-text"} -->
+                    <div class="flex-1 min-w-0 flex items-center gap-1"><span class="truncate dial-body-semi-text text-primary">User Research</span></div>
+                    <!-- render: GhostIconButton {"aria-label":"Remove skill","icon":"@icon:trash:20"} -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Toolsets. Brand icon (40px, 12px radius); warning badge = toolset needs sign-in. -->
+              <div class="flex flex-col gap-2 pt-1" data-empty="Capabilities available to the agent.">
+                <div class="flex items-center justify-between"><h3 class="dial-small-paragraph-semi-text text-primary">Toolsets</h3><!-- render: NeutralButton {"size":"small","label":"Add","iconBefore":"@icon:plus:16"} --></div>
+                <div style="height: 56px" class="flex items-center gap-3 px-1 pr-2 py-3">
+                  <span class="flex size-[40px] shrink-0"><!-- asset: quickapp-toolset-figma 42 --></span>
+                  <div class="flex-1 min-w-0 flex items-baseline gap-1"><span class="dial-body-semi-text text-primary">Figma</span><span class="dial-tiny-text text-secondary">1.0.0</span></div>
+                </div>
+              </div>
+
+              <!-- Agents (empty state: description line only). -->
+              <div class="flex flex-col gap-2 pt-1" data-empty="Sub-agents this agent can delegate tasks to.">
+                <div class="flex items-center justify-between"><h3 class="dial-small-paragraph-semi-text text-primary">Agents</h3><!-- render: NeutralButton {"size":"small","label":"Add","iconBefore":"@icon:plus:16"} --></div>
+                <p class="dial-small-text text-secondary">Sub-agents this agent can delegate tasks to.</p>
+              </div>
+
+              <!-- Knowledge base. 32px tree rows: file-type icon + location path (tertiary segments, chevrons, secondary semibold leaf). -->
+              <div class="flex flex-col gap-2 pt-1" data-empty="Documentation and resources for your agent.">
+                <div class="flex items-center justify-between"><h3 class="dial-small-paragraph-semi-text text-primary">Knowledge base</h3><!-- render: NeutralButton {"size":"small","label":"Add","iconBefore":"@icon:plus:16"} --></div>
+                <div class="flex flex-col gap-1">
+                  <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
+                    <!-- asset: quickapp-folder 24 -->
+                    <span class="flex-1 min-w-0 truncate dial-small-semi-text text-secondary">Personal</span>
+                    <!-- render: GhostIconButton {"aria-label":"Remove","icon":"@icon:trash:16","size":"small"} -->
+                  </div>
+                  <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
+                    <!-- asset: quickapp-folder 24 -->
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">DIAL<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">user-research-reports</span></span>
+                  </div>
+                  <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
+                    <!-- asset: quickapp-folder 24 -->
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">EPAM<!-- icon: chevron-right 20 -->...<!-- icon: chevron-right 20 -->Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">UX-evaluation_result-templates</span></span>
+                  </div>
+                  <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
+                    <span class="flex size-[24px] shrink-0 items-center justify-center"><!-- asset: file-pdf 20 --></span>
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">DIAL<!-- icon: chevron-right 20 -->Dial-Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">survey results</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conversation starters. Filled: "Manage" instead of "Add", a divider, then 56px rows (icon, title, prompt). -->
+              <div class="flex flex-col gap-2 pt-1" data-empty="Pre-built prompts shown at conversation start to help users get going quickly.">
+                <div class="flex items-center justify-between"><h3 class="dial-small-paragraph-semi-text text-primary">Conversation starters</h3><!-- render: NeutralButton {"size":"small","label":"Manage","iconBefore":"@icon:pencil:16"} --></div>
+                <div class="border-t border-tertiary"></div>
+                <div style="height: 56px" class="flex items-start gap-3 px-1 pr-2 py-3">
+                  <span class="text-secondary"><!-- icon: message-2 20 --></span>
+                  <div class="flex-1 min-w-0 flex flex-col gap-0.5"><span class="dial-small-semi-text text-primary">Visual hierarchy</span><span class="truncate dial-tiny-text text-secondary">Analyze visual hierarchy on the page:</span></div>
+                </div>
+                <div style="height: 56px" class="flex items-start gap-3 px-1 pr-2 py-3">
+                  <span class="text-secondary"><!-- icon: message-2 20 --></span>
+                  <div class="flex-1 min-w-0 flex flex-col gap-0.5"><span class="dial-small-semi-text text-primary">WCAG 2.0 compatibility</span><span class="truncate dial-tiny-text text-secondary">Check contrast and target sizes against WCAG 2.0 AA:</span></div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Column 3: Configuration (Figma: Configuration, 400px). Overline sections 28px apart; Edit JSON pinned to the bottom. -->
+      <aside class="shrink-0 flex flex-col p-6" style="width: 400px" aria-label="Configuration">
+        <div class="flex-1 min-h-0 flex flex-col gap-5 px-2">
+          <h2 class="dial-h3-text text-primary">Configuration</h2>
+          <div class="flex-1 min-h-0 overflow-y-auto flex flex-col gap-6">
+
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between gap-4"><h3 class="dial-caption-lead-semi-text text-primary">Default model</h3><!-- render: NeutralButton {"size":"small","label":"Change","iconBefore":"@icon:pencil:16"} --></div>
+              <div class="px-3 py-4 rounded-xl border border-tertiary bg-layer-raised">
+                <!-- render: EntityIdentity {"item":{"type":"model","name":"Google Gemini 3.5 Flash Lite","version":"1.0.3"},"labels":{"type":"Model"},"iconSize":40,"iconClassName":"size-[40px]"} -->
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-1" data-empty="Additional models users can choose from when starting a new chat.">
+              <div class="flex items-center justify-between gap-4"><h3 class="dial-caption-lead-semi-text text-primary">Model options</h3><!-- render: NeutralButton {"size":"small","label":"Add","iconBefore":"@icon:plus:16"} --></div>
+              <div class="flex flex-col">
+                <div style="height: 56px" class="flex items-center gap-3 px-1 pr-2 py-3 border-b border-tertiary"><!-- asset: quickapp-model-gpt4 40 --><span class="dial-body-semi-text text-primary">GPT 4.0</span></div>
+                <div style="height: 56px" class="flex items-center gap-3 px-1 pr-2 py-3"><!-- asset: quickapp-model-anthropic 40 --><span class="dial-body-semi-text text-primary">Opus 4.6</span></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              <div style="height: 12px" class="flex items-center justify-between"><h3 class="dial-caption-lead-semi-text text-primary">Settings</h3><!-- render: LinkButton {"size":"small","label":"Advanced","iconBefore":"@icon:settings:16"} --></div>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-2 pb-2 border-b border-tertiary">
+                  <div class="flex items-center justify-between gap-2"><span class="dial-tiny-semi-text text-primary">Attachments</span><!-- render: Switch {"id":"qa-attachments","isOn":true,"aria-label":"Attachments"} --></div>
+                  <p class="dial-tiny-text text-secondary">Lets end users upload files during a conversation. Useful for sharing documents, images, or data the agent needs to process.</p>
+                  <!-- render: Select {"id":"qa-attachment-types","labelProps":{"label":"Attachment types","required":true},"options":[{"value":"pdf","label":"PDF"},{"value":"img","label":"Images"},{"value":"csv","label":"CSV"}],"value":"pdf","onFooterClick":null} -->
+                </div>
+                <div class="flex flex-col gap-2 pb-2">
+                  <div class="flex items-center justify-between gap-2"><span class="dial-tiny-semi-text text-primary">Create sub-agents</span><!-- render: Switch {"id":"qa-subagents","isOn":true,"aria-label":"Create sub-agents"} --></div>
+                  <p class="dial-tiny-text text-secondary">Lets the agent spawn helper sub-agents for parallel work. Enables fan-out patterns but increases token usage.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="flex flex-col items-end gap-2 border-t border-tertiary pt-2">
+            <!-- render: LinkButton {"size":"small","label":"Edit JSON","iconBefore":"@icon:code:16","className":"px-2"} -->
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</body>
+</html>

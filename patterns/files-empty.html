@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, File manager — empty sub-folder: breadcrumbs title, disabled search and sort, empty state. Source of truth: Figma "DIAL Chat 2.0 (File manager)"
+     (U1rFBVyMM4o6nLzQocEBY2), page "Iteration 2", section "Desktop layouts", frame 3445:13046 "Files manager_empty state".
+     Generate with: kit-lookup.mjs pattern files-empty > page.html
+     Kit components and icons are filled in at generation time; edit the text, rows and states freely. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>File manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=files -->
+
+  <!-- Main (Figma: Workspace). Page header 72px, then the File manager card (raised, 12px radius, 20px padding):
+       folder tree | divider | file panel. -->
+  <main class="flex-1 min-w-0 flex">
+    <div class="w-[32px] shrink-0"></div>
+    <div class="flex min-w-0 flex-1 flex-col pr-8">
+    <header class="flex shrink-0 items-center py-4">
+      <h1 class="flex h-[40px] items-center dial-h1-text text-primary">File manager</h1>
+    </header>
+    <div class="flex min-h-0 flex-1 flex-col pb-4">
+      <div class="flex min-h-0 flex-1 gap-5 rounded-xl bg-layer-raised p-5 shadow-md">
+          <!-- Left panel (Figma: Sidebar, 320px): section filter chips + folder tree. Tree row: 32px pill,
+               16px indent per level, caret button, 24px folder icon. Selected folder: tinted row. -->
+          <div class="flex w-[320px] shrink-0 flex-col gap-3 overflow-hidden">
+            <div class="py-2"><!-- render: FilterChips {"aria-label":"File sections","value":"all","items":[{"value":"all","label":"All"},{"value":"mine","label":"My files"},{"value":"shared","label":"Shared"},{"value":"org","label":"Organization"}]} --></div>
+            <div class="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto" data-folder-tree>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer bg-control-accent-alpha" aria-current="true"><!-- render: GhostIconButton {"aria-label":"Expand My files","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">My files</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand 01folder","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">01folder</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand 08folder","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">08folder</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand 23.02 test chat folder","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">23.02 test chat folder</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand DK Test","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">DK Test</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand DK Test with nested","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">DK Test with nested</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Elbi","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Elbi</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand FOLDER 02","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">FOLDER 02</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Images","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Images</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><!-- render: GhostIconButton {"aria-label":"Expand Shared","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Shared</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Project Alpha","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Project Alpha</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Design Assets","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Design Assets</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Marketing Materials","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Marketing Materials</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand User Research","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">User Research</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Prototypes","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Prototypes</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Feedback Folder","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Feedback Folder</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="w-[32px] shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Archive","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Archive</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Style Guide","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Style Guide</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Meeting Notes","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Meeting Notes</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Client Deliverables","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Client Deliverables</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Q1 Reports","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Q1 Reports</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><!-- render: GhostIconButton {"aria-label":"Expand Organization","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Organization</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Q2 Planning","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Q2 Planning</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Onboarding Documents","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Onboarding Documents</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Development Tasks","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Development Tasks</span></div></div>
+            <div class="flex h-[32px] shrink-0 items-center rounded-full pr-3 cursor-pointer hover:bg-control-accent-alpha-hover"><span class="size-4 shrink-0"></span><!-- render: GhostIconButton {"aria-label":"Expand Final Presentations","icon":"@icon:caret-right-filled:16","size":"small"} --><div class="flex min-w-0 flex-1 items-center gap-2"><!-- asset: files-folder 24 --><span class="min-w-0 truncate dial-small-paragraph-text text-primary">Final Presentations</span></div></div>
+            </div>
+          </div>
+
+          <div class="shrink-0 self-stretch border-l border-tertiary"></div>
+
+          <!-- File panel (Figma: Files content) -->
+          <section class="relative flex min-w-0 flex-1 flex-col gap-5" aria-label="Files">
+            <!-- Title row (Figma: Frame 1): folder title or breadcrumbs, then "Show hidden files" + Add (menu: Folder / Files / Archive). -->
+            <div class="flex h-[40px] shrink-0 items-center justify-between gap-4">
+              <div class="min-w-0"><!-- render: Breadcrumbs {"ariaLabel":"Folder path","size":"heading","items":[{"label":"My files","href":"#"},{"label":"assets","href":"#"},{"label":"user feedback"}]} --></div>
+              <div class="flex shrink-0 items-center gap-4">
+                <!-- render: Switch {"id":"show-hidden","labelProps":{"label":"Show hidden files"}} -->
+                <!-- render: PrimaryButton {"label":"Add","iconBefore":"@icon:plus","iconAfter":"@icon:chevron-down"} -->
+              </div>
+            </div>
+
+            <!-- Search row (48px in Figma; the kit Search field is 40px, centred in the 48px row) + Sort. -->
+            <div class="flex shrink-0 items-center gap-3">
+              <div class="flex h-[48px] min-w-0 flex-1 flex-col justify-center"><!-- render: Search {"id":"file-search","placeholder":"Search in user feedback...","size":"large","disabled":true} --></div>
+              <!-- render: GhostButton {"label":"Sort","iconBefore":"@icon:arrows-sort","iconAfter":"@icon:chevron-down","disabled":true} -->
+            </div>
+
+            <!-- Empty state (Figma: section / No results found), centred in the remaining space. -->
+            <div class="flex min-h-0 flex-1 flex-col p-6"><!-- render: NoDataContent {"title":"This folder is empty"} --></div>
+          </section>
+      </div>
+    </div>
+    </div>
+  </main>
+
+</body>
+</html>

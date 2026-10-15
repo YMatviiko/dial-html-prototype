@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL Chat 2.0, start screen. Source of truth: Figma "DIAL Chat 2.0 (Chat)",
+     frame 22:2684 "Chat - Start - with conv starters". Generate with: kit-lookup.mjs pattern dial-chat > page.html
+     Kit components and icons are filled in at generation time; edit the text, list items and states freely. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIAL Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full flex bg-layer-base text-primary dial-small-text">
+
+  <!-- include: navigation active=new-chat -->
+
+  <!-- Main (Figma: Frame 141). The top 64px is empty in the design: there is no header bar. -->
+  <main class="flex-1 min-w-0 flex flex-col">
+    <div class="h-16 shrink-0"></div>
+    <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6">
+      <h1 class="dial-display2-text text-primary">Afternoon, Olha</h1>
+
+      <!-- Composer (Figma: chat-input). One card: text line on top, controls below; the model picker lives here. -->
+      <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 700px" data-composer>
+        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+        <div class="flex items-center gap-2">
+          <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
+          <div class="flex-1"></div>
+          <button type="button" class="flex h-[40px] max-w-[200px] items-center gap-2 px-3 rounded hover:bg-control-accent-alpha-hover"><!-- asset: model-gpt 28 --><span class="flex items-baseline gap-1 whitespace-nowrap"><span class="dial-tiny-text text-primary">GPT-4o mini</span><span class="dial-tiny-text text-secondary">Latest</span></span><!-- icon: chevron-down 20 --></button>
+          <!-- render: GhostIconButton {"aria-label":"Voice input","icon":"@icon:microphone:24"} -->
+        </div>
+      </form>
+
+      <!-- Conversation starters (Figma: quick actions) -->
+      <div class="flex w-full flex-wrap justify-center gap-2" style="max-width: 700px">
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->What can I do</button>
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->GenAI trends in 2026</button>
+        <button type="button" class="flex h-[40px] items-center justify-center gap-2 px-4 rounded-full border border-default dial-small-paragraph-semi-text text-secondary hover:bg-control-accent-alpha-hover"><!-- asset: sparkles 20 -->Prompting tips</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
