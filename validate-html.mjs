@@ -54,8 +54,18 @@ const SUBSTITUTES = {
   'mr-auto': 'use "ml-auto" on the next sibling, or "justify-between" on the parent',
   'h-screen': 'use "min-h-screen", or html,body{height:100%} in <style> plus "h-full"',
   'hover:underline': 'use a LinkButton imitation (dial-kit-primary-link-button)',
-  'max-w-sm': 'use max-w-[428px]', 'max-w-md': 'use max-w-[450px]', 'max-w-lg': 'use max-w-[600px]',
-  'max-w-xl': 'use max-w-[600px]', 'max-w-2xl': 'use max-w-[600px] or max-w-[1200px]', 'max-w-3xl': 'use max-w-[1200px] or max-w-[600px]',
+  'max-w-sm': 'use max-w-[420px]', 'max-w-md': 'use max-w-[450px]', 'max-w-lg': 'use max-w-[600px]',
+  'max-w-xl': 'use max-w-[600px]', 'max-w-2xl': 'use max-w-[600px] or max-w-full', 'max-w-3xl': 'use max-w-full or max-w-[600px]',
+  // dropped in kit 0.16 (Tailwind v4)
+  'text-tertiary': 'use "text-secondary" (the kit\'s own hint colour)',
+  'outline-none': 'on a bare textarea/input use style="outline: none"',
+  'placeholder:text-secondary': 'leave it out: the default placeholder colour is what the kit\'s inputs use',
+  'z-10': 'use "z-popup" on a page overlay; a raised sidebar only needs "relative"',
+  'z-50': 'use "z-popup"',
+  'self-end': 'use "items-end" on the parent, or "self-stretch flex items-end"',
+  'pl-6': 'use "ml-6", or "pl-4" plus "ml-2" on the first child',
+  'grid-cols-4': 'use "grid" + style="grid-template-columns: repeat(4, minmax(0, 1fr))"',
+  'break-all': 'use "break-words"',
 };
 function lev(a, b) {
   const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);

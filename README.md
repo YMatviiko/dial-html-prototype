@@ -98,9 +98,10 @@ node .claude/skills/dial-html-prototype/validate-html.mjs page.html
 | `SKILL.md` | The instructions Claude follows |
 | `components.md` | Props-JSON syntax, render recipes, page skeleton, tokens, typography, layout gaps, and what rendering can't produce (grid, tooltip, status pills, plain layout) |
 | `kit-lookup.mjs` | One tool for the kit: `update`, `search`, `info`, `render`, `classes`, `icon`, `asset`, `pattern`, `version` |
-| `patterns/` | 22 DIAL Chat 2.0 page patterns plus shared navigation partials (syntax and maintenance in `patterns/README.md`) |
+| `patterns/` | 22 DIAL Chat 2.0 page patterns, a `tables` reference (all 2.0 table types) plus shared navigation partials (syntax and maintenance in `patterns/README.md`) |
 | `assets/` | DIAL art the kit doesn't ship: logo, nav and gradient icons, model/provider logos, file-type icons |
 | `validate-html.mjs` | Deterministic checker run before a prototype is shown |
+| `CHANGELOG.md` | Release notes |
 
 ## Update
 

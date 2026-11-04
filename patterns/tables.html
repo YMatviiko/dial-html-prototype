@@ -1,0 +1,571 @@
+<!doctype html>
+<!-- DIAL prototype — not production code -->
+<!-- Pattern: DIAL 2.0 tables. Source of truth: Figma "[DIAL] Components 2.0" (cAfpAU0syJ8BQ5sQr3uR30), page
+     "Table Cells" (7:3834): frames 3191:83129 "Cell atoms", 3388:67675 "Table Header", 3388:67765 "Table Subheader",
+     3388:67547 "Table Cell", 3385:66917 "Cell types", 3191:90370 "Details", 3191:82224 "Cases".
+     Generate with: kit-lookup.mjs pattern tables > page.html
+     A reference page, not a screen: copy the table type you need into your prototype (it goes inside any page pattern).
+     The real table is the kit Grid (AG Grid), which a static page can't run, so every table here is a hand-built
+     <table> (or grid of divs for the chat table) tagged data-dial-component="Grid". Controls inside cells are real
+     kit renders (Search, Checkbox, Radio, Input, Badge, Avatar, ProgressBar, icon buttons).
+     Shared rules (from the Figma):
+       - Header cell: 40px, caption-lead (10px uppercase) text-secondary, 12px-tall divider at the right edge;
+         optional sort arrow, right alignment for numbers. Subheader row: Search + filter icon button, 40px.
+       - Densities: Dense 20px (heat map), Compact 40px (data, editable), Regular 56px (entity, admin),
+         Relaxed 84px (chat).
+       - Chat table: no border, 12px radius, shadow-md; full-width header divider; inset row dividers;
+         hover/selected row is a 12px-rounded tint without borders.
+       - Admin table: 1px border-tertiary, 8px radius, no shadow; rows keep their dividers on hover/selected.
+         Data type has vertical dividers between data cells; entity type has none.
+       - IDs, tokens, timestamps, costs and durations use tabular (monospace) numbers: tabular-nums.
+       - Horizontal scroll: the pinned Actions column gets a shadow (shadow-sm).
+     Approximate: row dividers are 1px (Figma 0.5px); the cell info/error corner marks are not drawn; the kit Search
+     is 32px tall (Figma filter field 24px); "running low" bars stay blue (the kit has no yellow fill token). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tables</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <!-- kit-link -->
+  <style>
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, sans-serif; }
+  </style>
+</head>
+<body class="h-full bg-layer-base text-primary dial-small-text">
+<main class="flex flex-col gap-10 p-6">
+
+  <header class="flex flex-col gap-1">
+    <h1 class="dial-display3-text text-primary">Tables</h1>
+    <p class="dial-small-text text-secondary">Table types, cells and states of the DIAL 2.0 table. Copy the type you need; the real component is the kit Grid.</p>
+  </header>
+
+  <!-- ============ 1. Anatomy: header, subheader, cell states, highlights, densities ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Anatomy</h2>
+      <p class="dial-small-text text-secondary">Header cell, subheader (filter) row, cell states and highlights. Figma: Table Header, Table Subheader, Table Cell, Cell atoms.</p>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+
+      <!-- Header cell variants (Figma: table-header — Title, Slot / Checkbox, 2 line title; sorting; right alignment) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Header cell</h3>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-tertiary">
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="flex items-center gap-1"><span class="dial-caption-lead-semi-text text-secondary">Title</span><!-- icon: arrow-down 16 text-secondary --></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            </tr>
+            <tr class="border-b border-tertiary">
+              <th class="relative h-[40px] px-3 text-right font-normal"><span class="flex items-center justify-end gap-1"><!-- icon: arrow-down 16 text-secondary --><span class="dial-caption-lead-semi-text text-secondary">Title</span></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            </tr>
+            <tr class="border-b border-tertiary">
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="flex items-center gap-1"><span class="flex flex-col"><span class="dial-caption-lead-semi-text text-secondary">Title</span><span class="dial-tiny-text text-secondary">Title</span></span><!-- icon: arrow-down 16 text-secondary --></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            </tr>
+            <tr>
+              <th class="relative h-[40px] w-[40px] px-3 text-left font-normal"><!-- render: Checkbox {"id":"anat-all","aria-label":"Select all","isSelected":true,"isIndeterminate":true} --></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Subheader (Figma: table-subheader — With controls / Empty) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Subheader (filter row)</h3>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-tertiary">
+              <td class="relative h-[40px] px-3">
+                <div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"anat-search","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div>
+                <span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span>
+              </td>
+            </tr>
+            <tr class="border-b border-tertiary">
+              <td class="relative h-[40px] px-3">
+                <!-- Filter applied: the filter icon gets a blue dot (Figma Cases: Filtering) -->
+                <div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"anat-search-2","placeholder":"Search...","size":"small","value":"Run #31"} --></div><span class="relative flex"><!-- render: GhostIconButton {"aria-label":"Filter applied","icon":"@icon:filter-2:16","size":"small"} --><span aria-hidden="true" class="absolute right-0 top-0 size-[8px] rounded-full bg-control-accent"></span></span></div>
+                <span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="relative h-[40px] px-3"><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="dial-tiny-text text-secondary">With controls · filter applied · empty</p>
+      </div>
+
+      <!-- Densities (Figma: Table Cell — Density) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Row density</h3>
+        <dl class="flex flex-col">
+          <div class="flex items-center justify-between border-b border-tertiary" style="height: 84px"><dt class="dial-small-semi-text">Relaxed</dt><dd class="dial-small-text text-secondary tabular-nums">84px · chat tables</dd></div>
+          <div class="flex items-center justify-between border-b border-tertiary" style="height: 56px"><dt class="dial-small-semi-text">Regular</dt><dd class="dial-small-text text-secondary tabular-nums">56px · entity / admin</dd></div>
+          <div class="flex h-[40px] items-center justify-between border-b border-tertiary"><dt class="dial-small-semi-text">Compact</dt><dd class="dial-small-text text-secondary tabular-nums">40px · data / editable</dd></div>
+          <div class="flex items-center justify-between" style="height: 20px"><dt class="dial-small-semi-text">Dense</dt><dd class="dial-small-text text-secondary tabular-nums">20px · heat map</dd></div>
+        </dl>
+      </div>
+
+      <!-- Cell states (Figma: table-cell — Default, Hover, Selected, Error, Error hover, Highlighted) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Cell states</h3>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Default</td><td class="h-[40px] px-3 dial-small-paragraph-text">Text</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Hover</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-control-accent-alpha">Text</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Selected</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-control-accent-muted">Text</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Error</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-error">Text</td></tr>
+            <tr><td class="w-[120px] px-3 dial-tiny-text text-secondary">Highlighted</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-info border border-accent">Text</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Highlights (Figma: .cell-highlight — Updated, Added, Deleted) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Change highlights</h3>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Updated</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-info border border-info tabular-nums">1 000 000</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Added</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-success border border-success tabular-nums">50 000</td></tr>
+            <tr><td class="w-[120px] px-3 dial-tiny-text text-secondary">Deleted</td><td class="h-[40px] px-3 dial-small-paragraph-text bg-error border border-error tabular-nums">20 000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cell types (Figma: Cell types — Text, Link, Number, Entity, Input, Checkbox, Radio, Icon, Hierarchical) -->
+      <div class="flex flex-col gap-3 rounded-xl border border-tertiary bg-layer-raised p-4">
+        <h3 class="dial-tiny-semi-text text-secondary">Cell types</h3>
+        <table class="w-full">
+          <tbody>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Text</td><td class="h-[40px] px-3 dial-small-paragraph-text">Text</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Link</td><td class="h-[40px] px-3"><a href="#" class="dial-small-paragraph-semi-text text-accent">Button</a></td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Number</td><td class="h-[40px] px-3 text-right dial-small-paragraph-text tabular-nums">1 250</td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Entity</td><td class="px-3 py-2"><div class="flex items-center gap-2"><!-- render: Avatar {"name":"Claude Opus","initials":"CO","shape":"square","size":24} --><div class="flex min-w-0 flex-col"><a href="#" class="dial-small-semi-text text-accent truncate">Link</a><span class="dial-tiny-text text-secondary truncate">Text</span></div></div></td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Input</td><td class="h-[40px] px-3"><!-- render: Input {"id":"type-input","size":"small","placeholder":"Placeholder","aria-label":"Value"} --></td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Checkbox · Radio</td><td class="h-[40px] px-3"><div class="flex items-center gap-4"><!-- render: Checkbox {"id":"type-cb","aria-label":"Select row"} --><!-- render: Radio {"name":"type-radio","value":"a","aria-label":"Select row"} --></div></td></tr>
+            <tr class="border-b border-tertiary"><td class="w-[120px] px-3 dial-tiny-text text-secondary">Icon</td><td class="h-[40px] px-3"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td></tr>
+            <tr><td class="w-[120px] px-3 dial-tiny-text text-secondary">Hierarchical</td><td class="h-[40px] px-3"><div class="flex items-center gap-1"><!-- icon: chevron-down 16 text-secondary --><span class="dial-small-paragraph-text">Level 1</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 2. Chat table (Figma: Details > Chat table, Chat table: example) ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Chat table</h2>
+      <p class="dial-small-text text-secondary">For DIAL Chat (settings, usage). No border, 12px radius, shadow; full-width header divider, inset row dividers; hover row is a rounded tint. Relaxed 84px or regular 56px rows.</p>
+    </div>
+    <div class="flex flex-col gap-3">
+      <h3 class="flex items-baseline gap-2"><span class="dial-small-semi-text text-primary">Model tokens limits</span><span class="dial-tiny-text text-secondary tabular-nums">5</span></h3>
+      <div data-dial-component="Grid" class="flex flex-col overflow-hidden rounded-xl bg-layer-raised shadow-md">
+        <div role="row" class="grid border-b border-tertiary px-3" style="grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr)">
+          <div role="columnheader" class="relative flex h-[40px] items-center px-3"><span class="dial-caption-lead-semi-text text-secondary">Item</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></div>
+          <div role="columnheader" class="relative flex h-[40px] items-center justify-between gap-1 px-3"><span class="dial-caption-lead-semi-text text-secondary">Last 24 hours</span><!-- icon: alert-triangle-filled 16 text-warning-icon --><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></div>
+          <div role="columnheader" class="relative flex h-[40px] items-center px-3"><span class="dial-caption-lead-semi-text text-secondary">Last 7 days</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></div>
+          <div role="columnheader" class="relative flex h-[40px] items-center px-3"><span class="dial-caption-lead-semi-text text-secondary">Last 30 days</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></div>
+          <div role="columnheader" class="flex h-[40px] items-center px-3"><span class="dial-caption-lead-semi-text text-secondary">Status</span></div>
+        </div>
+        <div class="flex flex-col px-3">
+
+          <div role="row" class="grid items-center border-b border-tertiary" style="grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr); height: 84px">
+            <div class="flex min-w-0 items-center gap-3 px-3"><!-- render: Avatar {"name":"Claude Opus","initials":"CO","shape":"square","size":40,"textClassName":"dial-h3-text"} --><div class="flex min-w-0 flex-col gap-0.5"><span class="dial-caption-lead-semi-text text-blue">Model</span><span class="flex items-baseline gap-1 truncate"><span class="dial-small-semi-text text-primary">Claude Opus</span><span class="dial-small-text text-secondary">4.8</span></span></div></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">1.0M <span class="text-secondary">/ 1.0M</span></span><!-- render: ProgressBar {"value":100,"size":"small","aria-label":"Last 24 hours","data-tone":"error"} --><span class="dial-tiny-text text-secondary tabular-nums">$20.00 spent</span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">1.0M <span class="text-secondary">/ 2.0M</span></span><!-- render: ProgressBar {"value":50,"size":"small","aria-label":"Last 7 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$20.00 spent</span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">2.9M <span class="text-secondary">/ 8.0M</span></span><!-- render: ProgressBar {"value":36,"size":"small","aria-label":"Last 30 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$42.00 spent</span></div>
+            <div class="flex px-3"><!-- render: Badge {"label":"Limit reached","variant":"filled","color":"red"} --></div>
+          </div>
+
+          <!-- Hover state: rounded tint, no dividers -->
+          <div role="row" class="grid items-center rounded-xl bg-control-accent-alpha" style="grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr); height: 84px">
+            <div class="flex min-w-0 items-center gap-3 px-3"><!-- render: Avatar {"name":"ali.deepseek-v4-flash","initials":"AD","shape":"square","size":40,"textClassName":"dial-h3-text"} --><div class="flex min-w-0 flex-col gap-0.5"><span class="dial-caption-lead-semi-text text-blue">Model</span><span class="flex items-baseline gap-1 truncate"><span class="dial-small-semi-text text-primary">ali.deepseek-v4-flash</span><span class="dial-small-text text-secondary">1.4.6</span></span></div></div>
+            <div class="flex flex-col gap-1 px-3"><span class="dial-small-text tabular-nums">210k</span><span class="flex flex-col gap-1 dial-tiny-text text-secondary"><span>Follows cost limit</span><span class="tabular-nums">$5.50 spent</span></span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">320k <span class="text-secondary">/ 500k</span></span><!-- render: ProgressBar {"value":64,"size":"small","aria-label":"Last 7 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$8.60 spent</span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">4.2M <span class="text-secondary">/ 10.0M</span></span><!-- render: ProgressBar {"value":42,"size":"small","aria-label":"Last 30 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$28.19 spent</span></div>
+            <div class="flex px-3"><!-- render: Badge {"label":"Within limits","variant":"filled","color":"blue"} --></div>
+          </div>
+
+          <div role="row" class="grid items-center border-b border-tertiary" style="grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr); height: 84px">
+            <div class="flex min-w-0 items-center gap-3 px-3"><!-- render: Avatar {"name":"GLM-5.2","initials":"G5","shape":"square","size":40,"textClassName":"dial-h3-text"} --><div class="flex min-w-0 flex-col gap-0.5"><span class="dial-caption-lead-semi-text text-blue">Model</span><span class="flex items-baseline gap-1 truncate"><span class="dial-small-semi-text text-primary">GLM-5.2</span><span class="dial-small-text text-secondary">3.0.0</span></span></div></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">320k <span class="text-secondary">/ 500k</span></span><!-- render: ProgressBar {"value":64,"size":"small","aria-label":"Last 24 hours"} --><span class="dial-tiny-text text-secondary tabular-nums">$8.60 spent</span></div>
+            <div class="flex flex-col gap-1 px-3"><span class="dial-small-text tabular-nums">730k</span><span class="flex flex-col gap-1 dial-tiny-text text-secondary"><span>Follows cost limit</span><span class="tabular-nums">$12.34 spent</span></span></div>
+            <div class="flex flex-col gap-1 px-3"><span class="dial-small-text tabular-nums">1.9M</span><span class="flex flex-col gap-1 dial-tiny-text text-secondary"><span>Follows cost limit</span><span class="tabular-nums">$19.20 spent</span></span></div>
+            <div class="flex px-3"><!-- render: Badge {"label":"Within limits","variant":"filled","color":"blue"} --></div>
+          </div>
+
+          <div role="row" class="grid items-center" style="grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr); height: 84px">
+            <div class="flex min-w-0 items-center gap-3 px-3"><!-- render: Avatar {"name":"GPT-4o","initials":"G4","shape":"square","size":40,"textClassName":"dial-h3-text"} --><div class="flex min-w-0 flex-col gap-0.5"><span class="dial-caption-lead-semi-text text-blue">Model</span><span class="flex items-baseline gap-1 truncate"><span class="dial-small-semi-text text-primary">GPT-4o</span><span class="dial-small-text text-secondary">1.0.0</span></span></div></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">1.3M <span class="text-secondary">/ 1.5M</span></span><!-- render: ProgressBar {"value":87,"size":"small","aria-label":"Last 24 hours"} --><span class="dial-tiny-text text-secondary tabular-nums">$28.19 spent</span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">2.1M <span class="text-secondary">/ 8.1M</span></span><!-- render: ProgressBar {"value":26,"size":"small","aria-label":"Last 7 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$28.19 spent</span></div>
+            <div class="flex flex-col gap-2 px-3"><span class="dial-small-text tabular-nums">3.0M <span class="text-secondary">/ 20.0M</span></span><!-- render: ProgressBar {"value":15,"size":"small","aria-label":"Last 30 days"} --><span class="dial-tiny-text text-secondary tabular-nums">$62.60 spent</span></div>
+            <div class="flex px-3"><!-- render: Badge {"label":"Running low","variant":"filled","color":"brown"} --></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. Admin table types (Figma: Details > Admin table) ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Admin table types</h2>
+      <p class="dial-small-text text-secondary">1px border, 8px radius, no shadow. Header, filter row with search and filter, row dividers kept on hover and selection.</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6">
+
+      <!-- DATA: compact 40px, vertical dividers between data cells, checkbox selection -->
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="dial-small-semi-text text-primary">Data <span class="dial-small-text text-secondary">· compact 40px, vertical dividers</span></h3>
+        <div data-dial-component="Grid" class="overflow-hidden rounded-lg border border-tertiary bg-layer-raised">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="relative h-[40px] w-[40px] px-3 text-left font-normal"><!-- render: Checkbox {"id":"data-all","aria-label":"Select all","isSelected":true,"isIndeterminate":true} --></th>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Display name</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Description</span></th>
+              </tr>
+              <tr class="border-b border-tertiary">
+                <td class="h-[40px]"></td>
+                <td class="relative h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"data-f-name","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></td>
+                <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"data-f-desc","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3"><!-- render: Checkbox {"id":"data-r1","aria-label":"Select row"} --></td>
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text whitespace-nowrap">Llama-3.3-Nemotron</td>
+                <td class="h-[40px] px-3 dial-small-paragraph-text" style="max-width: 280px"><div class="truncate">Llama-3.3-Nemotron-Super-49B-v1.5 is a significantly upgraded version of Llama-3.3-Nemotron-Super-49B-v1.</div></td>
+              </tr>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3"><!-- render: Checkbox {"id":"data-r2","aria-label":"Select row"} --></td>
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text whitespace-nowrap">Sarvam-m</td>
+                <td class="h-[40px] px-3 dial-small-paragraph-text" style="max-width: 280px"><div class="truncate">Sarvam-m generates human-like text for a seamless chatting experience.</div></td>
+              </tr>
+              <tr class="border-b border-tertiary bg-control-accent-alpha">
+                <td class="h-[40px] px-3"><!-- render: Checkbox {"id":"data-r3","aria-label":"Select row","isSelected":true} --></td>
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text whitespace-nowrap">Mistral-Nemotron</td>
+                <td class="h-[40px] px-3 dial-small-paragraph-text" style="max-width: 280px"><div class="truncate">Mistral-Nemotron is a large language model produced by Mistral and optimised by NVIDIA.</div></td>
+              </tr>
+              <tr class="border-b border-tertiary bg-control-accent-alpha">
+                <td class="h-[40px] px-3"><!-- render: Checkbox {"id":"data-r4","aria-label":"Select row","isSelected":true} --></td>
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text whitespace-nowrap">DeepSeek-R1-0528</td>
+                <td class="h-[40px] px-3 dial-small-paragraph-text" style="max-width: 280px"><div class="truncate">DeepSeek-R1-0528 is an enhanced version of the DeepSeek R1 model.</div></td>
+              </tr>
+              <tr class="hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3"><!-- render: Checkbox {"id":"data-r5","aria-label":"Select row"} --></td>
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text whitespace-nowrap">Jamba 1.5 mini</td>
+                <td class="h-[40px] px-3 dial-small-paragraph-text" style="max-width: 280px"><div class="truncate">Jamba 1.5 mini is a state-of-the-art, hybrid SSM-Transformer instruction following model.</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ENTITY: regular 56px, no vertical dividers, entity visual + link + second line -->
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="dial-small-semi-text text-primary">Entity <span class="dial-small-text text-secondary">· regular 56px, no vertical dividers</span></h3>
+        <div data-dial-component="Grid" class="overflow-hidden rounded-lg border border-tertiary bg-layer-raised">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Model</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Description</span></th>
+              </tr>
+              <tr class="border-b border-tertiary">
+                <td class="relative h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"ent-f-name","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></td>
+                <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"ent-f-desc","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="px-3" style="height: 56px"><div class="flex items-center gap-2"><!-- render: Avatar {"name":"GPT-5.6 Luna","initials":"G5","shape":"square","size":24} --><div class="flex min-w-0 flex-col"><a href="#" class="dial-small-semi-text text-accent whitespace-nowrap">GPT-5.6 Luna</a><span class="dial-tiny-text text-secondary whitespace-nowrap">With Web Search</span></div></div></td>
+                <td class="px-3 dial-small-paragraph-text" style="height: 56px; max-width: 300px"><div class="truncate">gpt-5.6-luna is a fast, cost-efficient model with up to a 1M-token context.</div></td>
+              </tr>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="px-3" style="height: 56px"><div class="flex items-center gap-2"><!-- render: Avatar {"name":"DeepSeek V4 Pro","initials":"DS","shape":"square","size":24} --><div class="flex min-w-0 flex-col"><a href="#" class="dial-small-semi-text text-accent whitespace-nowrap">DeepSeek V4 Pro</a><span class="dial-tiny-text text-secondary whitespace-nowrap tabular-nums">Azure: V4 Pro 2026-04-23</span></div></div></td>
+                <td class="px-3 dial-small-paragraph-text" style="height: 56px; max-width: 300px"><div class="truncate">DeepSeek V4 Pro is designed for high-precision tasks that require strong reasoning.</div></td>
+              </tr>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="px-3" style="height: 56px"><div class="flex items-center gap-2"><!-- render: Avatar {"name":"Anthropic Claude 4 Sonnet","initials":"AC","shape":"square","size":24} --><div class="flex min-w-0 flex-col"><a href="#" class="dial-small-semi-text text-accent whitespace-nowrap">Anthropic Claude 4 Sonnet</a><span class="dial-tiny-text text-secondary whitespace-nowrap tabular-nums">1.0</span></div></div></td>
+                <td class="px-3 dial-small-paragraph-text" style="height: 56px; max-width: 300px"><div class="truncate">Claude Sonnet 4 balances impressive performance for coding with speed.</div></td>
+              </tr>
+              <tr class="hover:bg-control-accent-alpha-hover">
+                <td class="px-3" style="height: 56px"><div class="flex items-center gap-2"><!-- render: Avatar {"name":"Google Gemini 3.5 Flash","initials":"GG","shape":"square","size":24} --><div class="flex min-w-0 flex-col"><a href="#" class="dial-small-semi-text text-accent whitespace-nowrap">Google Gemini 3.5 Flash</a><span class="dial-tiny-text text-secondary whitespace-nowrap">With Google Search Grounding</span></div></div></td>
+                <td class="px-3 dial-small-paragraph-text" style="height: 56px; max-width: 300px"><div class="truncate">Gemini 3.5 Flash provides sustained frontier-level intelligence optimized for speed.</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EDITABLE: compact 40px, inputs in cells, row actions -->
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="dial-small-semi-text text-primary">Editable <span class="dial-small-text text-secondary">· compact 40px, inputs in cells</span></h3>
+        <div data-dial-component="Grid" class="overflow-hidden rounded-lg border border-tertiary bg-layer-raised">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-tertiary">
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Type</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Expiration time (hours)</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+                <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Max users</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+                <th class="h-[40px] w-[40px]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text">Applications</td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-exp-1","size":"small","value":"120","aria-label":"Expiration time (hours)","className":"tabular-nums"} --></td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-max-1","size":"small","value":"50","aria-label":"Max users","className":"tabular-nums"} --></td>
+                <td class="h-[40px] px-2"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+              </tr>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text">Toolsets</td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-exp-2","size":"small","value":"72","aria-label":"Expiration time (hours)"} --></td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-max-2","size":"small","placeholder":"No limits","aria-label":"Max users"} --></td>
+                <td class="h-[40px] px-2"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+              </tr>
+              <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text">Prompts</td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-exp-3","size":"small","value":"72","aria-label":"Expiration time (hours)"} --></td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-max-3","size":"small","placeholder":"No limits","aria-label":"Max users"} --></td>
+                <td class="h-[40px] px-2"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+              </tr>
+              <tr class="hover:bg-control-accent-alpha-hover">
+                <td class="h-[40px] px-3 border-r border-tertiary dial-small-paragraph-text">Files</td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-exp-4","size":"small","value":"72","aria-label":"Expiration time (hours)"} --></td>
+                <td class="h-[40px] px-2 border-r border-tertiary"><!-- render: Input {"id":"ed-max-4","size":"small","placeholder":"No limits","aria-label":"Max users"} --></td>
+                <td class="h-[40px] px-2"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HEAT MAP: dense 20px, hierarchical rows, rotated column labels -->
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="dial-small-semi-text text-primary">Heat map <span class="dial-small-text text-secondary">· dense 20px, hierarchical rows</span></h3>
+        <div data-dial-component="Grid" class="overflow-hidden rounded-lg border border-tertiary bg-layer-raised p-3">
+          <table>
+            <thead>
+              <tr>
+                <th class="font-normal"></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 001</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 002</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 003</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 004</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 005</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 006</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 007</span></th>
+                <th class="pb-1 font-normal" style="width: 20px; height: 64px; vertical-align: bottom"><span class="inline-block rotate-180 whitespace-nowrap dial-tiny-text text-secondary" style="writing-mode: vertical-rl">Row 008</span></th>
+              </tr>
+            </thead>
+            <tbody class="dial-tiny-text">
+              <tr style="height: 20px"><td class="pr-3"><span class="flex items-center gap-1 whitespace-nowrap"><!-- icon: chevron-down 16 text-secondary -->Overall accuracy</span></td><td colspan="8"></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="ml-6 flex items-center gap-1 whitespace-nowrap"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} -->Equality check</span></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="ml-6 flex items-center gap-1 whitespace-nowrap"><!-- render: Badge {"label":"2","variant":"filled","color":"green"} -->Equality check</span></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-success"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="flex items-center gap-1 whitespace-nowrap"><!-- icon: chevron-down 16 text-secondary -->Context appropriateness</span></td><td colspan="8"></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="ml-6 flex items-center gap-1 whitespace-nowrap"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} -->Precision</span></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-success"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-success"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="ml-6 flex items-center gap-1 whitespace-nowrap"><!-- render: Badge {"label":"2","variant":"filled","color":"green"} -->Precision</span></td><td class="p-0.5"><div class="size-4 bg-success"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td><td class="p-0.5"><div class="size-4 bg-success"></div></td><td class="p-0.5"><div class="size-4 bg-green-2"></div></td></tr>
+              <tr style="height: 20px"><td class="pr-3"><span class="ml-6 flex items-center gap-1 whitespace-nowrap"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} -->Recall</span></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td><td class="p-0.5"><div class="size-4 bg-warning"></div></td><td class="p-0.5"><div class="size-4 bg-error"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 4. Admin table example: sorting, filtering, horizontal scroll, pinned actions (Figma: Details > Admin table: example; Cases) ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Admin table: example</h2>
+      <p class="dial-small-text text-secondary">Regular 56px rows. Sorted column shows an arrow; a filtered column's filter icon gets a blue dot. Wide tables scroll horizontally; the pinned Actions column gets a shadow.</p>
+    </div>
+    <div class="flex flex-col gap-3 rounded-2xl bg-layer-raised p-6">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="dial-h3-text text-primary">Runs</h3>
+        <!-- render: LinkButton {"label":"Columns","iconBefore":"@icon:layout-columns:20"} -->
+      </div>
+      <div data-dial-component="Grid" class="overflow-x-auto rounded-lg border border-tertiary bg-layer-raised">
+        <table class="w-full whitespace-nowrap">
+          <thead>
+            <tr>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Status</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="flex items-center gap-1"><span class="dial-caption-lead-semi-text text-secondary">Test case run name</span><!-- icon: arrow-up 16 text-secondary --></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-right font-normal"><span class="dial-caption-lead-semi-text text-secondary">Runs</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-right font-normal"><span class="dial-caption-lead-semi-text text-secondary">Test cases</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Test suite ID</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Target</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Metrics</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Start date</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">End date</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-right font-normal"><span class="dial-caption-lead-semi-text text-secondary">Duration</span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+              <th class="relative h-[40px] px-3 text-right font-normal"><span class="dial-caption-lead-semi-text text-secondary">Cost</span></th>
+              <th class="sticky right-0 h-[40px] w-[40px] bg-layer-raised shadow-sm"></th>
+            </tr>
+            <tr class="border-b border-tertiary">
+              <td class="relative h-[40px] px-3"><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></td>
+              <td class="relative h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-name","placeholder":"Search...","size":"small","value":"Run #31"} --></div><span class="relative flex"><!-- render: GhostIconButton {"aria-label":"Filter applied","icon":"@icon:filter-2:16","size":"small"} --><span aria-hidden="true" class="absolute right-0 top-0 size-[8px] rounded-full bg-control-accent"></span></span></div></td>
+              <td class="h-[40px] px-3 text-right"><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small","className":"ml-auto"} --></td>
+              <td class="h-[40px] px-3 text-right"><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small","className":"ml-auto"} --></td>
+              <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-suite","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-target","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-metrics","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-start","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="flex-1 min-w-0"><!-- render: Search {"id":"runs-f-end","placeholder":"Search...","size":"small"} --></div><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small"} --></div></td>
+              <td class="h-[40px] px-3"></td>
+              <td class="h-[40px] px-3 text-right"><!-- render: GhostIconButton {"aria-label":"Filter","icon":"@icon:filter-2:16","size":"small","className":"ml-auto"} --></td>
+              <td class="sticky right-0 h-[40px] bg-layer-raised shadow-sm"></td>
+            </tr>
+          </thead>
+          <tbody class="dial-small-paragraph-text">
+            <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover" style="height: 56px">
+              <td class="px-3"><!-- icon: point-filled 16 text-success --></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Run #315</a><span class="dial-tiny-text text-secondary tabular-nums truncate max-w-[160px]">975812d4-e90b-4526-84b4-a67df9fbf0bc</span></div></td>
+              <td class="px-3 text-right tabular-nums">1</td>
+              <td class="px-3 text-right tabular-nums">39</td>
+              <td class="px-3 tabular-nums"><div class="truncate max-w-[160px]">975812d4-e90b-4526-84b4</div></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Gemini 2.5 Flash</a><span class="dial-tiny-text text-secondary">Application</span></div></td>
+              <td class="px-3"><div class="flex items-center gap-2"><!-- render: Badge {"label":"Accuracy"} --><!-- render: Badge {"label":"Precision"} --><!-- render: Badge {"label":"Recall"} --></div></td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.16.04</td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.27.31</td>
+              <td class="px-3 text-right tabular-nums">12s</td>
+              <td class="px-3 text-right tabular-nums">$5.00</td>
+              <td class="sticky right-0 bg-layer-raised px-2 shadow-sm"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+            </tr>
+            <tr class="border-b border-tertiary bg-control-accent-alpha" style="height: 56px">
+              <td class="px-3"><!-- icon: point-filled 16 text-success --></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Run #314</a><span class="dial-tiny-text text-secondary tabular-nums truncate max-w-[160px]">975812d4-e90b-4526-84b4-a67df9fbf0bc</span></div></td>
+              <td class="px-3 text-right tabular-nums">1</td>
+              <td class="px-3 text-right tabular-nums">39</td>
+              <td class="px-3 tabular-nums"><div class="truncate max-w-[160px]">975812d4-e90b-4526-84b4</div></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">CleverBot 2.0</a><span class="dial-tiny-text text-secondary">Model</span></div></td>
+              <td class="px-3"><div class="flex items-center gap-2"><!-- render: Badge {"label":"F1 Score"} --><!-- render: Badge {"label":"ROC AUC"} --><!-- render: Badge {"label":"+2"} --></div></td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.16.04</td>
+              <td class="px-3 tabular-nums">13/05/2026, 21.23.16</td>
+              <td class="px-3 text-right tabular-nums">12s</td>
+              <td class="px-3 text-right tabular-nums">$5.00</td>
+              <td class="sticky right-0 bg-layer-raised px-2 shadow-sm"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+            </tr>
+            <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover" style="height: 56px">
+              <td class="px-3"><!-- icon: point-filled 16 text-success --></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Run #313</a><span class="dial-tiny-text text-secondary tabular-nums truncate max-w-[160px]">975812d4-e90b-4526-84b4-a67df9fbf0bc</span></div></td>
+              <td class="px-3 text-right tabular-nums">1</td>
+              <td class="px-3 text-right tabular-nums">39</td>
+              <td class="px-3"><div class="truncate max-w-[160px]">Session Timeout handling</div></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Neural Nexus</a><span class="dial-tiny-text text-secondary">MCP</span></div></td>
+              <td class="px-3"><div class="flex items-center gap-2"><!-- render: Badge {"label":"Mean Squared Error"} --><!-- render: Badge {"label":"+2"} --></div></td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.16.04</td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.27.31</td>
+              <td class="px-3 text-right tabular-nums">12s</td>
+              <td class="px-3 text-right tabular-nums">$5.00</td>
+              <td class="sticky right-0 bg-layer-raised px-2 shadow-sm"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+            </tr>
+            <tr class="hover:bg-control-accent-alpha-hover" style="height: 56px">
+              <td class="px-3"><!-- icon: point-filled 16 text-success --></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">Run #312</a><span class="dial-tiny-text text-secondary tabular-nums truncate max-w-[160px]">975812d4-e90b-4526-84b4-a67df9fbf0bc</span></div></td>
+              <td class="px-3 text-right tabular-nums">1</td>
+              <td class="px-3 text-right tabular-nums">39</td>
+              <td class="px-3"><div class="truncate max-w-[160px]">Error Handling suite</div></td>
+              <td class="px-3"><div class="flex flex-col"><a href="#" class="dial-small-paragraph-semi-text text-accent">SentiAI</a><span class="dial-tiny-text text-secondary">MCP</span></div></td>
+              <td class="px-3"><div class="flex items-center gap-2"><!-- render: Badge {"label":"R-squared"} --><!-- render: Badge {"label":"Root Mean Square"} --><!-- render: Badge {"label":"+1"} --></div></td>
+              <td class="px-3 tabular-nums">21/05/2026, 14.16.04</td>
+              <td class="px-3 tabular-nums">13/05/2026, 21.23.16</td>
+              <td class="px-3 text-right tabular-nums">12s</td>
+              <td class="px-3 text-right tabular-nums">$5.00</td>
+              <td class="sticky right-0 bg-layer-raised px-2 shadow-sm"><!-- render: GhostIconButton {"aria-label":"More actions","icon":"@icon:dots-vertical:16","size":"small"} --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. Double table header (Figma: Cases > Double table header) ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Double table header</h2>
+      <p class="dial-small-text text-secondary">Two lines of header cells for grouped columns. No horizontal divider between the two header rows; a long vertical divider separates the groups.</p>
+    </div>
+    <div data-dial-component="Grid" class="overflow-x-auto rounded-lg border border-tertiary bg-layer-raised">
+      <table class="w-full whitespace-nowrap">
+        <thead>
+          <tr>
+            <th colspan="3" class="h-[40px]"></th>
+            <th colspan="3" class="h-[40px] border-l border-tertiary px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Overall accuracy</span></th>
+            <th colspan="3" class="h-[40px] border-l border-tertiary px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Context appropriateness</span></th>
+          </tr>
+          <tr>
+            <th class="relative h-[40px] w-[40px] px-3 text-left font-normal"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} --></th>
+            <th class="relative h-[40px] w-[40px] px-3 text-left font-normal"><!-- render: Badge {"label":"2","variant":"filled","color":"green"} --></th>
+            <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Test case name</span></th>
+            <th class="relative h-[40px] border-l border-tertiary px-3 text-left font-normal"><span class="flex items-center gap-2"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} --><span class="dial-caption-lead-semi-text text-secondary">Equality check</span></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            <th class="relative h-[40px] px-3 text-left font-normal"><span class="flex items-center gap-2"><!-- render: Badge {"label":"2","variant":"filled","color":"green"} --><span class="dial-caption-lead-semi-text text-secondary">Equality check</span></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Delta</span></th>
+            <th class="relative h-[40px] border-l border-tertiary px-3 text-left font-normal"><span class="flex items-center gap-2"><!-- render: Badge {"label":"1","variant":"filled","color":"blue"} --><span class="dial-caption-lead-semi-text text-secondary">Precision</span></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            <th class="relative h-[40px] px-3 text-left font-normal"><span class="flex items-center gap-2"><!-- render: Badge {"label":"2","variant":"filled","color":"green"} --><span class="dial-caption-lead-semi-text text-secondary">Precision</span></span><span aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 border-r border-tertiary" style="height: 12px"></span></th>
+            <th class="relative h-[40px] px-3 text-left font-normal"><span class="dial-caption-lead-semi-text text-secondary">Delta</span></th>
+          </tr>
+        </thead>
+        <tbody class="dial-small-paragraph-text">
+          <tr class="border-t border-b border-tertiary hover:bg-control-accent-alpha-hover">
+            <td class="h-[40px] px-3"><!-- icon: check 16 text-success --></td>
+            <td class="h-[40px] px-3"><!-- icon: check 16 text-success --></td>
+            <td class="h-[40px] px-3">Row11</td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":2,"size":"small","aria-label":"Equality check 1"} --></div><span class="tabular-nums">0.000</span></div></td>
+            <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":30,"size":"small","aria-label":"Equality check 2"} --></div><span class="tabular-nums">0.303</span></div></td>
+            <td class="h-[40px] px-3"><!-- render: Badge {"label":"+0.303","variant":"filled","color":"green"} --></td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":10,"size":"small","aria-label":"Precision 1"} --></div><span class="tabular-nums">0.102</span></div></td>
+            <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":10,"size":"small","aria-label":"Precision 2"} --></div><span class="tabular-nums">0.102</span></div></td>
+            <td class="h-[40px] px-3"></td>
+          </tr>
+          <tr class="border-b border-tertiary hover:bg-control-accent-alpha-hover">
+            <td class="h-[40px] px-3"><!-- icon: check 16 text-success --></td>
+            <td class="h-[40px] px-3"><!-- icon: x 16 text-error --></td>
+            <td class="h-[40px] px-3">Row09</td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":100,"size":"small","aria-label":"Equality check 1"} --></div><span class="tabular-nums">1.000</span></div></td>
+            <td class="h-[40px] px-3 text-secondary">–</td>
+            <td class="h-[40px] px-3"></td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":73,"size":"small","aria-label":"Precision 1"} --></div><span class="tabular-nums">0.729</span></div></td>
+            <td class="h-[40px] px-3 text-secondary">–</td>
+            <td class="h-[40px] px-3"></td>
+          </tr>
+          <tr class="hover:bg-control-accent-alpha-hover">
+            <td class="h-[40px] px-3"><!-- icon: check 16 text-success --></td>
+            <td class="h-[40px] px-3"><!-- icon: check 16 text-success --></td>
+            <td class="h-[40px] px-3">Row08</td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":100,"size":"small","aria-label":"Equality check 1"} --></div><span class="tabular-nums">1.000</span></div></td>
+            <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":100,"size":"small","aria-label":"Equality check 2"} --></div><span class="tabular-nums">1.000</span></div></td>
+            <td class="h-[40px] px-3"></td>
+            <td class="h-[40px] border-l border-tertiary px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":85,"size":"small","aria-label":"Precision 1"} --></div><span class="tabular-nums">0.847</span></div></td>
+            <td class="h-[40px] px-3"><div class="flex items-center gap-2"><div class="w-[40px]"><!-- render: ProgressBar {"value":85,"size":"small","aria-label":"Precision 2"} --></div><span class="tabular-nums">0.847</span></div></td>
+            <td class="h-[40px] px-3"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // A static page can't run the kit ProgressBar's inline width, so fill each bar from its aria values.
+  // data-tone="error" on the bar (passed through the render) switches the fill to the error colour.
+  document.querySelectorAll('[data-dial-component="ProgressBar"]').forEach(function (bar) {
+    var fill = bar.firstElementChild;
+    var max = Number(bar.getAttribute('aria-valuemax')) || 100;
+    fill.style.width = Math.min(100, (Number(bar.getAttribute('aria-valuenow')) / max) * 100) + '%';
+    if (bar.getAttribute('data-tone') === 'error') {
+      fill.classList.remove('bg-control-accent');
+      fill.classList.add('bg-control-error-active');
+    }
+  });
+</script>
+</body>
+</html>

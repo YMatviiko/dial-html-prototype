@@ -118,6 +118,7 @@ feature to it.
 | Settings | `settings` | Settings popup (section rail + form) — any settings or preferences form |
 | | `settings-extensions` | Connections/integrations table in settings |
 | | `settings-menu` | Nav-footer user menu open (Settings / Log out) |
+| Tables | `tables` | Every table type from the Components 2.0 spec: chat table, admin data / entity / editable / heat map, sorting, filtering, pinned actions, double header, cell states — copy the one you need into a page |
 
 Pick by **layout**, not by name: a new "agent permissions" page is probably `toolsets-editor` or `settings`;
 a new list of things is `scheduled-tasks` or `catalog`; anything in a conversation is `chat-conversation` +

@@ -57,7 +57,8 @@ Recipes that work as-is:
 | Modal / confirm dialog | `Popup {"open":true,"header":"…","size":"sm","children":"…"}`; `ConfirmationPopup {"open":true,"header":"…","description":"…","variant":"danger","confirmLabel":"Delete"}` |
 
 Anything else: `search`, then `info`, then `render`. **Search before hand-building anything**: newer kits keep
-adding components (0.15 added e.g. `Badge`, `Avatar`, `SideDrawer`, `BottomSheet`). If a render prints nothing, the component only appears on
+adding components (0.15 added e.g. `Badge`, `Avatar`, `SideDrawer`, `BottomSheet`; 0.16 adds `ToggleChip`,
+`FormSection`, `SelectedEntityCard`, `LoginScreen`). If a render prints nothing, the component only appears on
 interaction (try `"open":true`) or needs props you didn't pass (`info` lists the required ones).
 
 ## DIAL screens: start from a pattern
@@ -126,8 +127,7 @@ Each is `<prefix>-<name>`. Light values shown for orientation only; never type t
 | Inset area, zebra rows, disabled fields, count badges | `bg-layer-sunken` | #EEF1F7 |
 | Modal backdrop | `bg-backdrop` | #161B2D at 30% |
 | Main text | `text-primary` | #161B2D |
-| Secondary text, labels, icons | `text-secondary` | #57647A |
-| Hint text | `text-tertiary` | #848E9C |
+| Secondary text, labels, hints, icons | `text-secondary` | #57647A |
 | Accent text, links, selected items | `text-accent` | #1D4ED8 |
 | Status text | `text-error` `text-success` `text-warning` `text-info` | |
 | Text on a filled accent/danger control | `text-control-permanent` | #FCFCFC |
@@ -142,7 +142,8 @@ Each is `<prefix>-<name>`. Light values shown for orientation only; never type t
 | Strong border (rare; not for fields) | `border-primary` | #57647A |
 
 **Don't use** the legacy 1.0 tokens the CSS still contains: `bg-layer-0…4`, `bg-accent-*`, `bg-controls-*`,
-`text-accent-primary`, `text-controls-*`, `border-accent-primary`. The blue→violet gradient only comes with
+`text-accent-primary`, `text-controls-*`, `border-accent-primary`. There is no `text-tertiary` from 0.16 on: hints
+and captions are `text-secondary`, as in the kit's own components. The blue→violet gradient only comes with
 the primary button (render `PrimaryButton`); there's no gradient utility.
 
 ## Typography
@@ -161,24 +162,32 @@ One `dial-*-text` class sets size, line height and weight. Inter comes from `bod
 
 ## Layout: what's missing in the kit CSS
 
-The kit CSS is a pruned Tailwind build. Most flex/grid/gap/padding utilities exist; these don't:
+The kit CSS is a pruned Tailwind build. Most flex/grid/gap/padding utilities exist; these don't. Kit 0.16
+(Tailwind v4) dropped more, so the table covers both: the substitutes work in 0.15 and 0.16.
 
 | Missing | Use instead |
 |---|---|
 | `mx-auto` | flex parent with `justify-center` |
 | `h-screen` | `html, body { height: 100%; }` (skeleton) + `h-full`, or `min-h-screen` |
 | `w-4`, `w-5`… for squares | `size-4`, `size-5`, `size-[16px]`, `size-[20px]`, `size-[24px]` |
-| `max-w-sm/md/lg/xl/2xl/3xl` | `max-w-[428px]`, `max-w-[600px]`, `max-w-[1200px]`, `max-w-full` |
-| `w-1/3`, `w-1/4` | `grid grid-cols-3` / `grid-cols-4`, or `flex-1` children |
+| `max-w-sm/md/lg/xl/2xl/3xl` | `max-w-[420px]`, `max-w-[600px]`, `max-w-full` |
+| `w-1/3`, `w-1/4`, `grid-cols-4` | `grid grid-cols-3`; four columns: `grid` + `style="grid-template-columns: repeat(4, minmax(0, 1fr))"`; or `flex-1` children |
 | `py-5`, `py-6`, `pt-6`, `pb-3`, `pb-5`, `pt-0.5` | the nearest of `py-4`, `p-6`, `pb-4`, `pt-3`, `pt-1` |
-| `px-8`, `pl-8` (32px gutters) | `px-6` on the container + `px-2` inside it (what the patterns do) |
-| `list-disc` | `style="list-style-type: disc"` on the `<ul>` plus `pl-6` |
+| `px-8`, `pl-8` (32px gutters) | `mx-4 px-4` on the container (what the catalog patterns do) |
+| `pl-6` | `ml-6` when nothing is painted behind it; on a bordered/filled box `pl-4` + `ml-2` on its first child |
+| `list-disc` | `style="list-style-type: disc"` on the `<ul>` plus `ml-6` |
 | `line-clamp-1` | `truncate` (`line-clamp-2` … `-5` exist) |
 | `rounded-tr-[4px]`, `rounded-b-lg` | `rounded-2xl` / `rounded-lg` all round |
 | `border-accent-alpha` | `border-secondary` |
-| `h-[36px]`, `h-[56px]`, `size-[44px]`, `size-[64px]`, `size-[100px]` | exact layout sizes may be inline px: `style="height: 36px"` |
+| `h-3`, `h-[10px]`, `h-[36px]`, `h-[56px]`, `h-[100px]`, `size-[44px]`, `size-[64px]`, `min-w-[800px]` | exact layout sizes may be inline px: `style="height: 36px"` (in render JSON, a `"style"` string on a plain element) |
+| `text-tertiary` | `text-secondary` |
+| `z-10`, `z-50` | `z-popup` on a page overlay (menu, backdrop); a raised sidebar only needs `relative` for its shadow to sit on top |
+| `self-end` | `items-end` on the parent, or `self-stretch flex items-end` on the item |
+| `outline-none` (bare `<textarea>`/`<input>` in a composer) | `style="outline: none"` |
+| `placeholder:text-*` | nothing: keep the default placeholder colour, which the kit's own inputs use |
+| `break-all` | `break-words` |
 | `col-span-*`, `grid-rows-*` | nested flex/grid |
-| `bottom-0`, `top-4`, `right-4` | `top-0`, `right-0`, `inset-0` + flex alignment |
+| `bottom-0`, `top-4`, `top-8`, `right-4` | `top-0`, `top-1/2`, `right-0`, `inset-0` + flex alignment |
 | responsive show/hide (`md:hidden`, `md:flex`) | none: build for one desktop width (1440) |
 
 Check any utility with `kit-lookup.mjs classes '<regex>'`. Arbitrary classes like `w-[260px]` are fine
@@ -195,9 +204,14 @@ one inside a section (e.g. a gallery or a "dialog state" panel), wrap it in
 to rendered markup.
 
 To show/hide an overlay from the script, toggle the kit's `hidden` **class**
-(`el.classList.toggle('hidden')`); the `hidden` attribute loses to `flex`.
+(`el.classList.toggle('hidden')`). The `hidden` attribute behaves differently across kits (up to 0.15 it
+loses to `flex`, from 0.16 it wins), so don't rely on it.
 
 ## Grid (table)
+
+For anything beyond a plain list, copy the matching table type from the `tables` pattern
+(`K pattern tables --source`): it follows the Components 2.0 table spec (header with 10px caption titles and short
+dividers, search + filter row, densities 20/40/56/84px, cell states, chat vs admin tables). The basic recipe:
 
 The real `Grid` is AG Grid; it needs runtime CSS a prototype can't load, so `render Grid` refuses. Imitate it
 with a `<table>` using the grid's own theme values (40px rows, header on `bg-layer-base`, `border-tertiary`
@@ -252,7 +266,8 @@ For DIAL Chat use the pattern above instead of these. Other app shells, lists an
   `flex w-full cursor-pointer items-center gap-2 px-3 h-[40px] rounded-lg dial-small-text text-primary truncate hover:bg-control-accent-alpha-hover`;
   active row: **replace** `text-primary` with `text-accent` and add `bg-control-accent-alpha` (with both text
   classes, `text-primary` wins). Group heading: `px-3 pt-3 pb-1 dial-tiny-lead-semi-text text-secondary`.
-- **Chat message:** user `self-end max-w-[600px] rounded-xl bg-layer-sunken px-4 py-3 dial-small-paragraph-text`;
+- **Chat message:** user `max-w-[600px] rounded-xl bg-layer-sunken px-4 py-3 dial-small-paragraph-text`, in a
+  `flex flex-col items-end` column;
   assistant `flex gap-3 max-w-[600px]`: a rendered `Avatar` (`{"name":"GPT-4o","size":28}`) next to the text in
   `dial-small-paragraph-text text-primary`.
 - **Message composer:** render `Textarea` and a `PrimaryIconButton` (`"icon":"@icon:send"`) side by side.

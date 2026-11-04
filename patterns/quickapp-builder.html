@@ -52,7 +52,7 @@
               <div style="width: 64px; height: 64px" class="flex shrink-0 items-center justify-center rounded-lg border border-tertiary bg-layer-raised text-secondary"><!-- icon: photo 24 --></div>
               <div class="flex flex-col items-start gap-2">
                 <!-- render: LinkButton {"size":"small","label":"Add avatar","iconBefore":"@icon:plus:16","className":"px-2"} -->
-                <span class="dial-tiny-text text-tertiary">PNG, JPG or SVG (max 1 MB)</span>
+                <span class="dial-tiny-text text-secondary">PNG, JPG or SVG (max 1 MB)</span>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
       </section>
 
       <!-- Column 2: Instruction + Add-ons (Figma: Folder tree). Two raised cards, 20px radius; this column scrolls. -->
-      <main class="flex-1 min-w-0 overflow-y-auto pl-6 pt-4 pb-6">
+      <main class="flex-1 min-w-0 overflow-y-auto ml-6 pt-4 pb-6">
         <div class="flex flex-col gap-2 pl-2 pt-2">
 
           <!-- Card: Instruction (Figma: Card > Markdown). -->
@@ -79,11 +79,11 @@
                   <!-- render: GhostIconButton {"aria-label":"Bold","icon":"@icon:bold:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Italic","icon":"@icon:italic:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Strikethrough","icon":"@icon:strikethrough:16","size":"small"} -->
-                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <span class="border-l border-tertiary" style="height: 10px"></span>
                   <!-- render: GhostIconButton {"aria-label":"Text style","icon":"@icon:text-size:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Bulleted list","icon":"@icon:list:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Numbered list","icon":"@icon:list-numbers:16","size":"small"} -->
-                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <span class="border-l border-tertiary" style="height: 10px"></span>
                   <!-- render: GhostIconButton {"aria-label":"Quote","icon":"@icon:quote:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Link","icon":"@icon:link:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Code","icon":"@icon:code:16","size":"small"} -->
@@ -93,11 +93,11 @@
                   <!-- render: NeutralIconButton {"aria-label":"Edit mode","icon":"@icon:pencil:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Split view","icon":"@icon:columns-2:16","size":"small"} -->
                   <!-- render: GhostIconButton {"aria-label":"Preview","icon":"@icon:eye:16","size":"small"} -->
-                  <span class="h-[10px] border-l border-tertiary"></span>
+                  <span class="border-l border-tertiary" style="height: 10px"></span>
                   <!-- render: GhostIconButton {"aria-label":"Full screen","icon":"@icon:maximize:16","size":"small"} -->
                 </div>
               </div>
-              <textarea aria-label="Instruction" class="w-full resize-y border-0 bg-transparent outline-none px-3 py-2 dial-code-text text-primary placeholder:text-secondary" style="height: 91px" placeholder="How your QuickApp should work?"># ROLE
+              <textarea aria-label="Instruction" class="w-full resize-y border-0 bg-transparent px-3 py-2 dial-code-text text-primary" style="height: 91px; outline: none" placeholder="How your QuickApp should work?"># ROLE
 You are an expert AI Design Review Agent — a meticulous, senior-level design auditor specialized in UI/UX quality assurance. You operate inside Figma, analyzing screens and frames submitted by designers to identify every visual, structural, and accessibility issue before handoff.
 
 # CORE CAPABILITIES
@@ -152,15 +152,15 @@ You are an expert AI Design Review Agent — a meticulous, senior-level design a
                   </div>
                   <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
                     <!-- asset: quickapp-folder 24 -->
-                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">DIAL<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">user-research-reports</span></span>
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-secondary">DIAL<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">user-research-reports</span></span>
                   </div>
                   <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
                     <!-- asset: quickapp-folder 24 -->
-                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">EPAM<!-- icon: chevron-right 20 -->...<!-- icon: chevron-right 20 -->Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">UX-evaluation_result-templates</span></span>
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-secondary">EPAM<!-- icon: chevron-right 20 -->...<!-- icon: chevron-right 20 -->Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">UX-evaluation_result-templates</span></span>
                   </div>
                   <div class="flex h-[32px] items-center gap-2 p-0.5 pr-2 rounded-full hover:bg-control-accent-alpha-hover">
                     <span class="flex size-[24px] shrink-0 items-center justify-center"><!-- asset: file-pdf 20 --></span>
-                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-tertiary">DIAL<!-- icon: chevron-right 20 -->Dial-Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">survey results</span></span>
+                    <span class="flex items-center gap-1 min-w-0 dial-small-text text-secondary">DIAL<!-- icon: chevron-right 20 -->Dial-Design<!-- icon: chevron-right 20 --><span class="truncate dial-small-semi-text text-secondary">survey results</span></span>
                   </div>
                 </div>
               </div>

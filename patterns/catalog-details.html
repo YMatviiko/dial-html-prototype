@@ -25,8 +25,8 @@
 
   <!-- Main (Figma: Catalog View). No header bar: a 64px heading row with the page title and the Create button. -->
   <main class="flex-1 min-w-0 overflow-y-auto">
-    <!-- 32px side gutters: mx-2 + px-6 (the kit has no px-8) -->
-    <div class="flex flex-col mx-2 px-6">
+    <!-- 32px side gutters: mx-4 + px-4 (the kit has no px-8) -->
+    <div class="flex flex-col mx-4 px-4">
     <div class="flex h-16 shrink-0 items-center justify-between">
       <h1 class="dial-display3-text text-primary">Catalog</h1>
       <!-- Create: primary button with a chevron; opens the create menu (Agent, Toolset, Skill…) -->
@@ -37,9 +37,9 @@
     <section class="flex flex-col gap-4 py-2">
       <div class="flex items-center gap-2">
         <h2 class="dial-h3-text text-primary">Your favorites</h2>
-        <span class="dial-tiny-semi-text text-tertiary">3</span>
+        <span class="dial-tiny-semi-text text-secondary">3</span>
       </div>
-      <div class="grid grid-cols-4 gap-5">
+      <div class="grid gap-5" style="grid-template-columns: repeat(4, minmax(0, 1fr))">
         <article data-dial-component="CardShell" class="relative flex items-center gap-3 rounded-[20px] border-2 border-transparent p-5 bg-layer-raised shadow-md">
           <!-- asset: catalog-icon-chathub 52 -->
           <div class="flex flex-1 min-w-0 items-end gap-1">
@@ -80,7 +80,7 @@
     <section class="flex flex-col gap-3 mt-6 mb-1 pb-4">
       <div class="flex items-center gap-2">
         <h2 class="dial-h3-text text-primary">Browse</h2>
-        <span class="dial-tiny-semi-text text-tertiary">10</span>
+        <span class="dial-tiny-semi-text text-secondary">10</span>
         <div class="flex flex-1 min-w-0 items-center justify-end gap-3">
           <!-- render: SegmentedControl {"aria-label":"View","value":"grid","items":[{"value":"grid","icon":"@icon:layout-grid:16","aria-label":"Grid view"},{"value":"list","icon":"@icon:layout-list:16","aria-label":"List view"}]} -->
           <span class="h-4 border-s border-default"></span>
@@ -196,7 +196,7 @@
        (render SideDrawer for a full-page overlay; this copy keeps the identity icon as an asset). Header: favourite
        star + close. Identity (icon 52, type, name + version, Featured), actions (Use in chat, Share), tabs, About. -->
   <div data-dial-component="SideDrawer" data-drawer class="z-popup bg-backdrop fixed inset-0 overflow-auto">
-    <div role="dialog" aria-modal="true" aria-label="GPT-5.1 details" class="fixed inset-y-0 end-0 flex w-full flex-col overflow-hidden bg-layer-raised outline-none desktop:w-[540px] desktop:rounded-s-xl desktop:border-s desktop:border-secondary">
+    <div role="dialog" aria-modal="true" aria-label="GPT-5.1 details" class="fixed inset-y-0 end-0 flex w-full flex-col overflow-hidden bg-layer-raised desktop:w-[540px] desktop:rounded-s-xl desktop:border-s desktop:border-secondary" style="outline: none">
       <div class="flex shrink-0 items-center gap-2 border-b border-tertiary px-6 py-3">
         <div class="min-w-0 flex-1"></div>
         <button type="button" aria-label="Remove from favorites" aria-pressed="true" data-dial-component="ToggleIconButton" class="flex size-[24px] shrink-0 items-center justify-center rounded hover:bg-control-accent-alpha-hover"><!-- asset: star-filled 16 --></button>

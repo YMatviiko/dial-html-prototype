@@ -34,7 +34,7 @@
             <!-- render: Notification {"variant":"warning","type":"section-message","title":"{Daily|Weekly|Monthly} limit 80% used.","message":"Resets at {time|date}.","closable":true} -->
           </div>
           <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px">
-            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent dial-body-paragraph-text text-primary" style="outline: none"></textarea>
             <div class="flex items-center gap-2">
               <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
               <div class="flex-1"></div>
@@ -48,7 +48,7 @@
             <!-- render: Notification {"variant":"error","type":"section-message","title":"{Daily|Weekly|Monthly} limit reached.","message":"Resets at {time|date}.","closable":true} -->
           </div>
           <form class="flex w-full flex-col gap-3 px-3 py-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 748px">
-            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+            <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent dial-body-paragraph-text text-primary" style="outline: none"></textarea>
             <div class="flex items-center gap-2">
               <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
               <div class="flex-1"></div>
@@ -73,7 +73,7 @@
         <div class="flex flex-col items-center p-8 rounded-xl border border-tertiary">
           <div class="flex w-full flex-col gap-1" style="max-width: 700px">
             <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md">
-              <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+              <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent dial-body-paragraph-text text-primary" style="outline: none"></textarea>
               <div class="flex items-center gap-2">
                 <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
                 <div class="flex-1"></div>
@@ -121,7 +121,7 @@
         <div class="flex items-start gap-1 p-8 rounded-xl border border-tertiary">
           <!-- Trigger + menu (kit Dropdown, open) -->
           <div class="flex items-start gap-2" style="width: 200px">
-            <!-- render: Dropdown {"open":true,"onItemClick":null,"listClassName":"w-[160px]","items":[{"key":"pin","label":"Pin","icon":"@icon:pin:20"},{"key":"rename","label":"Rename","icon":"@icon:pencil-minus:20"},{"key":"duplicate","label":"Duplicate","icon":"@icon:copy:20"},{"key":"export","label":"Export","icon":"@icon:download:20","className":"bg-control-accent-alpha-hover","children":[{"key":"with","label":"With attachments"},{"key":"without","label":"Without attachments"}]},{"key":"share","label":"Share","icon":"@icon:share:20"},{"key":"publish","label":"Publish","icon":"@icon:world-share:20"},{"key":"delete","label":"Delete","icon":"@icon:trash-x:20","danger":true}],"children":{"@component":"GhostIconButton","aria-label":"Chat actions","icon":"@icon:dots-vertical:16","size":"small","className":"bg-control-accent-alpha-hover"}} -->
+            <!-- render: Dropdown {"open":true,"onItemClick":null,"listClassName":"w-40","items":[{"key":"pin","label":"Pin","icon":"@icon:pin:20"},{"key":"rename","label":"Rename","icon":"@icon:pencil-minus:20"},{"key":"duplicate","label":"Duplicate","icon":"@icon:copy:20"},{"key":"export","label":"Export","icon":"@icon:download:20","className":"bg-control-accent-alpha-hover","children":[{"key":"with","label":"With attachments"},{"key":"without","label":"Without attachments"}]},{"key":"share","label":"Share","icon":"@icon:share:20"},{"key":"publish","label":"Publish","icon":"@icon:world-share:20"},{"key":"delete","label":"Delete","icon":"@icon:trash-x:20","danger":true}],"children":{"@component":"GhostIconButton","aria-label":"Chat actions","icon":"@icon:dots-vertical:16","size":"small","className":"bg-control-accent-alpha-hover"}} -->
           </div>
           <!-- Export submenu, aligned with the Export row (3 rows of 40px + 2px gaps + menu padding above it).
                Same overlay surface as the kit Dropdown; its rows are kit MenuItems. -->

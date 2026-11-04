@@ -26,7 +26,7 @@
     <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6">
       <h1 class="dial-display2-text text-primary">Afternoon, Olha</h1>
       <form class="flex w-full flex-col gap-3 p-4 rounded-xl border border-tertiary bg-control-neutral shadow-md" style="max-width: 700px" data-composer>
-        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent outline-none dial-body-paragraph-text text-primary placeholder:text-secondary"></textarea>
+        <textarea rows="1" aria-label="Message" placeholder="How can I help you today?" class="w-full resize-none border-0 bg-transparent dial-body-paragraph-text text-primary" style="outline: none"></textarea>
         <div class="flex items-center gap-2">
           <!-- render: GhostIconButton {"aria-label":"Attach","icon":"@icon:plus:24"} -->
           <div class="flex-1"></div>
@@ -45,7 +45,7 @@
   <!-- User menu (Figma: menu, 304px, 4px above the navigation footer). Opened by the user button in the
        navigation footer; "Settings" opens the Settings popup (see the settings pattern). The layer covers the page so
        a click outside closes the menu, like the real dropdown. -->
-  <div class="fixed inset-0 z-10 flex flex-col items-start justify-end pl-4" data-user-menu>
+  <div class="fixed inset-0 z-popup flex flex-col items-start justify-end pl-4" data-user-menu>
     <!-- render: Dropdown {"open":true,"matchReferenceWidth":false,"onItemClick":null,"items":[{"key":"settings","label":"Settings","icon":"@icon:settings:20"},{"key":"logout","label":"Log out","icon":"@icon:logout:20","danger":true}],"menuHeader":{"@component":"div","className":"flex w-[300px] items-center gap-2 border-b border-tertiary px-3 py-2","children":[{"@component":"Avatar","name":"Natalia Sudko","initials":"NS","size":32},{"@component":"div","className":"flex min-w-0 flex-col gap-0.5","children":[{"@component":"span","className":"truncate dial-small-text text-primary","children":"Natalia Sudko"},{"@component":"span","className":"truncate dial-tiny-text text-secondary","children":"Natalia_Sudko@epam.com"}]}]},"children":{"@component":"span","className":"hidden","children":""}} -->
     <div class="h-[60px] shrink-0"></div>
   </div>
