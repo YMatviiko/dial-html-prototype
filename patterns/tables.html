@@ -5,9 +5,12 @@
      3388:67547 "Table Cell", 3385:66917 "Cell types", 3191:90370 "Details", 3191:82224 "Cases".
      Generate with: kit-lookup.mjs pattern tables > page.html
      A reference page, not a screen: copy the table type you need into your prototype (it goes inside any page pattern).
-     The real table is the kit Grid (AG Grid), which a static page can't run, so every table here is a hand-built
-     <table> (or grid of divs for the chat table) tagged data-dial-component="Grid". Controls inside cells are real
-     kit renders (Search, Checkbox, Radio, Input, Badge, Avatar, ProgressBar, icon buttons).
+     Section 0 is the real kit Grid 2.0, live: AG Grid with the kit's theme, from the kit-grid marker in <head>
+     (kit-lookup.mjs grid) and a dialGrid() call. Use it for any data table the kit Grid covers (text, numbers,
+     dates, sorting, filtering, selection). The other sections are hand-built <table>s (or a grid of divs for the
+     chat table) tagged data-dial-component="Grid", for Figma layouts the kit Grid doesn't draw out of the box: chat
+     table, entity cells with avatars, inputs in cells, heat map, double header, change highlights. Controls inside
+     those cells are real kit renders (Search, Checkbox, Radio, Input, Badge, Avatar, ProgressBar, icon buttons).
      Shared rules (from the Figma):
        - Header cell: 40px, caption-lead (10px uppercase) text-secondary, 12px-tall divider at the right edge;
          optional sort arrow, right alignment for numbers. Subheader row: Search + filter icon button, 40px.
@@ -29,6 +32,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
   <!-- kit-link -->
+  <!-- kit-grid -->
   <style>
     html, body { height: 100%; }
     body { font-family: Inter, system-ui, sans-serif; }
@@ -41,6 +45,16 @@
     <h1 class="dial-display3-text text-primary">Tables</h1>
     <p class="dial-small-text text-secondary">Table types, cells and states of the DIAL 2.0 table. Copy the type you need; the real component is the kit Grid.</p>
   </header>
+
+  <!-- ============ 0. Kit Grid 2.0, live (kit Grid: AG Grid + GRID_THEME_PARAMS + .dial-kit-grid rules) ============ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <h2 class="dial-h2-text text-primary">Kit Grid (live)</h2>
+      <p class="dial-small-text text-secondary">The real kit Grid 2.0: 40px rows, floating filters, sortable and resizable columns, 2.0 checkboxes in the selection column (shown on hover, kept once something is selected). Sort a column, type in a filter, select rows. Needs an internet connection (AG Grid loads from jsDelivr).</p>
+    </div>
+    <!-- Host: give it a height; 40px header + 40px filter row + 40px per row + 2px border. -->
+    <div id="models-grid" data-dial-component="Grid" style="height: 362px"></div>
+  </section>
 
   <!-- ============ 1. Anatomy: header, subheader, cell states, highlights, densities ============ -->
   <section class="flex flex-col gap-4">
@@ -555,6 +569,33 @@
 </main>
 
 <script>
+  // Kit Grid (live). Options: columnDefs, rowData, selection ('multiple' | 'single'), selectedRowIds,
+  // alternateOddRowColors, wrapperBorder, withoutHeaderBorders, filterPlaceholder, emptyStateTitle/Description,
+  // getRowId, onSelectionChange, gridOptions (any AG Grid option). Right-align numbers with
+  // cellClass/headerClass 'dial-kit-grid-align-right'.
+  var tokens = new Intl.NumberFormat('en-US');
+  dialGrid('#models-grid', {
+    ariaLabel: 'Models',
+    selection: 'multiple',
+    selectedRowIds: ['mistral-nemotron'],
+    columnDefs: [
+      { field: 'name', headerName: 'Display name', flex: 1.4 },
+      { field: 'provider', headerName: 'Provider' },
+      { field: 'version', headerName: 'Version' },
+      { field: 'context', headerName: 'Context (tokens)', filter: 'agNumberColumnFilter', cellClass: 'dial-kit-grid-align-right', headerClass: 'dial-kit-grid-align-right', valueFormatter: function (p) { return tokens.format(p.value); } },
+      { field: 'updated', headerName: 'Updated' }
+    ],
+    rowData: [
+      { id: 'llama-nemotron', name: 'Llama-3.3-Nemotron', provider: 'NVIDIA', version: 'Super-49B-v1.5', context: 128000, updated: '2026-10-28' },
+      { id: 'sarvam-m', name: 'Sarvam-m', provider: 'Sarvam AI', version: '1.0', context: 32000, updated: '2026-09-14' },
+      { id: 'mistral-nemotron', name: 'Mistral-Nemotron', provider: 'Mistral', version: '2506', context: 128000, updated: '2026-11-03' },
+      { id: 'deepseek-r1', name: 'DeepSeek-R1-0528', provider: 'DeepSeek', version: '0528', context: 164000, updated: '2026-08-02' },
+      { id: 'jamba-mini', name: 'Jamba 1.5 mini', provider: 'AI21 Labs', version: '1.5', context: 256000, updated: '2026-07-19' },
+      { id: 'gpt-luna', name: 'GPT-5.6 Luna', provider: 'OpenAI', version: '2026-10-01', context: 1000000, updated: '2026-11-10' },
+      { id: 'gemini-flash', name: 'Gemini 3.5 Flash', provider: 'Google', version: '001', context: 1048576, updated: '2026-11-06' }
+    ]
+  });
+
   // A static page can't run the kit ProgressBar's inline width, so fill each bar from its aria values.
   // data-tone="error" on the bar (passed through the render) switches the fill to the error colour.
   document.querySelectorAll('[data-dial-component="ProgressBar"]').forEach(function (bar) {

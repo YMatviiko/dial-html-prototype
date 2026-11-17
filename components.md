@@ -7,7 +7,7 @@ node .claude/skills/dial-html-prototype/kit-lookup.mjs render PrimaryButton '{"l
 ```
 
 This file covers what rendering can't give you: the page skeleton, tokens, typography, layout gaps, and the
-few things a static page can't render (data grid, hover tooltip, overlays shown inside a section, status
+few things a static page can't render (data grid, which runs live, hover tooltip, overlays shown inside a section, status
 pills, plain layout).
 
 ## Rendering components
@@ -209,13 +209,53 @@ loses to `flex`, from 0.16 it wins), so don't rely on it.
 
 ## Grid (table)
 
-For anything beyond a plain list, copy the matching table type from the `tables` pattern
-(`K pattern tables --source`): it follows the Components 2.0 table spec (header with 10px caption titles and short
-dividers, search + filter row, densities 20/40/56/84px, cell states, chat vs admin tables). The basic recipe:
+The kit's 2.0 `Grid` is AG Grid with the kit's theme. `render Grid` can't draw it statically, so a prototype runs it
+**live**: `K grid` prints a block for `<head>` with the AG Grid script (from jsDelivr, the exact version the kit
+uses) and a `dialGrid()` helper built from the installed kit: its theme values (`GRID_THEME_PARAMS`), its selection
+column with the 2.0 `Checkbox`/`Radio`, and its empty state. The `.dial-kit-grid` rules already ship in the kit
+stylesheet. The result looks and behaves like the kit Grid: 40px rows and header, 10px uppercase titles with 12px
+dividers, floating text filters, sorting, resizing, 0.5px row lines, subtle hover and selected tints with a thin
+outline.
 
-The real `Grid` is AG Grid; it needs runtime CSS a prototype can't load, so `render Grid` refuses. Imitate it
-with a `<table>` using the grid's own theme values (40px rows, header on `bg-layer-base`, `border-tertiary`
-lines, 8px outer radius):
+In a template, put `<!-- kit-grid -->` in `<head>` after `<!-- kit-link -->` (without a template, paste the output
+of `K grid` there). Give the host a height and call `dialGrid` from your script:
+
+```html
+<!-- 40px header + 40px filter row + 40px per row + 2px border -->
+<div id="runs" data-dial-component="Grid" style="height: 322px"></div>
+<script>
+  dialGrid('#runs', {
+    ariaLabel: 'Runs',
+    selection: 'multiple',                 // or 'single' (radios); leave out for no selection column
+    selectedRowIds: ['run-315'],           // rows are matched by their "id" field (or getRowId)
+    columnDefs: [
+      { field: 'name', headerName: 'Run', flex: 1.4 },
+      { field: 'target', headerName: 'Target' },
+      { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter',
+        cellClass: 'dial-kit-grid-align-right', headerClass: 'dial-kit-grid-align-right',
+        valueFormatter: function (p) { return '$' + p.value.toFixed(2); } }
+    ],
+    rowData: [{ id: 'run-315', name: 'Run #315', target: 'Gemini 2.5 Flash', cost: 5 } /* … */]
+  });
+</script>
+```
+
+Options mirror the kit Grid's props: `columnDefs`, `rowData`, `selection`, `selectedRowIds`, `getRowId`,
+`onSelectionChange(ids, rows)`, `alternateOddRowColors` (zebra rows), `wrapperBorder` (default on),
+`withoutHeaderBorders`, `filterPlaceholder`, `emptyStateTitle`, `emptyStateDescription`, `selectRowLabel`,
+`selectAllLabel`, `ariaLabel`, and `gridOptions` for any other AG Grid option (e.g. `{ rowHeight: 56 }` for regular
+density; the kit itself only uses 40px). Column definitions are plain AG Grid ones. Cells without a `cellRenderer`
+get the kit's one-line truncated text. A custom `cellRenderer` returns a DOM element; build it with kit classes,
+or put rendered kit markup inside it (e.g. a `Badge` from `K render`).
+
+`dialGrid` returns the AG Grid API. It needs an internet connection; offline the host shows a short message.
+Not included: the row context menu (show a menu with a rendered `Dropdown` if the screen needs one) and the
+mobile always-visible selection column.
+
+**Static tables.** Figma layouts the kit Grid doesn't draw out of the box (the chat table, entity cells with
+avatars, inputs in cells, the heat map, the double header, change highlights) stay hand-built: copy them from
+the `tables` pattern (`K pattern tables --source`), which follows the Components 2.0 table spec (densities
+20/40/56/84px, cell states, chat vs admin tables). The basic static recipe:
 
 ```html
 <div data-dial-component="Grid" class="overflow-hidden rounded-lg border border-tertiary bg-layer-raised">

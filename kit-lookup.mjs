@@ -8,6 +8,7 @@
 //   node kit-lookup.mjs classes <regex>           which kit utility classes exist, with their CSS
 //   node kit-lookup.mjs icon <name> [size]        Tabler outline icon as inline SVG (kit style, stroke 1.5)
 //   node kit-lookup.mjs version                   installed kit version + the stylesheet <link> to paste
+//   node kit-lookup.mjs grid                      the kit's Grid 2.0, live: AG Grid + kit theme block to paste in <head>
 //   node kit-lookup.mjs asset <name> [height]     a DIAL brand asset (logo, gradient icons) as an inline <img>
 //   node kit-lookup.mjs pattern <name> --source > page.tpl.html   copy a DIAL page template to edit (patterns/ lists them)
 //   node kit-lookup.mjs pattern page.tpl.html > page.html         build your edited template into the page
@@ -15,7 +16,7 @@
 // "@icon:send" or "@icon:send:16" for an icon; {"@component":"PrimaryButton","label":"Ok"} for a nested component.
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 
@@ -200,7 +201,7 @@ async function render(items, collect = null) {
     if (collect) collect.push(res);
     say(`\n## ${name} ${JSON.stringify(props)}`);
     if (!kit[name]) { say(`not exported by the kit. Try: node kit-lookup.mjs search ${name}`); process.exitCode = 1; continue; }
-    if (name === 'Grid') { say(`AG Grid needs its runtime CSS, which a prototype can't load. Use the table imitation in components.md.`); continue; }
+    if (name === 'Grid') { say(`Grid is AG Grid and can't be rendered to static HTML. Use the live grid: "node kit-lookup.mjs grid" (see "Grid (table)" in components.md).`); continue; }
     noise.length = 0;
     added.clear();
     nested = [];
@@ -422,7 +423,221 @@ async function pattern(n, source = false) {
   html = html.replace(/<!-- asset: ([\w-]+)(?: (\d+))? -->/g, (_, a, h) => asset(a, h, true));
   html = html.replace(/<!-- icon: ([\w-]+) (\d+)(?: ([^>]*?))? -->/g, (_, i, sz, cls) => icon(i, sz, cls ?? '', true));
   html = html.replace('<!-- kit-link -->', `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/${KIT}@${kitVersion()}/dist/index.css">`);
+  if (html.includes('<!-- kit-grid -->')) { const block = await grid(); html = html.replace('<!-- kit-grid -->', () => block); }
   console.log(html);
+}
+
+// ---------- kit Grid 2.0, live: AG Grid from jsDelivr + the kit's own theme values, selection controls and empty state
+// The kit's Grid is AG Grid with a theme object (GRID_THEME_PARAMS) and `.dial-kit-grid` rules that already ship in the
+// kit stylesheet. AG Grid builds its theme CSS in the browser, so a page needs only the AG Grid script and the
+// theme values; both are read from the installed kit here, so the block always matches it.
+function findFile(dir, test) {
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) { if (e.name !== 'node_modules') { const r = findFile(p, test); if (r) return r; } }
+    else if (test(p)) return p;
+  }
+  return null;
+}
+function agGridVersion(kitPath) {
+  const dep = JSON.parse(readFileSync(join(kitPath, 'package.json'), 'utf8')).dependencies?.['ag-grid-community'] ?? '';
+  const want = dep.replace(/^[^\d]*/, '');
+  const bundled = join(kitPath, 'dist/node_modules/ag-grid-community/dist/package/main.esm.js');
+  if (existsSync(bundled)) {
+    const src = readFileSync(bundled, 'utf8');
+    if (want && src.includes(`"${want}"`)) return want;
+    const m = src.match(/var \w+ = "(\d+\.\d+\.\d+)", \w+ = 2e3/);
+    if (m) return m[1];
+  }
+  return want || null;
+}
+function kitGridRuntime(K) {
+  const ag = window.agGrid;
+  if (ag && ag.ModuleRegistry && ag.AllCommunityModule) ag.ModuleRegistry.registerModules([ag.AllCommunityModule]);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const fill = (tpl, map) => tpl.replace(/KIT[A-Z]+/g, (k) => (k in map ? esc(map[k]) : k));
+  const node = (html) => { const t = document.createElement('template'); t.innerHTML = html; return t.content.firstElementChild; };
+  // Case-insensitive, number-aware sorting, as the kit's baseColumnComparator.
+  const compare = (a, b) => {
+    if (a == null || a === '') return b == null || b === '' ? 0 : -1;
+    if (b == null || b === '') return 1;
+    if (typeof a === 'number' && typeof b === 'number') return a - b;
+    return String(a).localeCompare(String(b), undefined, { sensitivity: 'base', numeric: true });
+  };
+  let count = 0;
+  return function dialGrid(target, o = {}) {
+    const host = typeof target === 'string' ? document.querySelector(target) : target;
+    if (!host) throw new Error(`dialGrid: no element ${target}`);
+    if (!host.hasAttribute('data-dial-component')) host.setAttribute('data-dial-component', 'Grid');
+    if (!ag) { host.textContent = 'The table needs an internet connection: AG Grid loads from cdn.jsdelivr.net.'; return null; }
+    const uid = `dial-grid-${++count}`;
+    const mode = o.selection; // 'multiple' | 'single' | undefined
+    const rowId = o.getRowId || ((d) => String(d.id ?? JSON.stringify(d)));
+    const root = document.createElement('div');
+    root.className = [K.cls.root, 'size-full', mode && K.cls.withSelection, o.withoutHeaderBorders && K.cls.withoutHeaderBorders].filter(Boolean).join(' ');
+    root.setAttribute('role', 'region');
+    root.setAttribute('aria-label', o.ariaLabel || 'Data grid');
+    const inner = document.createElement('div');
+    inner.className = 'h-full overflow-x-auto';
+    root.appendChild(inner);
+    host.appendChild(root);
+
+    // Default cell: one truncated line; the full text shows on hover only when it is cut (kit EllipsisTooltip).
+    const textCell = (p) => {
+      const s = document.createElement('span');
+      s.className = 'block min-w-0 max-w-full truncate dial-small-text text-primary';
+      const v = p.valueFormatted ?? p.value;
+      s.textContent = v == null ? '' : String(v);
+      s.addEventListener('mouseenter', () => { s.title = s.scrollWidth > s.clientWidth ? s.textContent : ''; });
+      return s;
+    };
+    // Selection column: the kit's 2.0 Checkbox / Radio (rendered from the installed kit), not AG Grid's inputs.
+    const control = (on, id, label) => node(mode === 'single'
+      ? fill(on ? K.tpl.radioOn : K.tpl.radioOff, { KITID: `${uid}-${id}`, KITNAME: uid, KITVALUE: id, KITLABEL: label })
+      : fill(on ? K.tpl.checkboxOn : K.tpl.checkboxOff, { KITID: `${uid}-${id}`, KITLABEL: label }));
+    class SelectCell {
+      init(p) {
+        this.p = p;
+        this.e = document.createElement('div');
+        this.e.className = 'flex';
+        this.draw = () => this.e.replaceChildren(control(p.node.isSelected(), rowId(p.data), o.selectRowLabel?.(p.data) ?? 'Select row'));
+        this.draw();
+        p.node.addEventListener('rowSelected', this.draw);
+        this.e.addEventListener('click', (ev) => { ev.preventDefault(); p.node.setSelected(mode === 'single' ? true : !p.node.isSelected(), mode === 'single'); });
+      }
+      getGui() { return this.e; }
+      refresh() { return false; }
+      destroy() { this.p.node.removeEventListener('rowSelected', this.draw); }
+    }
+    class SelectAll {
+      init(p) {
+        this.api = p.api;
+        this.e = document.createElement('div');
+        this.e.className = 'flex';
+        this.draw = () => {
+          let s = 0, t = 0;
+          this.api.forEachNodeAfterFilter((n) => { if (n.selectable !== false) { t++; if (n.isSelected()) s++; } });
+          this.all = t > 0 && s === t;
+          const tpl = this.all ? K.tpl.checkboxOn : s > 0 ? K.tpl.checkboxMixed : K.tpl.checkboxOff;
+          this.e.replaceChildren(node(fill(tpl, { KITID: `${uid}-all`, KITLABEL: o.selectAllLabel || 'Select all rows' })));
+        };
+        this.draw();
+        this.api.addEventListener('selectionChanged', this.draw);
+        this.api.addEventListener('modelUpdated', this.draw);
+        this.e.addEventListener('click', (ev) => { ev.preventDefault(); this.all ? this.api.deselectAll('filtered') : this.api.selectAll('filtered'); });
+      }
+      getGui() { return this.e; }
+      refresh() { return false; }
+      destroy() {
+        if (this.api.isDestroyed()) return;
+        this.api.removeEventListener('selectionChanged', this.draw);
+        this.api.removeEventListener('modelUpdated', this.draw);
+      }
+    }
+    class Empty {
+      init() { this.e = node(fill(K.tpl.empty, { KITTITLE: o.emptyStateTitle ?? K.text.emptyTitle, KITDESC: o.emptyStateDescription ?? K.text.emptyDescription })); }
+      getGui() { return this.e; }
+    }
+
+    const selectionCol = mode && {
+      ...K.selectionColDef, colId: K.selectionColId, headerName: '', headerClass: K.cls.headerSelect, cellClass: K.cls.rowSelect,
+      headerComponent: mode === 'multiple' ? SelectAll : undefined, cellRenderer: SelectCell,
+    };
+    const columns = (o.columnDefs || []).map((c) => (c.cellRenderer || c.children ? c : { ...c, cellRenderer: textCell }));
+    const { defaultColDef, rowSelection, onGridReady, onSelectionChanged, ...rest } = o.gridOptions || {};
+    const api = ag.createGrid(inner, {
+      rowModelType: 'clientSide',
+      headerHeight: K.rowHeight,
+      rowHeight: K.rowHeight,
+      cellSelection: false,
+      theme: ag.themeBalham.withPart(ag.colorSchemeLight).withParams({
+        ...K.theme,
+        browserColorScheme: 'light',
+        oddRowBackgroundColor: o.alternateOddRowColors ? K.theme.oddRowBackgroundColor : K.theme.backgroundColor,
+        wrapperBorder: o.wrapperBorder !== false,
+      }),
+      autoSizeStrategy: { type: 'fitGridWidth' },
+      columnDefs: selectionCol ? [selectionCol, ...columns] : columns,
+      defaultColDef: {
+        minWidth: K.minColumnWidth, resizable: true, sortable: true, floatingFilter: true, filter: 'agTextColumnFilter',
+        filterParams: { filterPlaceholder: o.filterPlaceholder ?? K.text.filterPlaceholder, buttons: ['reset'] },
+        comparator: compare, ...defaultColDef,
+      },
+      onGridSizeChanged: (e) => e.api.sizeColumnsToFit(),
+      onGridReady: (e) => { e.api.sizeColumnsToFit(); onGridReady?.(e); },
+      suppressCellFocus: true,
+      suppressDragLeaveHidesColumns: true,
+      noRowsOverlayComponent: Empty,
+      rowData: o.rowData || [],
+      rowSelection: mode
+        ? { ...(typeof rowSelection === 'object' ? rowSelection : {}), mode: mode === 'single' ? 'singleRow' : 'multiRow', checkboxes: false, headerCheckbox: false }
+        : rowSelection,
+      onSelectionChanged: (e) => {
+        const rows = e.api.getSelectedRows();
+        // Once something is selected the selection column stays visible (it is hidden until hover before that).
+        root.classList.toggle(K.cls.selectionVisible, rows.length > 0);
+        o.onSelectionChange?.(new Set(rows.map(rowId)), rows);
+        onSelectionChanged?.(e);
+      },
+      getRowId: (p) => rowId(p.data),
+      ...rest,
+    });
+    for (const id of o.selectedRowIds || []) api.getRowNode(String(id))?.setSelected(true);
+    return api;
+  };
+}
+async function grid() {
+  const kitPath = needKit();
+  const dist = join(kitPath, 'dist');
+  const constFile = findFile(join(dist, 'components'), (p) => /Grid[\\/]constants\.js$/.test(p) && readFileSync(p, 'utf8').includes('GRID_THEME_PARAMS'));
+  if (!constFile) fail(`This kit (${kitVersion()}) has no 2.0 Grid theme (GRID_THEME_PARAMS). Use the static tables in the "tables" pattern.`);
+  const c = await import(pathToFileURL(constFile).href);
+  const rendererConsts = join(dirname(constFile), 'renderers/constants.js');
+  const r = existsSync(rendererConsts) ? await import(pathToFileURL(rendererConsts).href) : {};
+  const gridJs = join(dirname(constFile), 'Grid.js');
+  const gridSrc = existsSync(gridJs) ? readFileSync(gridJs, 'utf8') : '';
+  const grab = (re, dflt) => gridSrc.match(re)?.[1] ?? dflt;
+  const ver = agGridVersion(kitPath);
+  if (!ver) fail(`Couldn't find which AG Grid version kit ${kitVersion()} uses.`);
+
+  const res = [];
+  await render([
+    { name: 'Checkbox', props: { id: 'KITID', 'aria-label': 'KITLABEL' } },
+    { name: 'Checkbox', props: { id: 'KITID', 'aria-label': 'KITLABEL', isSelected: true } },
+    { name: 'Checkbox', props: { id: 'KITID', 'aria-label': 'KITLABEL', isSelected: true, isIndeterminate: true } },
+    { name: 'Radio', props: { name: 'KITNAME', value: 'KITVALUE', 'aria-label': 'KITLABEL' } },
+    { name: 'Radio', props: { name: 'KITNAME', value: 'KITVALUE', 'aria-label': 'KITLABEL', isSelected: true } },
+    { name: 'NoDataContent', props: { live: true, title: 'KITTITLE', description: 'KITDESC', icon: '@icon:zoom-cancel:100' } },
+  ], res);
+  const bad = res.find((x) => !x.html);
+  if (bad) fail(`grid: ${bad.name} rendered nothing:\n${bad.text.join('\n')}`);
+  // Radio gets a React id: make it a placeholder. The kit draws the empty-state icon with a 0.5 stroke.
+  const [checkboxOff, checkboxOn, checkboxMixed, radioOff, radioOn, empty] = res.map((x) => x.html.replace(/(id|for)="_r_\w+_"/g, '$1="KITID"'));
+  const K = {
+    theme: c.GRID_THEME_PARAMS,
+    rowHeight: c.ROW_HEIGHT ?? 40,
+    minColumnWidth: Number(grab(new RegExp(`\\b${grab(/minWidth: (\w+),\s*resizable: !0/, 'none')} = (\\d+)`), 150)),
+    selectionColId: grab(/= "(dial-kit-grid-selection)"/, 'dial-kit-grid-selection'),
+    selectionColDef: r.SELECTION_COL_DEF ?? { width: 40, minWidth: 40, maxWidth: 40, resizable: false, sortable: false, filter: false, floatingFilter: false, suppressMovable: true, suppressHeaderMenuButton: true, suppressAutoSize: true, suppressSizeToFit: true },
+    cls: {
+      root: c.GRID_ROOT_CLASS, withSelection: c.GRID_WITH_SELECTION_CLASS, withoutHeaderBorders: c.GRID_WITHOUT_HEADER_BORDERS_CLASS,
+      rowSelect: c.GRID_ROW_SELECT_CLASS, headerSelect: c.GRID_HEADER_SELECT_CLASS, selectionVisible: c.GRID_SELECTION_VISIBLE_CLASS,
+    },
+    text: {
+      filterPlaceholder: grab(/filterPlaceholder: \w+ = "([^"]*)"/, 'Enter value'),
+      emptyTitle: grab(/emptyStateTitle: \w+ = "([^"]*)"/, 'No results found'),
+      emptyDescription: grab(/emptyStateDescription: \w+ = "([^"]*)"/, "Sorry, we couldn't find any results for your search."),
+    },
+    tpl: { checkboxOff, checkboxOn, checkboxMixed, radioOff, radioOn, empty: empty.replace(/stroke-width="1\.5"/, 'stroke-width="0.5"') },
+  };
+  return [
+    `<!-- kit-grid: the kit's Grid 2.0 (AG Grid ${ver}, theme from kit ${kitVersion()}). Generated by kit-lookup.mjs grid; don't edit, regenerate. -->`,
+    `<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@${ver}/dist/ag-grid-community.min.js"></script>`,
+    `<script data-kit-grid>`,
+    `window.dialGrid = (${kitGridRuntime.toString()})(${JSON.stringify(K)});`,
+    `</script>`,
+    `<!-- /kit-grid -->`,
+  ].join('\n');
 }
 
 const [cmd, a1, a2] = process.argv.slice(2);
@@ -435,6 +650,7 @@ else if (cmd === 'classes' && a1) classes(a1);
 else if (cmd === 'icon' && a1) icon(a1, a2);
 else if (cmd === 'asset' && a1) asset(a1, a2);
 else if (cmd === 'pattern' && a1) await pattern(a1, a2 === '--source');
+else if (cmd === 'grid') console.log(await grid());
 else if (cmd === 'version') { const v = kitVersion(); console.log(v); console.log(`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/${KIT}@${v}/dist/index.css">`); }
 else {
   const src = readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1);

@@ -9,6 +9,7 @@ Page templates built from the latest DIAL Chat 2.0 Figma designs. Prototypes cop
 | Marker | Becomes |
 |---|---|
 | `<!-- kit-link -->` | The kit stylesheet `<link>`, pinned to the installed version |
+| `<!-- kit-grid -->` | The live kit Grid block (AG Grid + the kit's theme, `kit-lookup.mjs grid`). Put it in `<head>` after `kit-link`; then call `dialGrid()` from the page script |
 | `<!-- include: navigation … -->` | The shared left navigation (options below) |
 | `<!-- render: Name {"props":"json"} -->` | The real kit component, rendered now. One line |
 | `<!-- wrap: Name {"props":"json"} -->` … `<!-- /wrap -->` | A kit component (Popup, SideDrawer, Card…) **around your markup**: the markup becomes its `children`, or the prop named by `"@slot"` (e.g. `{"@slot":"footer"}`). Nests; markers inside are expanded too |

@@ -10,7 +10,9 @@
 //           (exception: px for layout sizes — width/height and their min/max — when the kit has no class)
 //   error   custom property (--x) declared in the file: prototypes are light theme only, no overrides
 //   error   kit stylesheet missing / not rel=stylesheet / not pinned to the installed version
-//   error   any other stylesheet, @import, or external <script src> (Google Fonts is the only extra allowed)
+//   error   any other stylesheet, @import, or external <script src> (Google Fonts is the only extra allowed;
+//           the one allowed script is AG Grid from the kit-grid block, pinned to the kit's AG Grid version)
+//   error   dialGrid() called without the kit-grid block (kit-lookup.mjs grid)
 //   error   Inter not loaded or not set on body; missing "DIAL prototype" comment
 //   error   interactive markup but no data-dial-component tags; 1.0 data-dial-component (Dial*)
 //   warning data-dial-component name not found in the kit manifest
@@ -33,6 +35,22 @@ if (!cssPath) {
 }
 const kitVersion = JSON.parse(readFileSync(cssPath.replace(/dist\/index\.css$/, 'package.json'), 'utf8')).version;
 const KIT_HREF = `https://cdn.jsdelivr.net/npm/@epam/ai-dial-ui-kit@${kitVersion}/dist/index.css`;
+// AG Grid version the kit's Grid uses: the only external script allowed, and only via the kit-grid block.
+const kitPath = cssPath.replace(/\/dist\/index\.css$/, '');
+function agGridVersion() {
+  const dep = JSON.parse(readFileSync(join(kitPath, 'package.json'), 'utf8')).dependencies?.['ag-grid-community'] ?? '';
+  const want = dep.replace(/^[^\d]*/, '');
+  const bundled = join(kitPath, 'dist/node_modules/ag-grid-community/dist/package/main.esm.js');
+  if (existsSync(bundled)) {
+    const src = readFileSync(bundled, 'utf8');
+    if (want && src.includes(`"${want}"`)) return want;
+    const m = src.match(/var \w+ = "(\d+\.\d+\.\d+)", \w+ = 2e3/);
+    if (m) return m[1];
+  }
+  return want || null;
+}
+const AG_VERSION = agGridVersion();
+const AG_SRC = AG_VERSION && `https://cdn.jsdelivr.net/npm/ag-grid-community@${AG_VERSION}/dist/ag-grid-community.min.js`;
 const manifestPath = cssPath.replace(/index\.css$/, 'components-manifest.json');
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : null;
 const componentNames = manifest ? new Set(manifest.components.map((c) => c.name)) : null;
@@ -182,6 +200,13 @@ for (const file of files) {
   for (const s of scripts) {
     if (/\bsrc\s*=/i.test(s[1])) {
       const src = (s[1].match(/\bsrc\s*=\s*["']?([^"'\s>]+)/i) || [])[1] ?? '';
+      if (AG_SRC && src === AG_SRC) continue;
+      if (/ag-grid/i.test(src)) {
+        add(s.index, 'error', 'grid-version', AG_SRC
+          ? `AG Grid must come from the kit-grid block, pinned to the kit's version: "${AG_SRC}". Regenerate it: node kit-lookup.mjs grid.`
+          : `This kit has no 2.0 Grid to match; use the static tables from the "tables" pattern.`);
+        continue;
+      }
       add(s.index, 'error', /tailwind|twind|unocss/i.test(src) ? 'no-tailwind-cdn' : 'no-external-script',
         `External script "${src}" — only a small inline <script> is allowed (no frameworks, no Tailwind runtime).`);
     }
@@ -210,6 +235,11 @@ for (const file of files) {
     for (const m of js.matchAll(/\.style\.[\w]+\s*=\s*(['"`])([^'"`]*)\1/g)) checkValue(m[2], start + valueAt(m, m[2]));
     for (const m of js.matchAll(/(?:cssText\s*=|setAttribute\(\s*['"]style['"]\s*,)\s*(['"`])([^'"`]*)\1/g)) checkDecls(m[2], start + valueAt(m, m[2]));
   }
+
+  // ---- live grid: dialGrid() needs the generated kit-grid block
+  const ownJs = scripts.filter((s) => !/\bdata-kit-grid\b/.test(s[1])).map((s) => s[2]).join('\n');
+  if (/\bdialGrid\s*\(/.test(ownJs) && !scripts.some((s) => /\bdata-kit-grid\b/.test(s[1])))
+    add(0, 'error', 'grid-missing', 'dialGrid() is called but the kit-grid block is missing. Paste the output of "node kit-lookup.mjs grid" into <head> (or use the <!-- kit-grid --> marker in a template).');
 
   // ---- stylesheets and fonts
   const links = [...text.matchAll(/<link\b[^>]*>/gi)].map((m) => {

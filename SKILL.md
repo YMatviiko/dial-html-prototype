@@ -31,6 +31,7 @@ doesn't work, a shell function does):
 | **A DIAL page template** to start from (table below) | `K pattern <name> --source > page.tpl.html` |
 | Build your edited template into the prototype | `K pattern page.tpl.html > page.html` |
 | The stylesheet `<link>` to paste | `K version` |
+| **A data table**: the kit's Grid 2.0, live (AG Grid + kit theme) | `K grid` (or `<!-- kit-grid -->` in a template) |
 
 [`components.md`](components.md) (next to this file) has the props-JSON syntax, render recipes for common
 components, the page skeleton, tokens, typography, layout gaps, and the few things rendering can't produce
@@ -48,7 +49,9 @@ don't build from memory. No MCP server or session restart is needed.
 
 1. **One self-contained `.html` file** that opens by double-click. No build tools, no frameworks, no
    Tailwind CDN, no external scripts. Plain HTML + CSS, plus an optional small inline `<script>` for
-   click-through behaviour.
+   click-through behaviour. One exception: a **data table uses the kit's Grid live**. Paste the `K grid` block
+   (AG Grid pinned to the kit's version, plus the kit's theme) unedited and call `dialGrid()` (see "Grid (table)"
+   in `components.md`). Never load AG Grid any other way or hand-build a table the kit Grid covers.
 2. **Start from the page skeleton in `components.md`**: Inter from Google Fonts, the kit stylesheet pinned to
    the installed version (exact line from `K version`), `font-family: Inter, system-ui, sans-serif` on `body`.
 3. **Light theme only.** Use the kit's built-in light values. Don't declare CSS variables (`--x: …`) or
@@ -118,7 +121,7 @@ feature to it.
 | Settings | `settings` | Settings popup (section rail + form) — any settings or preferences form |
 | | `settings-extensions` | Connections/integrations table in settings |
 | | `settings-menu` | Nav-footer user menu open (Settings / Log out) |
-| Tables | `tables` | Every table type from the Components 2.0 spec: chat table, admin data / entity / editable / heat map, sorting, filtering, pinned actions, double header, cell states — copy the one you need into a page |
+| Tables | `tables` | The live kit Grid (section 0), plus every static table type from the Components 2.0 spec: chat table, admin data / entity / editable / heat map, sorting, filtering, pinned actions, double header, cell states — copy the one you need into a page |
 
 Pick by **layout**, not by name: a new "agent permissions" page is probably `toolsets-editor` or `settings`;
 a new list of things is `scheduled-tasks` or `catalog`; anything in a conversation is `chat-conversation` +
@@ -164,5 +167,8 @@ prototype is a reference, not source to copy.
 ## Maintaining this skill
 
 New kit components need no change here: `K update` + `K search`/`K render` pick them up. After a kit upgrade,
-re-check the hand-written parts of `components.md` (the Grid table, Tooltip, status pills, plain layout, the
-gaps table): build a page from them and run the validator, which flags any class the new kit dropped.
+re-check the hand-written parts of `components.md` (the static Grid table, Tooltip, status pills, plain layout,
+the gaps table): build a page from them and run the validator, which flags any class the new kit dropped. The live
+grid regenerates from the kit (`K grid` reads its theme, AG Grid version, Checkbox/Radio and empty state), but build
+the `tables` pattern and screenshot it: if `K grid` fails, the kit moved its Grid files and `grid()` in
+`kit-lookup.mjs` needs the new path.
